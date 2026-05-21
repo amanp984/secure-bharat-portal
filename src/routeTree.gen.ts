@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FundTransferRouteImport } from './routes/fund-transfer'
+import { Route as BillsRouteImport } from './routes/bills'
 import { Route as BeneficiaryRouteImport } from './routes/beneficiary'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
@@ -21,6 +22,11 @@ import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.pa
 const FundTransferRoute = FundTransferRouteImport.update({
   id: '/fund-transfer',
   path: '/fund-transfer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillsRoute = BillsRouteImport.update({
+  id: '/bills',
+  path: '/bills',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BeneficiaryRoute = BeneficiaryRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/beneficiary': typeof BeneficiaryRoute
+  '/bills': typeof BillsRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/beneficiary': typeof BeneficiaryRoute
+  '/bills': typeof BillsRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/beneficiary': typeof BeneficiaryRoute
+  '/bills': typeof BillsRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/accounts'
     | '/beneficiary'
+    | '/bills'
     | '/fund-transfer'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/accounts'
     | '/beneficiary'
+    | '/bills'
     | '/fund-transfer'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/accounts'
     | '/beneficiary'
+    | '/bills'
     | '/fund-transfer'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountsRoute: typeof AccountsRouteWithChildren
   BeneficiaryRoute: typeof BeneficiaryRoute
+  BillsRoute: typeof BillsRoute
   FundTransferRoute: typeof FundTransferRouteWithChildren
 }
 
@@ -137,6 +150,13 @@ declare module '@tanstack/react-router' {
       path: '/fund-transfer'
       fullPath: '/fund-transfer'
       preLoaderRoute: typeof FundTransferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bills': {
+      id: '/bills'
+      path: '/bills'
+      fullPath: '/bills'
+      preLoaderRoute: typeof BillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/beneficiary': {
@@ -233,6 +253,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRouteWithChildren,
   BeneficiaryRoute: BeneficiaryRoute,
+  BillsRoute: BillsRoute,
   FundTransferRoute: FundTransferRouteWithChildren,
 }
 export const routeTree = rootRouteImport
