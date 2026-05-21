@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,6 @@ function OTPPage() {
   const [timer, setTimer] = useState(55);
   const [submitting, setSubmitting] = useState(false);
   const modal = useBankingModal();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (timer <= 0) return;
@@ -35,7 +34,6 @@ function OTPPage() {
     setTimeout(() => {
       setSubmitting(false);
       modal.show("mobile-only");
-      navigate({ to: "/" });
     }, 1400);
   };
 
