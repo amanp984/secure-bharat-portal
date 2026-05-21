@@ -18,8 +18,8 @@ const sections: { title: string; items: Item[] }[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, to: "/" },
       { label: "Account Summary", icon: Wallet, to: "/accounts" },
-      { label: "Mini Statement", icon: FileText, to: "/accounts/sav/statement" },
-      { label: "Full Statement", icon: ScrollText, to: "/accounts/sav/statement" },
+      { label: "Mini Statement", icon: FileText, to: "/accounts/cur/statement" },
+      { label: "Full Statement", icon: ScrollText, to: "/accounts/cur/statement" },
     ],
   },
   {
