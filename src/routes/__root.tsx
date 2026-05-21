@@ -76,10 +76,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Premium Indian Net Banking experience with secure transfers, cards, deposits and more." },
       { name: "author", content: "Lovable" },
       { property: "og:title", content: "Bharat Bank — Secure Net Banking" },
-      { property: "og:description", content: "Premium Indian Net Banking experience." },
+      { property: "og:description", content: "Premium Indian Net Banking experience with secure transfers, cards, deposits and more." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Bharat Bank — Secure Net Banking" },
+      { name: "twitter:description", content: "Premium Indian Net Banking experience with secure transfers, cards, deposits and more." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/067ad6eb-f891-4cab-adae-0c00d9c9e6f7/id-preview-99436e99--be191c48-0fee-4e60-ac22-c785415e7f2b.lovable.app-1779384877693.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/067ad6eb-f891-4cab-adae-0c00d9c9e6f7/id-preview-99436e99--be191c48-0fee-4e60-ac22-c785415e7f2b.lovable.app-1779384877693.png" },
     ],
     links: [
       {
