@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import {
-  Eye, EyeOff, ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
+  ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
   Receipt, CreditCard, PiggyBank, HandCoins, Phone,
   MessageSquare, FileText, Wallet, Send,
-  Zap, Droplet, Flame, Wifi, Tv, Smartphone, Car, ShieldCheck, MapPin,
+  Zap, Droplet, Flame, Wifi, Smartphone, Car, ShieldCheck, MapPin,
   Copy, Building2,
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
@@ -32,136 +31,119 @@ const quickActions = [
 const bills = [
   { label: "Electricity", icon: Zap }, { label: "Water", icon: Droplet },
   { label: "Gas", icon: Flame }, { label: "Broadband", icon: Wifi },
-  { label: "DTH", icon: Tv }, { label: "Mobile", icon: Smartphone },
+  { label: "Mobile", icon: Smartphone },
   { label: "Credit Card", icon: CreditCard }, { label: "FASTag", icon: Car },
 ];
 
 function Dashboard() {
-  const [showBalance, setShowBalance] = useState(true);
   const acc = accounts[0];
   const profilePanel = useProfilePanel();
-  const total = accounts.reduce((a, b) => a + b.balance, 0);
 
   return (
     <AppLayout>
-      {/* Compact greeting banner */}
+      {/* Thin compact greeting strip */}
       <motion.div
-        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-blue-800 via-indigo-800 to-slate-900 rounded-xl px-4 sm:px-5 py-3 text-white shadow-sm mb-5 relative overflow-hidden"
+        initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-blue-800 via-indigo-800 to-slate-900 rounded-lg px-3 sm:px-4 py-2 text-white shadow-sm mb-4 relative overflow-hidden"
       >
-        <div className="absolute -right-16 -top-12 w-48 h-48 rounded-full bg-white/5 blur-2xl" />
         <div className="relative flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-sm font-bold ring-2 ring-white/20">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold ring-1 ring-white/30">
               AR
             </div>
             <div className="leading-tight">
-              <div className="text-[11px] text-white/70">Good morning,</div>
-              <h1 className="text-base sm:text-lg font-bold">Arjun Ramesh</h1>
-              <div className="text-[10px] text-white/60 flex items-center gap-2 mt-0.5">
-                <span className="flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-amber-300" /> Last login: 21 May 2026, 09:42 AM</span>
-                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-3 h-3" /> Chennai</span>
+              <div className="text-[12px] font-semibold">Welcome, Arjun Ramesh</div>
+              <div className="text-[10px] text-white/70 flex items-center gap-2">
+                <span>Last login: 21 May 2026, 09:42 AM</span>
+                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Chennai</span>
               </div>
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-[10px] text-white/70 uppercase tracking-wider">Total Balance</div>
-            <div className="flex items-center justify-end gap-2">
-              <span className="text-lg sm:text-xl font-bold tracking-tight">
-                {showBalance ? fmt(total) : "₹ ••••••"}
-              </span>
-              <button onClick={() => setShowBalance(!showBalance)} className="text-amber-300 hover:bg-white/10 rounded-md p-1" aria-label="Toggle balance">
-                {showBalance ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-              </button>
-            </div>
-          </div>
+          <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 font-semibold">
+            <ShieldCheck className="w-3 h-3" /> Secure Session
+          </span>
         </div>
       </motion.div>
 
-      <div className="grid lg:grid-cols-3 gap-5 mb-5">
-        {/* Single Current Account card */}
+      <div className="grid lg:grid-cols-5 gap-4 mb-4">
+        {/* Compact Current Account card */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           className="lg:col-span-2"
         >
           <div
             onClick={profilePanel.open}
-            className={`relative rounded-2xl p-6 text-white shadow-xl bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow group`}
+            className={`relative rounded-xl p-4 text-white shadow-md bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group`}
           >
-            <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-white/10 blur-2xl" />
-            <div className="absolute right-6 top-6 opacity-20 text-7xl font-bold tracking-tighter">₹</div>
-
-            <div className="relative flex items-start justify-between mb-5">
+            <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
+            <div className="relative flex items-start justify-between mb-3">
               <div>
-                <div className="text-[10px] uppercase tracking-widest text-white/70 mb-0.5">Bharat Bank</div>
-                <div className="text-sm font-bold flex items-center gap-2">
+                <div className="text-[9px] uppercase tracking-widest text-white/60">Bharat Bank</div>
+                <div className="text-[13px] font-bold flex items-center gap-1.5">
                   {acc.type}
-                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-200 font-semibold tracking-wider">PRIMARY</span>
+                  <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 font-semibold tracking-wider">PRIMARY</span>
                 </div>
               </div>
-              <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> {acc.status}
+              <span className="inline-flex items-center gap-1 text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 font-semibold">
+                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> {acc.status}
               </span>
             </div>
 
             <div className="relative">
-              <div className="font-mono text-base tracking-[0.3em] text-white/90 mb-1">{acc.masked}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/60 mt-3">Available Balance</div>
-              <div className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">
-                {showBalance ? fmt(acc.balance) : "₹ ••••••••"}
-              </div>
+              <div className="font-mono text-[11px] tracking-[0.25em] text-white/85">{acc.masked}</div>
+              <div className="text-[9px] uppercase tracking-widest text-white/55 mt-2">Available Balance</div>
+              <div className="text-2xl font-bold tracking-tight mb-3">{fmt(acc.balance)}</div>
             </div>
 
-            <div className="relative grid grid-cols-3 gap-2 text-xs border-t border-white/15 pt-3">
+            <div className="relative grid grid-cols-3 gap-1.5 text-[10px] border-t border-white/15 pt-2">
               <div>
-                <div className="text-[9px] uppercase tracking-wider text-white/55">IFSC</div>
+                <div className="text-[8px] uppercase tracking-wider text-white/50">IFSC</div>
                 <div className="font-semibold flex items-center gap-1">
                   {acc.ifsc}
                   <button onClick={(e) => { e.stopPropagation(); navigator.clipboard?.writeText(acc.ifsc); toast.success("IFSC copied"); }}>
-                    <Copy className="w-2.5 h-2.5 opacity-70 hover:opacity-100" />
+                    <Copy className="w-2 h-2 opacity-70 hover:opacity-100" />
                   </button>
                 </div>
               </div>
               <div>
-                <div className="text-[9px] uppercase tracking-wider text-white/55">Branch</div>
+                <div className="text-[8px] uppercase tracking-wider text-white/50">Branch</div>
                 <div className="font-semibold truncate">{acc.branch}</div>
               </div>
               <div>
-                <div className="text-[9px] uppercase tracking-wider text-white/55">Customer ID</div>
+                <div className="text-[8px] uppercase tracking-wider text-white/50">Cust ID</div>
                 <div className="font-semibold">{acc.customerId}</div>
               </div>
             </div>
 
-            <div className="relative flex items-center justify-between mt-4 text-xs">
+            <div className="relative flex items-center justify-between mt-3 text-[11px]">
               <span className="text-white/70 group-hover:text-white transition-colors flex items-center gap-1">
                 View full account details <ChevronRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
               </span>
               <Link
                 to="/fund-transfer"
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white/15 hover:bg-white/25 px-3 py-1 rounded-full font-semibold transition-colors backdrop-blur"
+                className="bg-white/15 hover:bg-white/25 px-2.5 py-0.5 rounded-full font-semibold transition-colors backdrop-blur text-[11px]"
               >
                 Transfer
               </Link>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="grid grid-cols-2 gap-2 mt-2">
             {[
               { label: "Account Details", action: profilePanel.open, icon: Wallet },
               { label: "Statement", to: "/accounts/cur/statement", icon: FileText },
-              { label: "M-Passbook", to: "/accounts/cur/passbook", icon: FileText },
             ].map((o) =>
               o.to ? (
-                <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2.5 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-xs font-semibold group">
-                  <div className="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
+                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                     <o.icon className="w-3.5 h-3.5" />
                   </div>
                   <span>{o.label}</span>
                 </Link>
               ) : (
-                <button key={o.label} onClick={o.action} className="bg-card border rounded-lg p-2.5 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-xs font-semibold group text-left">
-                  <div className="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                <button key={o.label} onClick={o.action} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group text-left">
+                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                     <o.icon className="w-3.5 h-3.5" />
                   </div>
                   <span>{o.label}</span>
@@ -171,22 +153,22 @@ function Dashboard() {
           </div>
         </motion.div>
 
-        {/* Quick Actions vertical grid */}
-        <Card className="p-4">
+        {/* Quick Actions grid */}
+        <Card className="p-3 lg:col-span-3">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
               <Building2 className="w-4 h-4 text-primary" /> Quick Actions
             </h2>
           </div>
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-3 gap-2.5">
             {quickActions.map((q, i) => (
               <motion.div key={q.label} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04 }}>
                 <Link to={q.to} className="block group">
-                  <div className="border rounded-xl p-3 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20">
-                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${q.color} flex items-center justify-center mb-2 shadow-sm group-hover:shadow-md transition-shadow`}>
+                  <div className="border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20 flex flex-col items-center text-center gap-1.5">
+                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${q.color} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
                       <q.icon className="w-4 h-4 text-white" />
                     </div>
-                    <div className="text-[11px] font-semibold text-foreground leading-tight">{q.label}</div>
+                    <div className="text-[10.5px] font-semibold text-foreground leading-tight">{q.label}</div>
                   </div>
                 </Link>
               </motion.div>
@@ -195,24 +177,24 @@ function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-5 mb-5">
+      <div className="grid lg:grid-cols-3 gap-4 mb-4">
         {/* Recent Transactions */}
-        <Card className="lg:col-span-2 p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold">Recent Transactions</h2>
+        <Card className="lg:col-span-2 p-3">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-bold">Recent Transactions</h2>
             <Link to="/accounts/cur/statement" className="text-xs text-primary font-semibold hover:underline">View all →</Link>
           </div>
-          <div className="divide-y">
+          <div className="divide-y text-[12px]">
             {transactions.slice(0, 6).map((t) => (
-              <div key={t.id} className="flex items-center gap-3 py-2.5">
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${t.type === "Credit" ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>
-                  {t.type === "Credit" ? <ArrowDownLeft className="w-3.5 h-3.5" /> : <ArrowUpRight className="w-3.5 h-3.5" />}
+              <div key={t.id} className="flex items-center gap-2.5 py-2">
+                <div className={`w-7 h-7 rounded-md flex items-center justify-center ${t.type === "Credit" ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"}`}>
+                  {t.type === "Credit" ? <ArrowDownLeft className="w-3 h-3" /> : <ArrowUpRight className="w-3 h-3" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm truncate">{t.narration}</div>
+                  <div className="font-semibold truncate">{t.narration}</div>
                   <div className="text-[10px] text-muted-foreground">{t.date} · {t.id}</div>
                 </div>
-                <div className={`font-semibold text-sm whitespace-nowrap ${t.type === "Credit" ? "text-success" : "text-foreground"}`}>
+                <div className={`font-semibold whitespace-nowrap ${t.type === "Credit" ? "text-success" : "text-foreground"}`}>
                   {t.type === "Credit" ? "+" : "−"} {fmt(t.type === "Credit" ? t.credit : t.debit)}
                 </div>
               </div>
