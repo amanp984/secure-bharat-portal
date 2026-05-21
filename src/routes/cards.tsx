@@ -32,7 +32,7 @@ function CardsPage() {
           <div className="flex justify-between items-end mt-6 text-xs">
             <div><div className="opacity-70">Valid Thru</div><div className="font-semibold text-base">11 / 29</div></div>
             <div><div className="opacity-70">Holder</div><div className="font-semibold">ARJUN R IYER</div></div>
-            <div className="text-2xl font-bold italic text-gold">VISA</div>
+            <div className="text-xl font-extrabold tracking-tight"><span className="text-amber-300">Ru</span><span className="text-emerald-300">Pay</span></div>
           </div>
         </Card>
 
