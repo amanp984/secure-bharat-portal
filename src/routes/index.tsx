@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
   Receipt, CreditCard, PiggyBank, HandCoins, Phone,
-  MessageSquare, FileText, Wallet, Send,
+  MessageSquare, FileText, Wallet,
   Zap, Droplet, Flame, Wifi, Smartphone, Car, ShieldCheck, MapPin,
   Copy, Building2,
 } from "lucide-react";
