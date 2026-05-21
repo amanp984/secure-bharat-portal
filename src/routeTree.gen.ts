@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FundTransferRouteImport } from './routes/fund-transfer'
+import { Route as BeneficiaryRouteImport } from './routes/beneficiary'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FundTransferOtpRouteImport } from './routes/fund-transfer.otp'
@@ -20,6 +21,11 @@ import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.pa
 const FundTransferRoute = FundTransferRouteImport.update({
   id: '/fund-transfer',
   path: '/fund-transfer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeneficiaryRoute = BeneficiaryRouteImport.update({
+  id: '/beneficiary',
+  path: '/beneficiary',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountsRoute = AccountsRouteImport.update({
@@ -56,6 +62,7 @@ const AccountsIdPassbookRoute = AccountsIdPassbookRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/beneficiary': typeof BeneficiaryRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/beneficiary': typeof BeneficiaryRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/beneficiary': typeof BeneficiaryRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accounts'
+    | '/beneficiary'
     | '/fund-transfer'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accounts'
+    | '/beneficiary'
     | '/fund-transfer'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/accounts'
+    | '/beneficiary'
     | '/fund-transfer'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountsRoute: typeof AccountsRouteWithChildren
+  BeneficiaryRoute: typeof BeneficiaryRoute
   FundTransferRoute: typeof FundTransferRouteWithChildren
 }
 
@@ -124,6 +137,13 @@ declare module '@tanstack/react-router' {
       path: '/fund-transfer'
       fullPath: '/fund-transfer'
       preLoaderRoute: typeof FundTransferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beneficiary': {
+      id: '/beneficiary'
+      path: '/beneficiary'
+      fullPath: '/beneficiary'
+      preLoaderRoute: typeof BeneficiaryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/accounts': {
@@ -212,8 +232,19 @@ const FundTransferRouteWithChildren = FundTransferRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRouteWithChildren,
+  BeneficiaryRoute: BeneficiaryRoute,
   FundTransferRoute: FundTransferRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
