@@ -25,7 +25,7 @@ function CardsPage() {
         <Card className="p-6 bg-gradient-hero text-primary-foreground border-0 shadow-elegant relative overflow-hidden h-56">
           <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
           <div className="flex justify-between">
-            <div className="text-xs uppercase tracking-widest opacity-70">Bharat Bank · Platinum Debit</div>
+            <div className="text-xs uppercase tracking-widest opacity-70">Bharat Bank · RuPay Platinum Debit</div>
             <Wifi className="w-5 h-5 rotate-90 opacity-80" />
           </div>
           <div className="font-mono text-2xl mt-10 tracking-widest">5432 88•• •••• 4521</div>
