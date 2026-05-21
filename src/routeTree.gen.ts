@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 
 const AccountsRoute = AccountsRouteImport.update({
   id: '/accounts',
@@ -22,31 +23,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountsIdRoute = AccountsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AccountsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRoute
+  '/accounts': typeof AccountsRouteWithChildren
+  '/accounts/$id': typeof AccountsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRoute
+  '/accounts': typeof AccountsRouteWithChildren
+  '/accounts/$id': typeof AccountsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/accounts': typeof AccountsRoute
+  '/accounts': typeof AccountsRouteWithChildren
+  '/accounts/$id': typeof AccountsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/accounts'
+  fullPaths: '/' | '/accounts' | '/accounts/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/accounts'
-  id: '__root__' | '/' | '/accounts'
+  to: '/' | '/accounts' | '/accounts/$id'
+  id: '__root__' | '/' | '/accounts' | '/accounts/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountsRoute: typeof AccountsRoute
+  AccountsRoute: typeof AccountsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,13 +74,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/accounts/$id': {
+      id: '/accounts/$id'
+      path: '/$id'
+      fullPath: '/accounts/$id'
+      preLoaderRoute: typeof AccountsIdRouteImport
+      parentRoute: typeof AccountsRoute
+    }
   }
 }
 
+interface AccountsRouteChildren {
+  AccountsIdRoute: typeof AccountsIdRoute
+}
+
+const AccountsRouteChildren: AccountsRouteChildren = {
+  AccountsIdRoute: AccountsIdRoute,
+}
+
+const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
+  AccountsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountsRoute: AccountsRoute,
+  AccountsRoute: AccountsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
