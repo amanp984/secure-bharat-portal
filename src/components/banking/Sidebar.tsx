@@ -3,8 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   LayoutDashboard, Wallet, FileText, ScrollText, Send, Smartphone, Zap,
   Building2, Banknote, UserPlus, Users, CreditCard, ShieldCheck, Lock,
-  HandCoins, PiggyBank, TrendingUp, Heart, Receipt, Phone, MessageSquare,
-  AlertCircle, Headphones, MapPin, Settings, ShieldAlert, History,
+  HandCoins, PiggyBank, TrendingUp, Receipt, Phone, MessageSquare,
+  AlertCircle, Headphones, MapPin, Settings, ShieldAlert,
   MonitorSmartphone, LogOut, X, Landmark,
 } from "lucide-react";
 import { useBankingModal } from "./ModalContext";
@@ -18,8 +18,8 @@ const sections: { title: string; items: Item[] }[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, to: "/" },
       { label: "Account Summary", icon: Wallet, to: "/accounts" },
-      { label: "Mini Statement", icon: FileText, to: "/accounts/sav/statement" },
-      { label: "Full Statement", icon: ScrollText, to: "/accounts/sav/statement" },
+      { label: "Mini Statement", icon: FileText, to: "/accounts/cur/statement" },
+      { label: "Full Statement", icon: ScrollText, to: "/accounts/cur/statement" },
     ],
   },
   {
@@ -49,7 +49,6 @@ const sections: { title: string; items: Item[] }[] = [
       { label: "Loans", icon: HandCoins, to: "/loans" },
       { label: "FD / RD", icon: PiggyBank, to: "/deposits" },
       { label: "Investments", icon: TrendingUp, to: "/investments" },
-      { label: "Insurance", icon: Heart, to: "/insurance" },
     ],
   },
   {
@@ -73,7 +72,6 @@ const sections: { title: string; items: Item[] }[] = [
     items: [
       { label: "Settings", icon: Settings, to: "/settings" },
       { label: "Security Center", icon: ShieldAlert, to: "/settings" },
-      { label: "Login History", icon: History, to: "/settings" },
       { label: "Device Management", icon: MonitorSmartphone, to: "/settings" },
       { label: "Logout", icon: LogOut, action: "logout" },
     ],
@@ -86,8 +84,9 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
 
   const handleAction = (item: Item) => {
     if (item.action === "logout") {
+      localStorage.removeItem("bharat_bank_demo_auth");
       toast.success("Logging out securely…");
-      setTimeout(() => navigate({ to: "/" }), 600);
+      setTimeout(() => { navigate({ to: "/" }); window.location.reload(); }, 500);
     } else if (item.action) {
       modal.show(item.action);
     }
