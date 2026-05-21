@@ -12,11 +12,11 @@ import { motion } from "framer-motion";
 export const Route = createFileRoute("/fund-transfer")({ component: FundTransfer });
 
 const modes = [
-  { id: "imps", label: "IMPS", icon: Zap, desc: "Instant 24x7" },
-  { id: "neft", label: "NEFT", icon: Building2, desc: "Anytime" },
-  { id: "rtgs", label: "RTGS", icon: Banknote, desc: "Above ₹2L" },
-  { id: "within", label: "Within Bank", icon: Send, desc: "Free" },
-  { id: "upi", label: "UPI", icon: Smartphone, desc: "VPA / Mobile" },
+  { id: "imps", label: "IMPS", icon: Zap },
+  { id: "neft", label: "NEFT", icon: Building2 },
+  { id: "rtgs", label: "RTGS", icon: Banknote },
+  { id: "within", label: "Within Bank", icon: Send },
+  { id: "upi", label: "UPI", icon: Smartphone },
 ];
 
 function FundTransfer() {
@@ -48,7 +48,6 @@ function FundTransfer() {
             className={`p-4 rounded-2xl border-2 transition-all text-left ${mode === m.id ? "border-primary bg-primary/5 shadow-elegant" : "border-border bg-card hover:border-primary/40"}`}>
             <m.icon className={`w-5 h-5 mb-2 ${mode === m.id ? "text-primary" : "text-muted-foreground"}`} />
             <div className="font-bold text-sm">{m.label}</div>
-            <div className="text-[11px] text-muted-foreground">{m.desc}</div>
           </button>
         ))}
       </div>
@@ -88,7 +87,7 @@ function FundTransfer() {
             </div>
             <div>
               <label className="text-xs text-muted-foreground">Transaction Password</label>
-              <Input type="password" placeholder="••••••" value={pwd} onChange={(e) => setPwd(e.target.value)} />
+              <Input type="password" placeholder="" value={pwd} onChange={(e) => setPwd(e.target.value)} />
             </div>
             <Button disabled={!ben || !amount || !pwd || loading} onClick={proceed}
               className="w-full bg-gradient-primary text-primary-foreground hover:opacity-90">
