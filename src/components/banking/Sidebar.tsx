@@ -26,7 +26,6 @@ const sections: { title: string; items: Item[] }[] = [
     title: "Transfers",
     items: [
       { label: "Fund Transfer", icon: Send, to: "/fund-transfer" },
-      { label: "UPI Transfer", icon: Smartphone, to: "/fund-transfer" },
       { label: "IMPS", icon: Zap, to: "/fund-transfer" },
       { label: "NEFT", icon: Building2, to: "/fund-transfer" },
       { label: "RTGS", icon: Banknote, to: "/fund-transfer" },

@@ -5,7 +5,7 @@ import { beneficiaries } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Zap, Building2, Banknote, Smartphone, ArrowRight, Send, Loader2 } from "lucide-react";
+import { Zap, Building2, Banknote, ArrowRight, Send, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -16,7 +16,6 @@ const modes = [
   { id: "neft", label: "NEFT", icon: Building2 },
   { id: "rtgs", label: "RTGS", icon: Banknote },
   { id: "within", label: "Within Bank", icon: Send },
-  { id: "upi", label: "UPI", icon: Smartphone },
 ];
 
 function FundTransfer() {
@@ -42,7 +41,7 @@ function FundTransfer() {
     <AppLayout>
       <PageHeader title="Fund Transfer" subtitle="Send money securely to anyone, anywhere" />
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {modes.map((m) => (
           <button key={m.id} onClick={() => setMode(m.id)}
             className={`p-4 rounded-2xl border-2 transition-all text-left ${mode === m.id ? "border-primary bg-primary/5 shadow-elegant" : "border-border bg-card hover:border-primary/40"}`}>
