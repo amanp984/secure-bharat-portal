@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
+import { Route as AccountsIdStatementRouteImport } from './routes/accounts.$id.statement'
 
 const AccountsRoute = AccountsRouteImport.update({
   id: '/accounts',
@@ -28,29 +29,42 @@ const AccountsIdRoute = AccountsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AccountsRoute,
 } as any)
+const AccountsIdStatementRoute = AccountsIdStatementRouteImport.update({
+  id: '/statement',
+  path: '/statement',
+  getParentRoute: () => AccountsIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
-  '/accounts/$id': typeof AccountsIdRoute
+  '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
-  '/accounts/$id': typeof AccountsIdRoute
+  '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
-  '/accounts/$id': typeof AccountsIdRoute
+  '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/accounts' | '/accounts/$id'
+  fullPaths: '/' | '/accounts' | '/accounts/$id' | '/accounts/$id/statement'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/accounts' | '/accounts/$id'
-  id: '__root__' | '/' | '/accounts' | '/accounts/$id'
+  to: '/' | '/accounts' | '/accounts/$id' | '/accounts/$id/statement'
+  id:
+    | '__root__'
+    | '/'
+    | '/accounts'
+    | '/accounts/$id'
+    | '/accounts/$id/statement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -81,15 +95,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountsIdRouteImport
       parentRoute: typeof AccountsRoute
     }
+    '/accounts/$id/statement': {
+      id: '/accounts/$id/statement'
+      path: '/statement'
+      fullPath: '/accounts/$id/statement'
+      preLoaderRoute: typeof AccountsIdStatementRouteImport
+      parentRoute: typeof AccountsIdRoute
+    }
   }
 }
 
+interface AccountsIdRouteChildren {
+  AccountsIdStatementRoute: typeof AccountsIdStatementRoute
+}
+
+const AccountsIdRouteChildren: AccountsIdRouteChildren = {
+  AccountsIdStatementRoute: AccountsIdStatementRoute,
+}
+
+const AccountsIdRouteWithChildren = AccountsIdRoute._addFileChildren(
+  AccountsIdRouteChildren,
+)
+
 interface AccountsRouteChildren {
-  AccountsIdRoute: typeof AccountsIdRoute
+  AccountsIdRoute: typeof AccountsIdRouteWithChildren
 }
 
 const AccountsRouteChildren: AccountsRouteChildren = {
-  AccountsIdRoute: AccountsIdRoute,
+  AccountsIdRoute: AccountsIdRouteWithChildren,
 }
 
 const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
