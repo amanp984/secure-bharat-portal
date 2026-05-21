@@ -1,10 +1,15 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Shield, AlertTriangle, X } from "lucide-react";
+import { Shield, AlertTriangle, X, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 
-type ModalKind = "mobile-only" | "beneficiary-restricted" | null;
+type ModalKind =
+  | "mobile-only"
+  | "beneficiary-restricted"
+  | "register-failed"
+  | "card-action-success"
+  | null;
 
 interface ModalCtx {
   show: (kind: Exclude<ModalKind, null>) => void;
@@ -24,7 +29,7 @@ export function BankingModalProvider({ children }: { children: ReactNode }) {
       icon: AlertTriangle,
       title: "Transaction Not Available",
       message:
-        "We can't process this transaction through Net Banking currently. Please use Mobile Banking to complete this transaction.",
+        "Unable to process this transaction through Net Banking. Please use Mobile Banking to continue.",
       color: "text-destructive",
       bg: "bg-destructive/10",
     },
@@ -35,6 +40,22 @@ export function BankingModalProvider({ children }: { children: ReactNode }) {
         "For security reasons, beneficiary management is currently available only on Mobile Banking. Please use Mobile Banking to continue.",
       color: "text-primary",
       bg: "bg-primary/10",
+    },
+    "register-failed": {
+      icon: AlertTriangle,
+      title: "Registration Unavailable",
+      message:
+        "Unable to complete online registration. Please contact your home branch with valid identity proof to complete registration.",
+      color: "text-destructive",
+      bg: "bg-destructive/10",
+    },
+    "card-action-success": {
+      icon: CheckCircle2,
+      title: "Action Completed Successfully",
+      message:
+        "Your card setting has been updated securely. A confirmation SMS has been sent to your registered mobile number.",
+      color: "text-success",
+      bg: "bg-success/10",
     },
   } as const;
 
