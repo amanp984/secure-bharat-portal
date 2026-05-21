@@ -84,8 +84,9 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
 
   const handleAction = (item: Item) => {
     if (item.action === "logout") {
+      localStorage.removeItem("bharat_bank_demo_auth");
       toast.success("Logging out securely…");
-      setTimeout(() => navigate({ to: "/" }), 600);
+      setTimeout(() => { navigate({ to: "/" }); window.location.reload(); }, 500);
     } else if (item.action) {
       modal.show(item.action);
     }
