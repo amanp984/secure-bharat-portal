@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FundTransferRouteImport } from './routes/fund-transfer'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 import { Route as AccountsIdStatementRouteImport } from './routes/accounts.$id.statement'
 import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.passbook'
 
+const FundTransferRoute = FundTransferRouteImport.update({
+  id: '/fund-transfer',
+  path: '/fund-transfer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountsRoute = AccountsRouteImport.update({
   id: '/accounts',
   path: '/accounts',
@@ -44,6 +50,7 @@ const AccountsIdPassbookRoute = AccountsIdPassbookRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/fund-transfer': typeof FundTransferRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
   '/accounts/$id/statement': typeof AccountsIdStatementRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/fund-transfer': typeof FundTransferRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
   '/accounts/$id/statement': typeof AccountsIdStatementRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
+  '/fund-transfer': typeof FundTransferRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
   '/accounts/$id/statement': typeof AccountsIdStatementRoute
@@ -68,6 +77,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accounts'
+    | '/fund-transfer'
     | '/accounts/$id'
     | '/accounts/$id/passbook'
     | '/accounts/$id/statement'
@@ -75,6 +85,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accounts'
+    | '/fund-transfer'
     | '/accounts/$id'
     | '/accounts/$id/passbook'
     | '/accounts/$id/statement'
@@ -82,6 +93,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/accounts'
+    | '/fund-transfer'
     | '/accounts/$id'
     | '/accounts/$id/passbook'
     | '/accounts/$id/statement'
@@ -90,10 +102,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountsRoute: typeof AccountsRouteWithChildren
+  FundTransferRoute: typeof FundTransferRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/fund-transfer': {
+      id: '/fund-transfer'
+      path: '/fund-transfer'
+      fullPath: '/fund-transfer'
+      preLoaderRoute: typeof FundTransferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/accounts': {
       id: '/accounts'
       path: '/accounts'
@@ -161,6 +181,7 @@ const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRouteWithChildren,
+  FundTransferRoute: FundTransferRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
