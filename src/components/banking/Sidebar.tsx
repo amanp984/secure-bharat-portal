@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  LayoutDashboard, Wallet, FileText, ScrollText, Send, Smartphone, Zap,
-  Building2, Banknote, UserPlus, Users, CreditCard, ShieldCheck, Lock,
-  HandCoins, PiggyBank, TrendingUp, Receipt, Phone, MessageSquare,
-  AlertCircle, Headphones, MapPin, Settings, ShieldAlert,
-  MonitorSmartphone, LogOut, X, Landmark,
+  LayoutDashboard, Wallet, FileText, ScrollText, Send, Zap,
+  Building2, Banknote, UserPlus, Users, CreditCard, ShieldCheck,
+  HandCoins, PiggyBank, Receipt, MessageSquare,
+  AlertCircle, Headphones, MapPin, Settings,
+  LogOut, X, Landmark,
 } from "lucide-react";
 import { useBankingModal } from "./ModalContext";
 import { toast } from "sonner";
@@ -26,7 +26,6 @@ const sections: { title: string; items: Item[] }[] = [
     title: "Transfers",
     items: [
       { label: "Fund Transfer", icon: Send, to: "/fund-transfer" },
-      { label: "UPI Transfer", icon: Smartphone, to: "/fund-transfer" },
       { label: "IMPS", icon: Zap, to: "/fund-transfer" },
       { label: "NEFT", icon: Building2, to: "/fund-transfer" },
       { label: "RTGS", icon: Banknote, to: "/fund-transfer" },
@@ -38,24 +37,19 @@ const sections: { title: string; items: Item[] }[] = [
     title: "Cards",
     items: [
       { label: "Debit Card", icon: CreditCard, to: "/cards" },
-      { label: "Credit Card", icon: CreditCard, to: "/cards" },
-      { label: "Card Controls", icon: ShieldCheck, to: "/cards" },
-      { label: "Block Card", icon: Lock, to: "/cards" },
     ],
   },
   {
     title: "Investments",
     items: [
       { label: "Loans", icon: HandCoins, to: "/loans" },
-      { label: "FD / RD", icon: PiggyBank, to: "/deposits" },
-      { label: "Investments", icon: TrendingUp, to: "/investments" },
+      { label: "Deposits", icon: PiggyBank, to: "/deposits" },
     ],
   },
   {
     title: "Pay & Recharge",
     items: [
       { label: "Bill Payments", icon: Receipt, to: "/bills" },
-      { label: "Recharge", icon: Phone, to: "/bills" },
     ],
   },
   {
@@ -68,11 +62,9 @@ const sections: { title: string; items: Item[] }[] = [
     ],
   },
   {
-    title: "Security",
+    title: "Settings",
     items: [
       { label: "Settings", icon: Settings, to: "/settings" },
-      { label: "Security Center", icon: ShieldAlert, to: "/settings" },
-      { label: "Device Management", icon: MonitorSmartphone, to: "/settings" },
       { label: "Logout", icon: LogOut, action: "logout" },
     ],
   },
