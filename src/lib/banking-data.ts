@@ -1,35 +1,16 @@
 export const accounts = [
   {
-    id: "sav",
-    type: "Savings Account",
-    masked: "XXXX XXXX 4521",
-    balance: 284562.45,
-    primary: true,
-    color: "from-blue-600 to-indigo-700",
-  },
-  {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 7812",
+    masked: "5021 7894 7812",
+    accountNumber: "502178947812",
+    ifsc: "BHAR0000123",
+    branch: "Anna Nagar, Chennai",
+    customerId: "5489221",
+    status: "Active",
     balance: 1248903.1,
-    primary: false,
-    color: "from-slate-700 to-slate-900",
-  },
-  {
-    id: "fd",
-    type: "Fixed Deposit",
-    masked: "FD XXXX 9923",
-    balance: 500000,
-    primary: false,
-    color: "from-amber-500 to-yellow-700",
-  },
-  {
-    id: "od",
-    type: "OD / CC Account",
-    masked: "XXXX XXXX 3344",
-    balance: 75000,
-    primary: false,
-    color: "from-emerald-600 to-teal-800",
+    primary: true,
+    color: "from-blue-700 via-indigo-700 to-slate-900",
   },
 ];
 
@@ -57,12 +38,29 @@ export const transactions = Array.from({ length: 28 }).map((_, i) => {
 });
 
 export const beneficiaries = [
-  { id: "b1", name: "Rahul Sharma", bank: "HDFC Bank", acc: "XXXX 4421", last: "12 Nov 2025" },
-  { id: "b2", name: "Priya Mehta", bank: "ICICI Bank", acc: "XXXX 7732", last: "08 Nov 2025" },
-  { id: "b3", name: "Anil Verma", bank: "SBI", acc: "XXXX 1290", last: "30 Oct 2025" },
-  { id: "b4", name: "Sneha Iyer", bank: "Axis Bank", acc: "XXXX 8821", last: "21 Oct 2025" },
-  { id: "b5", name: "Karan Patel", bank: "Kotak Mahindra", acc: "XXXX 5567", last: "15 Oct 2025" },
+  { id: "b1", name: "Jignesh Sahar", bank: "HDFC Bank", acc: "XXXX 6831", last: "18 May 2026" },
+  { id: "b2", name: "Jay Mata Di Enterprises", bank: "Axis Bank", acc: "XXXX 4427", last: "12 May 2026" },
+  { id: "b3", name: "Amrinder Telecom", bank: "ICICI Bank", acc: "XXXX 9015", last: "06 May 2026" },
 ];
+
+export const profile = {
+  fullName: "Arjun Ramesh Iyer",
+  customerId: "5489221",
+  accountNumber: "502178947812",
+  ifsc: "BHAR0000123",
+  mobile: "+91 98xxxxxx21",
+  email: "arjun.r@example.com",
+  aadhaar: "XXXX XXXX 4892",
+  pan: "AXXXX1234R",
+  branch: "Anna Nagar Branch",
+  branchAddress: "12, 2nd Avenue, Anna Nagar West, Chennai – 600040",
+  accountType: "Current Account",
+  kycStatus: "Verified",
+  accountStatus: "Active",
+  nominee: "Lakshmi Iyer (Mother)",
+  openedOn: "14 March 2018",
+  lastLogin: "21 May 2026, 09:42 AM · Chennai",
+};
 
 export const billers = [
   { name: "Electricity", icon: "Zap" },
