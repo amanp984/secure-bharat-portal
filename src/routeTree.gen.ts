@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
+import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as FundTransferRouteImport } from './routes/fund-transfer'
 import { Route as DepositsRouteImport } from './routes/deposits'
 import { Route as CardsRouteImport } from './routes/cards'
@@ -31,6 +32,11 @@ const LoansRoute = LoansRouteImport.update({
 const InvestmentsRoute = InvestmentsRouteImport.update({
   id: '/investments',
   path: '/investments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsuranceRoute = InsuranceRouteImport.update({
+  id: '/insurance',
+  path: '/insurance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FundTransferRoute = FundTransferRouteImport.update({
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/cards': typeof CardsRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
+  '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/cards': typeof CardsRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
+  '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/cards': typeof CardsRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRouteWithChildren
+  '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/cards'
     | '/deposits'
     | '/fund-transfer'
+    | '/insurance'
     | '/investments'
     | '/loans'
     | '/accounts/$id'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/cards'
     | '/deposits'
     | '/fund-transfer'
+    | '/insurance'
     | '/investments'
     | '/loans'
     | '/accounts/$id'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/cards'
     | '/deposits'
     | '/fund-transfer'
+    | '/insurance'
     | '/investments'
     | '/loans'
     | '/accounts/$id'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   CardsRoute: typeof CardsRoute
   DepositsRoute: typeof DepositsRoute
   FundTransferRoute: typeof FundTransferRouteWithChildren
+  InsuranceRoute: typeof InsuranceRoute
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
 }
@@ -209,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: '/investments'
       fullPath: '/investments'
       preLoaderRoute: typeof InvestmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insurance': {
+      id: '/insurance'
+      path: '/insurance'
+      fullPath: '/insurance'
+      preLoaderRoute: typeof InsuranceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fund-transfer': {
@@ -337,6 +357,7 @@ const rootRouteChildren: RootRouteChildren = {
   CardsRoute: CardsRoute,
   DepositsRoute: DepositsRoute,
   FundTransferRoute: FundTransferRouteWithChildren,
+  InsuranceRoute: InsuranceRoute,
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
 }
