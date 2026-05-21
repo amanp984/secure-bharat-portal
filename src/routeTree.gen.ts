@@ -9,38 +9,310 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as LoansRouteImport } from './routes/loans'
+import { Route as InvestmentsRouteImport } from './routes/investments'
+import { Route as InsuranceRouteImport } from './routes/insurance'
+import { Route as FundTransferRouteImport } from './routes/fund-transfer'
+import { Route as DepositsRouteImport } from './routes/deposits'
+import { Route as CardsRouteImport } from './routes/cards'
+import { Route as BillsRouteImport } from './routes/bills'
+import { Route as BeneficiaryRouteImport } from './routes/beneficiary'
+import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FundTransferOtpRouteImport } from './routes/fund-transfer.otp'
+import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
+import { Route as AccountsIdStatementRouteImport } from './routes/accounts.$id.statement'
+import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.passbook'
 
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoansRoute = LoansRouteImport.update({
+  id: '/loans',
+  path: '/loans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvestmentsRoute = InvestmentsRouteImport.update({
+  id: '/investments',
+  path: '/investments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsuranceRoute = InsuranceRouteImport.update({
+  id: '/insurance',
+  path: '/insurance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FundTransferRoute = FundTransferRouteImport.update({
+  id: '/fund-transfer',
+  path: '/fund-transfer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepositsRoute = DepositsRouteImport.update({
+  id: '/deposits',
+  path: '/deposits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CardsRoute = CardsRouteImport.update({
+  id: '/cards',
+  path: '/cards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillsRoute = BillsRouteImport.update({
+  id: '/bills',
+  path: '/bills',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeneficiaryRoute = BeneficiaryRouteImport.update({
+  id: '/beneficiary',
+  path: '/beneficiary',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountsRoute = AccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FundTransferOtpRoute = FundTransferOtpRouteImport.update({
+  id: '/otp',
+  path: '/otp',
+  getParentRoute: () => FundTransferRoute,
+} as any)
+const AccountsIdRoute = AccountsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AccountsRoute,
+} as any)
+const AccountsIdStatementRoute = AccountsIdStatementRouteImport.update({
+  id: '/statement',
+  path: '/statement',
+  getParentRoute: () => AccountsIdRoute,
+} as any)
+const AccountsIdPassbookRoute = AccountsIdPassbookRouteImport.update({
+  id: '/passbook',
+  path: '/passbook',
+  getParentRoute: () => AccountsIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsRouteWithChildren
+  '/beneficiary': typeof BeneficiaryRoute
+  '/bills': typeof BillsRoute
+  '/cards': typeof CardsRoute
+  '/deposits': typeof DepositsRoute
+  '/fund-transfer': typeof FundTransferRouteWithChildren
+  '/insurance': typeof InsuranceRoute
+  '/investments': typeof InvestmentsRoute
+  '/loans': typeof LoansRoute
+  '/settings': typeof SettingsRoute
+  '/support': typeof SupportRoute
+  '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/fund-transfer/otp': typeof FundTransferOtpRoute
+  '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
+  '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsRouteWithChildren
+  '/beneficiary': typeof BeneficiaryRoute
+  '/bills': typeof BillsRoute
+  '/cards': typeof CardsRoute
+  '/deposits': typeof DepositsRoute
+  '/fund-transfer': typeof FundTransferRouteWithChildren
+  '/insurance': typeof InsuranceRoute
+  '/investments': typeof InvestmentsRoute
+  '/loans': typeof LoansRoute
+  '/settings': typeof SettingsRoute
+  '/support': typeof SupportRoute
+  '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/fund-transfer/otp': typeof FundTransferOtpRoute
+  '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
+  '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsRouteWithChildren
+  '/beneficiary': typeof BeneficiaryRoute
+  '/bills': typeof BillsRoute
+  '/cards': typeof CardsRoute
+  '/deposits': typeof DepositsRoute
+  '/fund-transfer': typeof FundTransferRouteWithChildren
+  '/insurance': typeof InsuranceRoute
+  '/investments': typeof InvestmentsRoute
+  '/loans': typeof LoansRoute
+  '/settings': typeof SettingsRoute
+  '/support': typeof SupportRoute
+  '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/fund-transfer/otp': typeof FundTransferOtpRoute
+  '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
+  '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/accounts'
+    | '/beneficiary'
+    | '/bills'
+    | '/cards'
+    | '/deposits'
+    | '/fund-transfer'
+    | '/insurance'
+    | '/investments'
+    | '/loans'
+    | '/settings'
+    | '/support'
+    | '/accounts/$id'
+    | '/fund-transfer/otp'
+    | '/accounts/$id/passbook'
+    | '/accounts/$id/statement'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/accounts'
+    | '/beneficiary'
+    | '/bills'
+    | '/cards'
+    | '/deposits'
+    | '/fund-transfer'
+    | '/insurance'
+    | '/investments'
+    | '/loans'
+    | '/settings'
+    | '/support'
+    | '/accounts/$id'
+    | '/fund-transfer/otp'
+    | '/accounts/$id/passbook'
+    | '/accounts/$id/statement'
+  id:
+    | '__root__'
+    | '/'
+    | '/accounts'
+    | '/beneficiary'
+    | '/bills'
+    | '/cards'
+    | '/deposits'
+    | '/fund-transfer'
+    | '/insurance'
+    | '/investments'
+    | '/loans'
+    | '/settings'
+    | '/support'
+    | '/accounts/$id'
+    | '/fund-transfer/otp'
+    | '/accounts/$id/passbook'
+    | '/accounts/$id/statement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountsRoute: typeof AccountsRouteWithChildren
+  BeneficiaryRoute: typeof BeneficiaryRoute
+  BillsRoute: typeof BillsRoute
+  CardsRoute: typeof CardsRoute
+  DepositsRoute: typeof DepositsRoute
+  FundTransferRoute: typeof FundTransferRouteWithChildren
+  InsuranceRoute: typeof InsuranceRoute
+  InvestmentsRoute: typeof InvestmentsRoute
+  LoansRoute: typeof LoansRoute
+  SettingsRoute: typeof SettingsRoute
+  SupportRoute: typeof SupportRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loans': {
+      id: '/loans'
+      path: '/loans'
+      fullPath: '/loans'
+      preLoaderRoute: typeof LoansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/investments': {
+      id: '/investments'
+      path: '/investments'
+      fullPath: '/investments'
+      preLoaderRoute: typeof InvestmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insurance': {
+      id: '/insurance'
+      path: '/insurance'
+      fullPath: '/insurance'
+      preLoaderRoute: typeof InsuranceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fund-transfer': {
+      id: '/fund-transfer'
+      path: '/fund-transfer'
+      fullPath: '/fund-transfer'
+      preLoaderRoute: typeof FundTransferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deposits': {
+      id: '/deposits'
+      path: '/deposits'
+      fullPath: '/deposits'
+      preLoaderRoute: typeof DepositsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cards': {
+      id: '/cards'
+      path: '/cards'
+      fullPath: '/cards'
+      preLoaderRoute: typeof CardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bills': {
+      id: '/bills'
+      path: '/bills'
+      fullPath: '/bills'
+      preLoaderRoute: typeof BillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beneficiary': {
+      id: '/beneficiary'
+      path: '/beneficiary'
+      fullPath: '/beneficiary'
+      preLoaderRoute: typeof BeneficiaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accounts': {
+      id: '/accounts'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AccountsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +320,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fund-transfer/otp': {
+      id: '/fund-transfer/otp'
+      path: '/otp'
+      fullPath: '/fund-transfer/otp'
+      preLoaderRoute: typeof FundTransferOtpRouteImport
+      parentRoute: typeof FundTransferRoute
+    }
+    '/accounts/$id': {
+      id: '/accounts/$id'
+      path: '/$id'
+      fullPath: '/accounts/$id'
+      preLoaderRoute: typeof AccountsIdRouteImport
+      parentRoute: typeof AccountsRoute
+    }
+    '/accounts/$id/statement': {
+      id: '/accounts/$id/statement'
+      path: '/statement'
+      fullPath: '/accounts/$id/statement'
+      preLoaderRoute: typeof AccountsIdStatementRouteImport
+      parentRoute: typeof AccountsIdRoute
+    }
+    '/accounts/$id/passbook': {
+      id: '/accounts/$id/passbook'
+      path: '/passbook'
+      fullPath: '/accounts/$id/passbook'
+      preLoaderRoute: typeof AccountsIdPassbookRouteImport
+      parentRoute: typeof AccountsIdRoute
+    }
   }
 }
 
+interface AccountsIdRouteChildren {
+  AccountsIdPassbookRoute: typeof AccountsIdPassbookRoute
+  AccountsIdStatementRoute: typeof AccountsIdStatementRoute
+}
+
+const AccountsIdRouteChildren: AccountsIdRouteChildren = {
+  AccountsIdPassbookRoute: AccountsIdPassbookRoute,
+  AccountsIdStatementRoute: AccountsIdStatementRoute,
+}
+
+const AccountsIdRouteWithChildren = AccountsIdRoute._addFileChildren(
+  AccountsIdRouteChildren,
+)
+
+interface AccountsRouteChildren {
+  AccountsIdRoute: typeof AccountsIdRouteWithChildren
+}
+
+const AccountsRouteChildren: AccountsRouteChildren = {
+  AccountsIdRoute: AccountsIdRouteWithChildren,
+}
+
+const AccountsRouteWithChildren = AccountsRoute._addFileChildren(
+  AccountsRouteChildren,
+)
+
+interface FundTransferRouteChildren {
+  FundTransferOtpRoute: typeof FundTransferOtpRoute
+}
+
+const FundTransferRouteChildren: FundTransferRouteChildren = {
+  FundTransferOtpRoute: FundTransferOtpRoute,
+}
+
+const FundTransferRouteWithChildren = FundTransferRoute._addFileChildren(
+  FundTransferRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountsRoute: AccountsRouteWithChildren,
+  BeneficiaryRoute: BeneficiaryRoute,
+  BillsRoute: BillsRoute,
+  CardsRoute: CardsRoute,
+  DepositsRoute: DepositsRoute,
+  FundTransferRoute: FundTransferRouteWithChildren,
+  InsuranceRoute: InsuranceRoute,
+  InvestmentsRoute: InvestmentsRoute,
+  LoansRoute: LoansRoute,
+  SettingsRoute: SettingsRoute,
+  SupportRoute: SupportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
