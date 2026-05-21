@@ -13,6 +13,7 @@ import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccountsIdRouteImport } from './routes/accounts.$id'
 import { Route as AccountsIdStatementRouteImport } from './routes/accounts.$id.statement'
+import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.passbook'
 
 const AccountsRoute = AccountsRouteImport.update({
   id: '/accounts',
@@ -34,17 +35,24 @@ const AccountsIdStatementRoute = AccountsIdStatementRouteImport.update({
   path: '/statement',
   getParentRoute: () => AccountsIdRoute,
 } as any)
+const AccountsIdPassbookRoute = AccountsIdPassbookRouteImport.update({
+  id: '/passbook',
+  path: '/passbook',
+  getParentRoute: () => AccountsIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
   '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
   '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRoutesById {
@@ -52,18 +60,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRouteWithChildren
   '/accounts/$id': typeof AccountsIdRouteWithChildren
+  '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
   '/accounts/$id/statement': typeof AccountsIdStatementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/accounts' | '/accounts/$id' | '/accounts/$id/statement'
+  fullPaths:
+    | '/'
+    | '/accounts'
+    | '/accounts/$id'
+    | '/accounts/$id/passbook'
+    | '/accounts/$id/statement'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/accounts' | '/accounts/$id' | '/accounts/$id/statement'
+  to:
+    | '/'
+    | '/accounts'
+    | '/accounts/$id'
+    | '/accounts/$id/passbook'
+    | '/accounts/$id/statement'
   id:
     | '__root__'
     | '/'
     | '/accounts'
     | '/accounts/$id'
+    | '/accounts/$id/passbook'
     | '/accounts/$id/statement'
   fileRoutesById: FileRoutesById
 }
@@ -102,14 +122,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountsIdStatementRouteImport
       parentRoute: typeof AccountsIdRoute
     }
+    '/accounts/$id/passbook': {
+      id: '/accounts/$id/passbook'
+      path: '/passbook'
+      fullPath: '/accounts/$id/passbook'
+      preLoaderRoute: typeof AccountsIdPassbookRouteImport
+      parentRoute: typeof AccountsIdRoute
+    }
   }
 }
 
 interface AccountsIdRouteChildren {
+  AccountsIdPassbookRoute: typeof AccountsIdPassbookRoute
   AccountsIdStatementRoute: typeof AccountsIdStatementRoute
 }
 
 const AccountsIdRouteChildren: AccountsIdRouteChildren = {
+  AccountsIdPassbookRoute: AccountsIdPassbookRoute,
   AccountsIdStatementRoute: AccountsIdStatementRoute,
 }
 
