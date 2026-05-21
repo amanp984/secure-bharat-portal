@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SupportRouteImport } from './routes/support'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as InsuranceRouteImport } from './routes/insurance'
@@ -28,6 +29,11 @@ import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.pa
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoansRoute = LoansRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/settings': typeof SettingsRoute
   '/support': typeof SupportRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/settings': typeof SettingsRoute
   '/support': typeof SupportRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/insurance': typeof InsuranceRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/settings': typeof SettingsRoute
   '/support': typeof SupportRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/investments'
     | '/loans'
+    | '/settings'
     | '/support'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/investments'
     | '/loans'
+    | '/settings'
     | '/support'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/insurance'
     | '/investments'
     | '/loans'
+    | '/settings'
     | '/support'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   InsuranceRoute: typeof InsuranceRoute
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
+  SettingsRoute: typeof SettingsRoute
   SupportRoute: typeof SupportRoute
 }
 
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loans': {
@@ -380,6 +400,7 @@ const rootRouteChildren: RootRouteChildren = {
   InsuranceRoute: InsuranceRoute,
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
+  SettingsRoute: SettingsRoute,
   SupportRoute: SupportRoute,
 }
 export const routeTree = rootRouteImport
