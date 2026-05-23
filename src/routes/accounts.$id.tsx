@@ -7,7 +7,24 @@ import { Button } from "@/components/ui/button";
 import { Download, Printer, Share2, FileText } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/accounts/$id")({ component: AccountDetails });
+export const Route = createFileRoute("/accounts/$id")({
+  component: AccountDetails,
+  head: ({ params }) => {
+    const url = `https://indbanksample.lovable.app/accounts/${params.id}`;
+    const title = `Account ${params.id.toUpperCase()} — Bharat Bank`;
+    const desc = `View account ${params.id.toUpperCase()} details, balance, IFSC, branch and recent transactions on Bharat Bank.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
+});
 
 const fmt = (n: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(n);
 
