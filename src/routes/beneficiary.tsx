@@ -10,7 +10,19 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 
-export const Route = createFileRoute("/beneficiary")({ component: BeneficiaryPage });
+export const Route = createFileRoute("/beneficiary")({
+  component: BeneficiaryPage,
+  head: () => ({
+    meta: [
+      { title: "Beneficiaries — Bharat Bank" },
+      { name: "description", content: "Add, manage and delete payment beneficiaries for IMPS, NEFT and RTGS transfers." },
+      { property: "og:title", content: "Beneficiaries — Bharat Bank" },
+      { property: "og:description", content: "Add, manage and delete payment beneficiaries for IMPS, NEFT and RTGS transfers." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/beneficiary" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/beneficiary" }],
+  }),
+});
 
 function BeneficiaryPage() {
   const modal = useBankingModal();

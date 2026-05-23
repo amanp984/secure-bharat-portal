@@ -9,7 +9,19 @@ import { PiggyBank, TrendingUp, Calculator } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/deposits")({ component: DepositsPage });
+export const Route = createFileRoute("/deposits")({
+  component: DepositsPage,
+  head: () => ({
+    meta: [
+      { title: "Fixed Deposits — Bharat Bank" },
+      { name: "description", content: "Open a fixed deposit, calculate maturity value and explore Bharat Bank FD interest rates." },
+      { property: "og:title", content: "Fixed Deposits — Bharat Bank" },
+      { property: "og:description", content: "Open a fixed deposit, calculate maturity value and explore Bharat Bank FD interest rates." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/deposits" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/deposits" }],
+  }),
+});
 
 function DepositsPage() {
   const [amt, setAmt] = useState(100000);

@@ -9,7 +9,19 @@ import { Zap, Building2, Banknote, ArrowRight, Send, Loader2 } from "lucide-reac
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/fund-transfer")({ component: FundTransfer });
+export const Route = createFileRoute("/fund-transfer")({
+  component: FundTransfer,
+  head: () => ({
+    meta: [
+      { title: "Fund Transfer — Bharat Bank" },
+      { name: "description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Bharat Bank accounts." },
+      { property: "og:title", content: "Fund Transfer — Bharat Bank" },
+      { property: "og:description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Bharat Bank accounts." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/fund-transfer" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/fund-transfer" }],
+  }),
+});
 
 const modes = [
   { id: "imps", label: "IMPS", icon: Zap },

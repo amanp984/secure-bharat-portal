@@ -4,7 +4,19 @@ import { PageHeader } from "@/components/banking/PageHeader";
 import { Card } from "@/components/ui/card";
 import { TrendingUp, LineChart, Coins, Gem } from "lucide-react";
 
-export const Route = createFileRoute("/investments")({ component: Investments });
+export const Route = createFileRoute("/investments")({
+  component: Investments,
+  head: () => ({
+    meta: [
+      { title: "Investments — Bharat Bank" },
+      { name: "description", content: "Track your mutual funds, stocks, gold bonds, PPF and NPS investments in one view." },
+      { property: "og:title", content: "Investments — Bharat Bank" },
+      { property: "og:description", content: "Track your mutual funds, stocks, gold bonds, PPF and NPS investments in one view." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/investments" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/investments" }],
+  }),
+});
 
 function Investments() {
   return (

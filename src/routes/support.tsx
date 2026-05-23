@@ -9,7 +9,19 @@ import { MessageSquare, Phone, Mail, MapPin, HelpCircle, Send } from "lucide-rea
 import { useState } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/support")({ component: Support });
+export const Route = createFileRoute("/support")({
+  component: Support,
+  head: () => ({
+    meta: [
+      { title: "Customer Support — Bharat Bank" },
+      { name: "description", content: "Chat with Bharat Bank support, raise service requests and find help with net banking." },
+      { property: "og:title", content: "Customer Support — Bharat Bank" },
+      { property: "og:description", content: "Chat with Bharat Bank support, raise service requests and find help with net banking." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/support" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/support" }],
+  }),
+});
 
 function Support() {
   const [msg, setMsg] = useState("");

@@ -6,7 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Home, Car, GraduationCap, Briefcase, Heart, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/loans")({ component: Loans });
+export const Route = createFileRoute("/loans")({
+  component: Loans,
+  head: () => ({
+    meta: [
+      { title: "Loans — Bharat Bank" },
+      { name: "description", content: "Apply for home, car, education, personal and pre-approved loans with Bharat Bank." },
+      { property: "og:title", content: "Loans — Bharat Bank" },
+      { property: "og:description", content: "Apply for home, car, education, personal and pre-approved loans with Bharat Bank." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/loans" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/loans" }],
+  }),
+});
 
 const items = [
   { label: "Home Loan", icon: Home, rate: "8.50%", color: "from-blue-500 to-indigo-600" },

@@ -6,7 +6,19 @@ import { Card } from "@/components/ui/card";
 import { CreditCard, ChevronRight } from "lucide-react";
 import { useProfilePanel } from "@/components/banking/ProfileContext";
 
-export const Route = createFileRoute("/accounts")({ component: AccountsPage });
+export const Route = createFileRoute("/accounts")({
+  component: AccountsPage,
+  head: () => ({
+    meta: [
+      { title: "All Accounts — Bharat Bank" },
+      { name: "description", content: "View and manage all your linked Bharat Bank savings and current accounts at one place." },
+      { property: "og:title", content: "All Accounts — Bharat Bank" },
+      { property: "og:description", content: "View and manage all your linked Bharat Bank savings and current accounts at one place." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/accounts" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/accounts" }],
+  }),
+});
 
 const fmt = (n: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(n);
 

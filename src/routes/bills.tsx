@@ -10,7 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export const Route = createFileRoute("/bills")({ component: BillsPage });
+export const Route = createFileRoute("/bills")({
+  component: BillsPage,
+  head: () => ({
+    meta: [
+      { title: "Bill Payments & Recharge — Bharat Bank" },
+      { name: "description", content: "Pay electricity, water, gas, broadband, mobile, credit card and FASTag bills securely." },
+      { property: "og:title", content: "Bill Payments & Recharge — Bharat Bank" },
+      { property: "og:description", content: "Pay electricity, water, gas, broadband, mobile, credit card and FASTag bills securely." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/bills" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/bills" }],
+  }),
+});
 
 const billers = [
   { label: "Electricity", icon: Zap, color: "from-amber-400 to-orange-500", providers: ["Tata Power", "Adani Electricity", "MSEB", "BSES Rajdhani"], idLabel: "Consumer Number" },
