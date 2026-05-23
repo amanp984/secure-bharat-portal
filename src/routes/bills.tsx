@@ -108,9 +108,9 @@ function BillsPage() {
           {step === "form" && (
             <div className="p-5 space-y-4">
               <div>
-                <label className="text-xs text-muted-foreground">Select Provider</label>
+                <label htmlFor="bill-provider" className="text-xs text-muted-foreground">Select Provider</label>
                 <Select value={provider} onValueChange={setProvider}>
-                  <SelectTrigger><SelectValue placeholder="Choose provider" /></SelectTrigger>
+                  <SelectTrigger id="bill-provider" aria-label="Select provider"><SelectValue placeholder="Choose provider" /></SelectTrigger>
                   <SelectContent>
                     {biller.providers.map((p) => (
                       <SelectItem key={p} value={p}>{p}</SelectItem>
@@ -119,12 +119,12 @@ function BillsPage() {
                 </Select>
               </div>
               <div>
-                <label className="text-xs text-muted-foreground">{biller.idLabel}</label>
-                <Input value={consumerId} onChange={(e) => setConsumerId(e.target.value)} placeholder={`Enter ${biller.idLabel.toLowerCase()}`} />
+                <label htmlFor="bill-consumer-id" className="text-xs text-muted-foreground">{biller.idLabel}</label>
+                <Input id="bill-consumer-id" value={consumerId} onChange={(e) => setConsumerId(e.target.value)} placeholder={`Enter ${biller.idLabel.toLowerCase()}`} />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground">Amount (₹)</label>
-                <Input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
+                <label htmlFor="bill-amount" className="text-xs text-muted-foreground">Amount (₹)</label>
+                <Input id="bill-amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
               </div>
               <Button
                 disabled={!provider || !consumerId || !amount}
@@ -172,6 +172,7 @@ function BillsPage() {
                 We have sent a 6-digit OTP to your registered mobile +91 98xxxxxx21
               </p>
               <Input
+                aria-label="One-time password"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 placeholder="••••••"
