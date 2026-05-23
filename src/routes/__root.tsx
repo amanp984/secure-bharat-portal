@@ -99,7 +99,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "BankOrCreditUnion",
           name: "Bharat Bank",
-          url: "https://indbanksample.lovable.app",
+          url: "https://digital-dhan-portal-new.lovable.app",
           description:
             "Bharat Bank Net Banking — secure transfers, cards, deposits, loans, bill payments and more.",
         }),
