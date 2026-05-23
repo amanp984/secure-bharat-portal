@@ -58,6 +58,7 @@ function Dashboard() {
 
   return (
     <AppLayout>
+      <h1 className="sr-only">Dashboard — Bharat Bank Net Banking</h1>
       {/* Thin compact greeting strip */}
       <motion.div
         initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
