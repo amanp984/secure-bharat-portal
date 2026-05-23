@@ -10,7 +10,24 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { profile } from "@/lib/banking-data";
 
-export const Route = createFileRoute("/accounts/$id/statement")({ component: StatementPage });
+export const Route = createFileRoute("/accounts/$id/statement")({
+  component: StatementPage,
+  head: ({ params }) => {
+    const url = `https://indbanksample.lovable.app/accounts/${params.id}/statement`;
+    const title = `Account Statement — Bharat Bank`;
+    const desc = `Download and search full account statement with date filters and export to CSV or PDF.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
+});
 
 const fmt = (n: number) => "₹" + new Intl.NumberFormat("en-IN").format(Math.round(n));
 const PAGE = 10;
