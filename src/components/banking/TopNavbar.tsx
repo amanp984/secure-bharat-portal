@@ -49,13 +49,16 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1.5 ml-3 flex-1 max-w-sm bg-secondary/70 rounded-lg px-3 py-1.5 border">
-          <Search className="w-4 h-4 text-muted-foreground" />
+        <label htmlFor="global-search" className="hidden md:flex items-center gap-1.5 ml-3 flex-1 max-w-sm bg-secondary/70 rounded-lg px-3 py-1.5 border">
+          <Search className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+          <span className="sr-only">Search</span>
           <input
+            id="global-search"
+            aria-label="Search transactions, payees and services"
             placeholder="Search transactions, payees, services…"
             className="bg-transparent text-sm outline-none flex-1 placeholder:text-muted-foreground"
           />
-        </div>
+        </label>
 
         <div className="flex-1 md:flex-none" />
 
@@ -66,7 +69,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           <span>Last login: {profile.lastLogin.split(" · ")[0]}</span>
         </div>
 
-        <button onClick={() => toast("No new notifications")} className="relative p-2 rounded-lg hover:bg-primary/10">
+        <button onClick={() => toast("No new notifications")} aria-label="Notifications" className="relative p-2 rounded-lg hover:bg-primary/10">
           <Bell className="w-5 h-5 text-foreground" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-destructive animate-pulse" />
         </button>
