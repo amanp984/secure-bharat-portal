@@ -5,7 +5,19 @@ import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, History, MonitorSmartphone, Bell, Lock } from "lucide-react";
 
-export const Route = createFileRoute("/settings")({ component: Settings });
+export const Route = createFileRoute("/settings")({
+  component: Settings,
+  head: () => ({
+    meta: [
+      { title: "Settings — Bharat Bank" },
+      { name: "description", content: "Update your Bharat Bank profile, security, notifications and net banking preferences." },
+      { property: "og:title", content: "Settings — Bharat Bank" },
+      { property: "og:description", content: "Update your Bharat Bank profile, security, notifications and net banking preferences." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/settings" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/settings" }],
+  }),
+});
 
 function Settings() {
   const logins = [

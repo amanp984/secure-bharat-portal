@@ -9,7 +9,19 @@ import { Wifi, Lock, KeyRound, Globe, ShieldOff, Download, AlertTriangle } from 
 import { useState } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/cards")({ component: CardsPage });
+export const Route = createFileRoute("/cards")({
+  component: CardsPage,
+  head: () => ({
+    meta: [
+      { title: "Debit Cards — Bharat Bank" },
+      { name: "description", content: "Manage your Bharat Bank debit card limits, controls, PIN and freeze settings." },
+      { property: "og:title", content: "Debit Cards — Bharat Bank" },
+      { property: "og:description", content: "Manage your Bharat Bank debit card limits, controls, PIN and freeze settings." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/cards" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/cards" }],
+  }),
+});
 
 function CardsPage() {
   const [frozen, setFrozen] = useState(false);

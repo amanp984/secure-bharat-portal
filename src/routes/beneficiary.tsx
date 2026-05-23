@@ -10,7 +10,19 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 
-export const Route = createFileRoute("/beneficiary")({ component: BeneficiaryPage });
+export const Route = createFileRoute("/beneficiary")({
+  component: BeneficiaryPage,
+  head: () => ({
+    meta: [
+      { title: "Beneficiaries — Bharat Bank" },
+      { name: "description", content: "Add, manage and delete payment beneficiaries for IMPS, NEFT and RTGS transfers." },
+      { property: "og:title", content: "Beneficiaries — Bharat Bank" },
+      { property: "og:description", content: "Add, manage and delete payment beneficiaries for IMPS, NEFT and RTGS transfers." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/beneficiary" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/beneficiary" }],
+  }),
+});
 
 function BeneficiaryPage() {
   const modal = useBankingModal();
@@ -39,7 +51,7 @@ function BeneficiaryPage() {
             </div>
             <div className="flex gap-2">
               <Button size="sm" className="flex-1 bg-gradient-primary"><Send className="w-3.5 h-3.5 mr-1" />Quick Transfer</Button>
-              <Button size="sm" variant="outline" onClick={() => setDeleteOpen(true)}><Trash2 className="w-3.5 h-3.5" /></Button>
+              <Button size="sm" variant="outline" aria-label="Delete beneficiary" onClick={() => setDeleteOpen(true)}><Trash2 className="w-3.5 h-3.5" /></Button>
             </div>
           </Card>
         ))}
@@ -64,7 +76,7 @@ function BeneficiaryPage() {
                   <div className="w-14 h-14 rounded-2xl bg-destructive/10 flex items-center justify-center">
                     <AlertTriangle className="w-7 h-7 text-destructive" />
                   </div>
-                  <button onClick={() => setDeleteOpen(false)} className="p-1 rounded-lg hover:bg-muted">
+                  <button onClick={() => setDeleteOpen(false)} aria-label="Close dialog" className="p-1 rounded-lg hover:bg-muted">
                     <X className="w-5 h-5 text-muted-foreground" />
                   </button>
                 </div>

@@ -14,6 +14,22 @@ const search = z.object({ amt: z.string().optional(), to: z.string().optional() 
 export const Route = createFileRoute("/fund-transfer/otp")({
   component: OTPPage,
   validateSearch: search,
+  head: () => {
+    const url = "https://indbanksample.lovable.app/fund-transfer/otp";
+    const title = "OTP Verification — Bharat Bank";
+    const desc = "Verify your fund transfer with a one-time password to complete the transaction securely.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+        { name: "robots", content: "noindex" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
 });
 
 function OTPPage() {

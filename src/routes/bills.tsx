@@ -10,7 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export const Route = createFileRoute("/bills")({ component: BillsPage });
+export const Route = createFileRoute("/bills")({
+  component: BillsPage,
+  head: () => ({
+    meta: [
+      { title: "Bill Payments & Recharge — Bharat Bank" },
+      { name: "description", content: "Pay electricity, water, gas, broadband, mobile, credit card and FASTag bills securely." },
+      { property: "og:title", content: "Bill Payments & Recharge — Bharat Bank" },
+      { property: "og:description", content: "Pay electricity, water, gas, broadband, mobile, credit card and FASTag bills securely." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/bills" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/bills" }],
+  }),
+});
 
 const billers = [
   { label: "Electricity", icon: Zap, color: "from-amber-400 to-orange-500", providers: ["Tata Power", "Adani Electricity", "MSEB", "BSES Rajdhani"], idLabel: "Consumer Number" },
@@ -96,9 +108,9 @@ function BillsPage() {
           {step === "form" && (
             <div className="p-5 space-y-4">
               <div>
-                <label className="text-xs text-muted-foreground">Select Provider</label>
+                <label htmlFor="bill-provider" className="text-xs text-muted-foreground">Select Provider</label>
                 <Select value={provider} onValueChange={setProvider}>
-                  <SelectTrigger><SelectValue placeholder="Choose provider" /></SelectTrigger>
+                  <SelectTrigger id="bill-provider" aria-label="Select provider"><SelectValue placeholder="Choose provider" /></SelectTrigger>
                   <SelectContent>
                     {biller.providers.map((p) => (
                       <SelectItem key={p} value={p}>{p}</SelectItem>
@@ -107,12 +119,12 @@ function BillsPage() {
                 </Select>
               </div>
               <div>
-                <label className="text-xs text-muted-foreground">{biller.idLabel}</label>
-                <Input value={consumerId} onChange={(e) => setConsumerId(e.target.value)} placeholder={`Enter ${biller.idLabel.toLowerCase()}`} />
+                <label htmlFor="bill-consumer-id" className="text-xs text-muted-foreground">{biller.idLabel}</label>
+                <Input id="bill-consumer-id" value={consumerId} onChange={(e) => setConsumerId(e.target.value)} placeholder={`Enter ${biller.idLabel.toLowerCase()}`} />
               </div>
               <div>
-                <label className="text-xs text-muted-foreground">Amount (₹)</label>
-                <Input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
+                <label htmlFor="bill-amount" className="text-xs text-muted-foreground">Amount (₹)</label>
+                <Input id="bill-amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00" />
               </div>
               <Button
                 disabled={!provider || !consumerId || !amount}
@@ -160,6 +172,7 @@ function BillsPage() {
                 We have sent a 6-digit OTP to your registered mobile +91 98xxxxxx21
               </p>
               <Input
+                aria-label="One-time password"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 placeholder="••••••"

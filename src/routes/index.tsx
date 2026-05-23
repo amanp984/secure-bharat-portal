@@ -14,7 +14,24 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useProfilePanel } from "@/components/banking/ProfileContext";
 
-export const Route = createFileRoute("/")({ component: Dashboard });
+export const Route = createFileRoute("/")({
+  component: Dashboard,
+  head: () => {
+    const url = "https://indbanksample.lovable.app/";
+    const title = "Dashboard — Bharat Bank Net Banking";
+    const desc = "Your Bharat Bank net banking dashboard: account balance, quick actions, recent transactions and bill payments.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
+});
 
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
@@ -41,6 +58,7 @@ function Dashboard() {
 
   return (
     <AppLayout>
+      <h1 className="sr-only">Dashboard — Bharat Bank Net Banking</h1>
       {/* Thin compact greeting strip */}
       <motion.div
         initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
@@ -100,7 +118,7 @@ function Dashboard() {
                 <div className="text-[8px] uppercase tracking-wider text-white/50">IFSC</div>
                 <div className="font-semibold flex items-center gap-1">
                   {acc.ifsc}
-                  <button onClick={(e) => { e.stopPropagation(); navigator.clipboard?.writeText(acc.ifsc); toast.success("IFSC copied"); }}>
+                  <button aria-label="Copy IFSC code" onClick={(e) => { e.stopPropagation(); navigator.clipboard?.writeText(acc.ifsc); toast.success("IFSC copied"); }}>
                     <Copy className="w-2 h-2 opacity-70 hover:opacity-100" />
                   </button>
                 </div>

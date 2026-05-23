@@ -5,7 +5,24 @@ import { transactions } from "@/lib/banking-data";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/accounts/$id/passbook")({ component: Passbook });
+export const Route = createFileRoute("/accounts/$id/passbook")({
+  component: Passbook,
+  head: ({ params }) => {
+    const url = `https://indbanksample.lovable.app/accounts/${params.id}/passbook`;
+    const title = `M-Passbook — Bharat Bank`;
+    const desc = `Real-time digital passbook with credits, debits and running balance for your Bharat Bank account.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
+});
 
 const fmt = (n: number) => "₹" + new Intl.NumberFormat("en-IN").format(Math.round(n));
 

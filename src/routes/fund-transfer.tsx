@@ -9,7 +9,19 @@ import { Zap, Building2, Banknote, ArrowRight, Send, Loader2 } from "lucide-reac
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/fund-transfer")({ component: FundTransfer });
+export const Route = createFileRoute("/fund-transfer")({
+  component: FundTransfer,
+  head: () => ({
+    meta: [
+      { title: "Fund Transfer — Bharat Bank" },
+      { name: "description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Bharat Bank accounts." },
+      { property: "og:title", content: "Fund Transfer — Bharat Bank" },
+      { property: "og:description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Bharat Bank accounts." },
+      { property: "og:url", content: "https://indbanksample.lovable.app/fund-transfer" },
+    ],
+    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/fund-transfer" }],
+  }),
+});
 
 const modes = [
   { id: "imps", label: "IMPS", icon: Zap },
@@ -77,16 +89,16 @@ function FundTransfer() {
           <p className="text-xs text-muted-foreground mb-4">{ben ? `To: ${ben.name}` : "Select a beneficiary"}</p>
           <div className="space-y-3">
             <div>
-              <label className="text-xs text-muted-foreground">Amount (₹)</label>
-              <Input type="number" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <label htmlFor="ft-amount" className="text-xs text-muted-foreground">Amount (₹)</label>
+              <Input id="ft-amount" type="number" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">Remarks</label>
-              <Input placeholder="e.g. Rent for May" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+              <label htmlFor="ft-remarks" className="text-xs text-muted-foreground">Remarks</label>
+              <Input id="ft-remarks" placeholder="e.g. Rent for May" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">Transaction Password</label>
-              <Input type="password" placeholder="" value={pwd} onChange={(e) => setPwd(e.target.value)} />
+              <label htmlFor="ft-password" className="text-xs text-muted-foreground">Transaction Password</label>
+              <Input id="ft-password" type="password" placeholder="" value={pwd} onChange={(e) => setPwd(e.target.value)} />
             </div>
             <Button disabled={!ben || !amount || !pwd || loading} onClick={proceed}
               className="w-full bg-gradient-primary text-primary-foreground hover:opacity-90">

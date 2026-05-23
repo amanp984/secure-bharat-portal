@@ -1,0 +1,17 @@
+# Bharat Bank — Net Banking
+
+> Demo Indian net banking portal with realistic account, transfer, bills, cards, deposits, and loan workflows.
+
+## Pages
+
+- [Dashboard](/): Account summary, quick actions, recent transactions.
+- [Accounts](/accounts): All linked accounts overview.
+- [Fund Transfer](/fund-transfer): IMPS, NEFT, RTGS and within-bank transfers.
+- [Beneficiary](/beneficiary): Add and manage beneficiaries.
+- [Bills](/bills): Pay electricity, water, gas, broadband, mobile and more.
+- [Cards](/cards): Manage debit cards, limits and controls.
+- [Deposits](/deposits): Open and calculate fixed deposits.
+- [Loans](/loans): Browse and apply for loan products.
+- [Investments](/investments): Mutual funds, stocks, bonds, PPF/NPS.
+- [Settings](/settings): Profile and preferences.
+- [Support](/support): Help and customer service.
