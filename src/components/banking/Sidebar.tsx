@@ -113,7 +113,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                   <div className="text-[11px] text-white/80">Welcome, Arjun R.</div>
                 </div>
               </div>
-              <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/10">
+              <button onClick={onClose} aria-label="Close menu" className="p-2 rounded-lg hover:bg-white/10">
                 <X className="w-5 h-5" />
               </button>
             </div>
