@@ -89,16 +89,16 @@ function FundTransfer() {
           <p className="text-xs text-muted-foreground mb-4">{ben ? `To: ${ben.name}` : "Select a beneficiary"}</p>
           <div className="space-y-3">
             <div>
-              <label className="text-xs text-muted-foreground">Amount (₹)</label>
-              <Input type="number" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <label htmlFor="ft-amount" className="text-xs text-muted-foreground">Amount (₹)</label>
+              <Input id="ft-amount" type="number" placeholder="0.00" value={amount} onChange={(e) => setAmount(e.target.value)} />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">Remarks</label>
-              <Input placeholder="e.g. Rent for May" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+              <label htmlFor="ft-remarks" className="text-xs text-muted-foreground">Remarks</label>
+              <Input id="ft-remarks" placeholder="e.g. Rent for May" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">Transaction Password</label>
-              <Input type="password" placeholder="" value={pwd} onChange={(e) => setPwd(e.target.value)} />
+              <label htmlFor="ft-password" className="text-xs text-muted-foreground">Transaction Password</label>
+              <Input id="ft-password" type="password" placeholder="" value={pwd} onChange={(e) => setPwd(e.target.value)} />
             </div>
             <Button disabled={!ben || !amount || !pwd || loading} onClick={proceed}
               className="w-full bg-gradient-primary text-primary-foreground hover:opacity-90">
