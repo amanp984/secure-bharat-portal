@@ -92,6 +92,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BankOrCreditUnion",
+          name: "Bharat Bank",
+          url: "https://indbanksample.lovable.app",
+          description:
+            "Bharat Bank Net Banking — secure transfers, cards, deposits, loans, bill payments and more.",
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
