@@ -14,7 +14,24 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useProfilePanel } from "@/components/banking/ProfileContext";
 
-export const Route = createFileRoute("/")({ component: Dashboard });
+export const Route = createFileRoute("/")({
+  component: Dashboard,
+  head: () => {
+    const url = "https://indbanksample.lovable.app/";
+    const title = "Dashboard — Bharat Bank Net Banking";
+    const desc = "Your Bharat Bank net banking dashboard: account balance, quick actions, recent transactions and bill payments.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: desc },
+        { property: "og:title", content: title },
+        { property: "og:description", content: desc },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
+});
 
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
