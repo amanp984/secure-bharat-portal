@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SupportRouteImport } from './routes/support'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
@@ -28,6 +29,11 @@ import { Route as AccountsIdPassbookRouteImport } from './routes/accounts.$id.pa
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/settings': typeof SettingsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/settings': typeof SettingsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/settings': typeof SettingsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/fund-transfer/otp': typeof FundTransferOtpRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/settings'
+    | '/sitemap.xml'
     | '/support'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/settings'
+    | '/sitemap.xml'
     | '/support'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -200,6 +211,7 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/settings'
+    | '/sitemap.xml'
     | '/support'
     | '/accounts/$id'
     | '/fund-transfer/otp'
@@ -218,6 +230,7 @@ export interface RootRouteChildren {
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
   SettingsRoute: typeof SettingsRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SupportRoute: typeof SupportRoute
 }
 
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -380,8 +400,19 @@ const rootRouteChildren: RootRouteChildren = {
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
   SettingsRoute: SettingsRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SupportRoute: SupportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
