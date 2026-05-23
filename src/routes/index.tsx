@@ -118,7 +118,7 @@ function Dashboard() {
                 <div className="text-[8px] uppercase tracking-wider text-white/50">IFSC</div>
                 <div className="font-semibold flex items-center gap-1">
                   {acc.ifsc}
-                  <button onClick={(e) => { e.stopPropagation(); navigator.clipboard?.writeText(acc.ifsc); toast.success("IFSC copied"); }}>
+                  <button aria-label="Copy IFSC code" onClick={(e) => { e.stopPropagation(); navigator.clipboard?.writeText(acc.ifsc); toast.success("IFSC copied"); }}>
                     <Copy className="w-2 h-2 opacity-70 hover:opacity-100" />
                   </button>
                 </div>
