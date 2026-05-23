@@ -132,8 +132,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <DemoAuthGate>
-        <Outlet />
+        <main>
+          <Outlet />
+        </main>
       </DemoAuthGate>
     </QueryClientProvider>
   );
 }
+
