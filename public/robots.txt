@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://indbanksample.lovable.app/sitemap.xml
+Sitemap: https://digital-dhan-portal-new.lovable.app/sitemap.xml
