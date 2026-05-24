@@ -72,7 +72,8 @@ function OTPPage() {
               className="absolute inset-0 rounded-3xl border-2 border-primary"
             />
           </motion.div>
-          <h1 className="text-xl font-bold">Secure OTP Verification</h1>
+          <div className="text-[10px] uppercase tracking-widest text-primary font-bold mb-1">Bharat Bank SecurePay</div>
+          <h1 className="text-xl font-bold">Secure Transaction OTP</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Enter the 6-digit code sent to your registered mobile<br />
             for ₹{amt} to <span className="font-semibold text-foreground">{to}</span>
@@ -98,7 +99,7 @@ function OTPPage() {
 
           <Button disabled={otp.length !== 6 || submitting} onClick={verify}
             className="w-full bg-gradient-primary text-primary-foreground hover:opacity-90">
-            {submitting ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" />Verifying…</> : "Verify & Pay"}
+            {submitting ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" />Processing securely…</> : "Confirm Transaction"}
           </Button>
 
           <div className="flex items-center gap-1.5 justify-center mt-4 text-[11px] text-muted-foreground">
