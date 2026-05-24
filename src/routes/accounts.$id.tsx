@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
-import { accounts, transactions } from "@/lib/banking-data";
+import { accounts, transactions, profile } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, Printer, Share2, FileText } from "lucide-react";
@@ -32,17 +32,21 @@ function AccountDetails() {
   const { id } = Route.useParams();
   const acc = accounts.find((a) => a.id === id) ?? accounts[0];
   const rows = [
-    ["Full Name", "Arjun Ramesh Iyer"],
-    ["CIF Number", "5489221"],
-    ["IFSC Code", "BHAR0000123"],
-    ["Branch", "Anna Nagar, Chennai"],
-    ["Registered Mobile", "+91 98xxxxxx21"],
-    ["Email", "arjun.r@example.com"],
-    ["KYC Status", "Verified"],
-    ["Account Status", "Active"],
-    ["Nominee", "Lakshmi Iyer (Mother)"],
+    ["Account Number", profile.accountNumber],
+    ["CIF", profile.customerId],
+    ["IFSC", profile.ifsc],
+    ["Branch", profile.branch],
+    ["Account Type", profile.accountType],
     ["Available Balance", fmt(acc.balance)],
     ["Ledger Balance", fmt(acc.balance + 1240)],
+    ["Registered Mobile", profile.mobile],
+    ["Email", profile.email],
+    ["Aadhaar", profile.aadhaar],
+    ["PAN", profile.pan],
+    ["Nominee", profile.nominee],
+    ["Address", profile.address],
+    ["KYC Status", profile.kycStatus],
+    ["Opening Date", profile.openedOn],
   ];
   return (
     <AppLayout>
@@ -51,20 +55,20 @@ function AccountDetails() {
         subtitle={acc.masked}
         action={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => toast.success("PDF downloaded")}><Download className="w-4 h-4 mr-1" />PDF</Button>
+            <Link to="/accounts/$id/statement" params={{ id }}><Button variant="outline"><Download className="w-4 h-4 mr-1" />Statement</Button></Link>
             <Button variant="outline" onClick={() => window.print()}><Printer className="w-4 h-4 mr-1" />Print</Button>
             <Button variant="outline" onClick={() => toast.success("Share link copied")}><Share2 className="w-4 h-4 mr-1" />Share</Button>
           </div>
         }
       />
       <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 p-5">
-          <h2 className="text-lg font-bold mb-4">Account Information</h2>
-          <div className="divide-y">
+        <Card className="lg:col-span-2 p-4 shadow-card-soft">
+          <h2 className="text-base font-bold mb-3">Professional Current Account Details</h2>
+          <div className="grid sm:grid-cols-2 gap-x-5 divide-y sm:divide-y-0">
             {rows.map(([k, v]) => (
-              <div key={k} className="flex justify-between py-3 text-sm">
+              <div key={k} className="flex justify-between gap-3 py-2.5 text-sm border-b border-border/70">
                 <span className="text-muted-foreground">{k}</span>
-                <span className="font-semibold text-foreground">{v}</span>
+                <span className="font-semibold text-foreground text-right">{v}</span>
               </div>
             ))}
           </div>
