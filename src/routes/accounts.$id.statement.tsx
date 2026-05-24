@@ -47,13 +47,16 @@ function StatementPage() {
   const [page, setPage] = useState(1);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [typeFilter, setTypeFilter] = useState<"All" | "Credit" | "Debit">("All");
 
   const filtered = useMemo(
     () =>
       transactions.filter((t) => {
-        return t.narration.toLowerCase().includes(q.toLowerCase()) || t.id.includes(q);
+        const matchesQ = t.narration.toLowerCase().includes(q.toLowerCase()) || t.id.includes(q);
+        const matchesType = typeFilter === "All" || t.type === typeFilter;
+        return matchesQ && matchesType;
       }),
-    [q, from, to],
+    [q, from, to, typeFilter],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE));
