@@ -4,10 +4,9 @@ import { PageHeader } from "@/components/banking/PageHeader";
 import { accounts } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, ChevronRight, ArrowRightLeft, FileText, Info, PiggyBank, Wallet, Plus, ShieldCheck } from "lucide-react";
-import { motion } from "framer-motion";
-import { useProfilePanel } from "@/components/banking/ProfileContext";
-import { toast } from "sonner";
+import { CreditCard, ChevronRight, ArrowRightLeft, FileText, Info, PiggyBank, Wallet, Plus, ShieldCheck, Building2, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 export const Route = createFileRoute("/accounts")({
   component: AccountsPage,
@@ -30,11 +29,13 @@ function EmptyAccountCard({
   icon: Icon,
   message,
   accent,
+  onOpen,
 }: {
   type: string;
   icon: typeof PiggyBank;
   message: string;
   accent: string;
+  onOpen: () => void;
 }) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
@@ -64,7 +65,7 @@ function EmptyAccountCard({
           variant="outline"
           size="sm"
           className="w-full mt-2"
-          onClick={() => toast("Opening account application form…")}
+          onClick={onOpen}
         >
           <Plus className="w-3.5 h-3.5 mr-1.5" /> Open {type}
         </Button>
