@@ -54,7 +54,9 @@ function StatementPage() {
       transactions.filter((t) => {
         const matchesQ = t.narration.toLowerCase().includes(q.toLowerCase()) || t.id.includes(q);
         const matchesType = typeFilter === "All" || t.type === typeFilter;
-        return matchesQ && matchesType;
+        const matchesFrom = !from || t.isoDate >= from;
+        const matchesTo = !to || t.isoDate <= to;
+        return matchesQ && matchesType && matchesFrom && matchesTo;
       }),
     [q, from, to, typeFilter],
   );
@@ -186,7 +188,7 @@ function StatementPage() {
         subtitle={`${acc.type} · A/c ${acc.masked} · ${filtered.length} transactions`}
         action={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={exportCSV}><FileSpreadsheet className="w-4 h-4 mr-1.5" />Download Excel</Button>
+            <Button variant="outline" onClick={exportCSV}><FileSpreadsheet className="w-4 h-4 mr-1.5" />Download CSV</Button>
             <Button className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white hover:opacity-95" onClick={exportPDF}>
               <Download className="w-4 h-4 mr-1.5" />Download PDF
             </Button>
