@@ -47,13 +47,16 @@ function StatementPage() {
   const [page, setPage] = useState(1);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [typeFilter, setTypeFilter] = useState<"All" | "Credit" | "Debit">("All");
 
   const filtered = useMemo(
     () =>
       transactions.filter((t) => {
-        return t.narration.toLowerCase().includes(q.toLowerCase()) || t.id.includes(q);
+        const matchesQ = t.narration.toLowerCase().includes(q.toLowerCase()) || t.id.includes(q);
+        const matchesType = typeFilter === "All" || t.type === typeFilter;
+        return matchesQ && matchesType;
       }),
-    [q, from, to],
+    [q, from, to, typeFilter],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE));
@@ -183,9 +186,9 @@ function StatementPage() {
         subtitle={`${acc.type} · A/c ${acc.masked} · ${filtered.length} transactions`}
         action={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={exportCSV}><FileSpreadsheet className="w-4 h-4 mr-1.5" />CSV</Button>
+            <Button variant="outline" onClick={exportCSV}><FileSpreadsheet className="w-4 h-4 mr-1.5" />Download Excel</Button>
             <Button className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white hover:opacity-95" onClick={exportPDF}>
-              <Download className="w-4 h-4 mr-1.5" />Download PDF Statement
+              <Download className="w-4 h-4 mr-1.5" />Download PDF
             </Button>
           </div>
         }
@@ -196,10 +199,26 @@ function StatementPage() {
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input className="pl-9 h-9" placeholder="Search by narration or reference id…" value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
         </div>
+        <div className="flex items-center gap-1 border rounded-md p-0.5 bg-secondary/40">
+          {(["All", "Credit", "Debit"] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => { setTypeFilter(t); setPage(1); }}
+              className={`px-2.5 h-7 text-[11px] font-semibold rounded transition-colors ${
+                typeFilter === t ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
         <Input type="date" className="w-auto h-9" value={from} onChange={(e) => setFrom(e.target.value)} />
         <span className="text-xs text-muted-foreground">to</span>
         <Input type="date" className="w-auto h-9" value={to} onChange={(e) => setTo(e.target.value)} />
       </Card>
+
+
+
 
       <Card className="overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
