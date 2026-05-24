@@ -78,6 +78,7 @@ export const profile = {
   ifsc: "BHAR0000123",
   mobile: "+91 98xxxxxx21",
   email: "arjun.r@example.com",
+  address: "Flat 8C, Vaigai Towers, 2nd Avenue, Anna Nagar West, Chennai – 600040",
   aadhaar: "XXXX XXXX 4892",
   pan: "AXXXX1234R",
   branch: "Anna Nagar Branch",
