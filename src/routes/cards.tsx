@@ -5,9 +5,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
-import { Wifi, Lock, KeyRound, Globe, ShieldOff, Download, AlertTriangle } from "lucide-react";
-import { useState } from "react";
+import { Wifi, KeyRound, Globe, ShieldOff, Download, AlertTriangle, CreditCard, X, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const Route = createFileRoute("/cards")({
   component: CardsPage,
@@ -28,6 +29,31 @@ function CardsPage() {
   const [intl, setIntl] = useState(false);
   const [online, setOnline] = useState(true);
   const [limit, setLimit] = useState([50000]);
+  const [securityOpen, setSecurityOpen] = useState<"freeze" | "unfreeze" | null>(null);
+  const [otp, setOtp] = useState("");
+  const [reason, setReason] = useState("Security Concern");
+  const [timer, setTimer] = useState(55);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!securityOpen || timer <= 0) return;
+    const id = setTimeout(() => setTimer((value) => value - 1), 1000);
+    return () => clearTimeout(id);
+  }, [securityOpen, timer]);
+
+  const openSecurity = (nextFrozen: boolean) => {
+    setSecurityOpen(nextFrozen ? "freeze" : "unfreeze");
+    setOtp("");
+    setReason("Security Concern");
+    setTimer(55);
+    setDone(false);
+  };
+
+  const submitSecurity = () => {
+    if (otp.length !== 6) return toast.error("Enter 6-digit OTP");
+    setFrozen(securityOpen === "freeze");
+    setDone(true);
+  };
 
   return (
     <AppLayout>
