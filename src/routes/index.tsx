@@ -149,7 +149,7 @@ function Dashboard() {
 
           <div className="grid grid-cols-2 gap-2 mt-2">
             {[
-              { label: "Account Details", action: profilePanel.open, icon: Wallet },
+              { label: "Account Details", to: "/accounts", icon: Wallet },
               { label: "Statement", to: "/accounts/cur/statement", icon: FileText },
             ].map((o) =>
               o.to ? (
