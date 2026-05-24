@@ -4,10 +4,9 @@ import { PageHeader } from "@/components/banking/PageHeader";
 import { accounts } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, ChevronRight, ArrowRightLeft, FileText, Info, PiggyBank, Wallet, Plus, ShieldCheck } from "lucide-react";
-import { motion } from "framer-motion";
-import { useProfilePanel } from "@/components/banking/ProfileContext";
-import { toast } from "sonner";
+import { ChevronRight, ArrowRightLeft, FileText, Info, PiggyBank, Wallet, Plus, ShieldCheck, Building2, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
 export const Route = createFileRoute("/accounts")({
   component: AccountsPage,
@@ -30,11 +29,13 @@ function EmptyAccountCard({
   icon: Icon,
   message,
   accent,
+  onOpen,
 }: {
   type: string;
   icon: typeof PiggyBank;
   message: string;
   accent: string;
+  onOpen: () => void;
 }) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
@@ -64,7 +65,7 @@ function EmptyAccountCard({
           variant="outline"
           size="sm"
           className="w-full mt-2"
-          onClick={() => toast("Opening account application form…")}
+          onClick={onOpen}
         >
           <Plus className="w-3.5 h-3.5 mr-1.5" /> Open {type}
         </Button>
@@ -74,7 +75,7 @@ function EmptyAccountCard({
 }
 
 function AccountsPage() {
-  const profilePanel = useProfilePanel();
+  const [branchModal, setBranchModal] = useState<string | null>(null);
   return (
     <AppLayout>
       <PageHeader title="All Accounts" subtitle="Manage all your linked Bharat Bank accounts in one place" />
@@ -120,18 +121,18 @@ function AccountsPage() {
                   <ArrowRightLeft className="w-3 h-3" /> Transfer
                 </Link>
                 <Link
-                  to="/accounts/$id/statement"
-                  params={{ id: a.id }}
+                  to="/transactions"
                   className="flex items-center justify-center gap-1 text-[10.5px] font-semibold bg-white/15 hover:bg-white/25 px-2 py-1.5 rounded-md backdrop-blur transition-colors"
                 >
                   <FileText className="w-3 h-3" /> Mini Stmt
                 </Link>
-                <button
-                  onClick={profilePanel.open}
+                <Link
+                  to="/accounts/$id"
+                  params={{ id: a.id }}
                   className="flex items-center justify-center gap-1 text-[10.5px] font-semibold bg-white/15 hover:bg-white/25 px-2 py-1.5 rounded-md backdrop-blur transition-colors"
                 >
                   Full <ChevronRight className="w-3 h-3" />
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -143,12 +144,14 @@ function AccountsPage() {
           icon={PiggyBank}
           message="No Savings Account Found"
           accent="bg-gradient-to-br from-emerald-600 to-teal-700"
+          onOpen={() => setBranchModal("Savings Account")}
         />
         <EmptyAccountCard
           type="Salary Account"
           icon={Wallet}
           message="No Salary Account Found"
           accent="bg-gradient-to-br from-purple-600 to-indigo-700"
+          onOpen={() => setBranchModal("Salary Account")}
         />
       </div>
 
@@ -156,6 +159,27 @@ function AccountsPage() {
         <ShieldCheck className="w-4 h-4 text-success shrink-0" />
         Your account balances are protected under DICGC up to ₹5,00,000. All transactions are monitored 24×7 for security.
       </Card>
+      <AnimatePresence>
+        {branchModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setBranchModal(null)}>
+            <motion.div initial={{ scale: 0.9, y: 18, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.92, opacity: 0 }} transition={{ type: "spring", damping: 22 }} onClick={(e) => e.stopPropagation()} className="bg-card rounded-2xl border shadow-elegant max-w-md w-full overflow-hidden">
+              <div className="bg-gradient-primary text-primary-foreground p-4 flex items-center justify-between">
+                <div className="flex items-center gap-2 font-bold"><Building2 className="w-5 h-5" /> Bharat Bank Branch Support</div>
+                <button onClick={() => setBranchModal(null)} className="p-1 rounded-md hover:bg-white/10" aria-label="Close"><X className="w-4 h-4" /></button>
+              </div>
+              <div className="p-6 text-center">
+                <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4"><Building2 className="w-8 h-8" /></div>
+                <h3 className="text-lg font-bold mb-2">Open {branchModal}</h3>
+                <p className="text-sm text-muted-foreground">Please visit your nearest Bharat Bank branch for more details.</p>
+                <div className="flex gap-2 mt-6">
+                  <Button variant="outline" className="flex-1" onClick={() => setBranchModal(null)}>Close</Button>
+                  <Button className="flex-1 bg-gradient-primary text-primary-foreground" onClick={() => setBranchModal(null)}>Branch Support</Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AppLayout>
   );
 }

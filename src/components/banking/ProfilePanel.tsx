@@ -3,7 +3,7 @@ import {
   X, Copy, Download, ShieldCheck, BadgeCheck, User, CreditCard,
   Building2, Phone, Mail, Hash, FileText, MapPin, Calendar, Clock,
 } from "lucide-react";
-import { profile } from "@/lib/banking-data";
+import { accounts, profile } from "@/lib/banking-data";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -30,6 +30,7 @@ function Row({ icon: Icon, label, value, copy }: { icon: any; label: string; val
 }
 
 export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const acc = accounts[0];
   return (
     <AnimatePresence>
       {open && (
@@ -71,20 +72,27 @@ export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => 
                   <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Account</h3>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-success/15 text-success font-semibold">Secure</span>
                 </div>
-                <div className="rounded-xl border bg-card px-3">
+                <div className="rounded-xl border bg-card px-3 shadow-card-soft">
+                  <Row icon={User} label="Full Name" value={profile.fullName} />
                   <Row icon={Hash} label="Customer ID / CIF" value={profile.customerId} copy />
                   <Row icon={CreditCard} label="Account Number" value={profile.accountNumber} copy />
                   <Row icon={Building2} label="IFSC Code" value={profile.ifsc} copy />
+                  <Row icon={Building2} label="Branch" value={profile.branch} />
                   <Row icon={User} label="Account Type" value={profile.accountType} />
                   <Row icon={Calendar} label="Account Opened" value={profile.openedOn} />
+                  <Row icon={CreditCard} label="Available Balance" value={new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(acc.balance)} />
+                  <Row icon={ShieldCheck} label="KYC Status" value={profile.kycStatus} />
+                  <Row icon={BadgeCheck} label="Account Status" value={profile.accountStatus} />
+                  <Row icon={User} label="Nominee" value={profile.nominee} />
                 </div>
               </section>
 
               <section>
                 <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-2">Contact</h3>
-                <div className="rounded-xl border bg-card px-3">
+                <div className="rounded-xl border bg-card px-3 shadow-card-soft">
                   <Row icon={Phone} label="Registered Mobile" value={profile.mobile} />
                   <Row icon={Mail} label="Email" value={profile.email} />
+                  <Row icon={MapPin} label="Address" value={profile.address} />
                 </div>
               </section>
 

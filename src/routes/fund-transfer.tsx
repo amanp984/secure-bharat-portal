@@ -8,9 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Zap, Building2, Banknote, ArrowRight, Send, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { z } from "zod";
+
+const transferSearch = z.object({ beneficiary: z.string().optional() });
 
 export const Route = createFileRoute("/fund-transfer")({
   component: FundTransfer,
+  validateSearch: transferSearch,
   head: () => ({
     meta: [
       { title: "Fund Transfer — Bharat Bank" },
@@ -31,8 +35,9 @@ const modes = [
 ];
 
 function FundTransfer() {
+  const { beneficiary } = Route.useSearch();
   const [mode, setMode] = useState("imps");
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(beneficiary ?? null);
   const [amount, setAmount] = useState("");
   const [remarks, setRemarks] = useState("");
   const [pwd, setPwd] = useState("");
@@ -51,21 +56,21 @@ function FundTransfer() {
 
   return (
     <AppLayout>
-      <PageHeader title="Fund Transfer" subtitle="Send money securely to anyone, anywhere" />
+      <PageHeader title="Fund Transfer" subtitle="Select beneficiary, transfer mode and verify with transaction password" />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
         {modes.map((m) => (
           <button key={m.id} onClick={() => setMode(m.id)}
-            className={`p-4 rounded-2xl border-2 transition-all text-left ${mode === m.id ? "border-primary bg-primary/5 shadow-elegant" : "border-border bg-card hover:border-primary/40"}`}>
+            className={`p-3 rounded-xl border transition-all text-left ${mode === m.id ? "border-primary bg-primary/5 shadow-card-soft" : "border-border bg-card hover:border-primary/40"}`}>
             <m.icon className={`w-5 h-5 mb-2 ${mode === m.id ? "text-primary" : "text-muted-foreground"}`} />
             <div className="font-bold text-sm">{m.label}</div>
           </button>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 p-5">
-          <h2 className="font-bold mb-3">Saved Beneficiaries</h2>
+      <div className="grid lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2 p-4 shadow-card-soft">
+          <h2 className="font-bold mb-3 text-sm">1. Select Beneficiary</h2>
           <div className="space-y-2">
             {beneficiaries.map((b) => (
               <motion.button key={b.id} whileHover={{ x: 4 }}
@@ -84,8 +89,8 @@ function FundTransfer() {
           </div>
         </Card>
 
-        <Card className="p-5 h-fit sticky top-24">
-          <h2 className="font-bold mb-1">Transfer Details</h2>
+        <Card className="p-4 h-fit sticky top-24 shadow-card-soft border-t-4 border-t-primary">
+          <h2 className="font-bold mb-1">2. Transfer Details</h2>
           <p className="text-xs text-muted-foreground mb-4">{ben ? `To: ${ben.name}` : "Select a beneficiary"}</p>
           <div className="space-y-3">
             <div>
