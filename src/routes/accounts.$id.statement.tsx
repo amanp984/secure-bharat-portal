@@ -217,15 +217,8 @@ function StatementPage() {
         <Input type="date" className="w-auto h-9" value={to} onChange={(e) => setTo(e.target.value)} />
       </Card>
 
-      <Card className="p-3 mb-3 flex flex-wrap gap-2 items-center">
-        <div className="relative flex-1 min-w-[220px]">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input className="pl-9 h-9" placeholder="Search by narration or reference id…" value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
-        </div>
-        <Input type="date" className="w-auto h-9" value={from} onChange={(e) => setFrom(e.target.value)} />
-        <span className="text-xs text-muted-foreground">to</span>
-        <Input type="date" className="w-auto h-9" value={to} onChange={(e) => setTo(e.target.value)} />
-      </Card>
+
+
 
       <Card className="overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
