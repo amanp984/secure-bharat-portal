@@ -50,7 +50,7 @@ function BeneficiaryPage() {
               <div className="flex justify-between"><span className="text-muted-foreground">Last Transfer</span><span>{b.last}</span></div>
             </div>
             <div className="flex gap-2">
-              <Button size="sm" className="flex-1 bg-gradient-primary"><Send className="w-3.5 h-3.5 mr-1" />Quick Transfer</Button>
+              <Button size="sm" className="flex-1 bg-gradient-primary" onClick={() => navigate({ to: "/fund-transfer", search: { beneficiary: b.id } })}><Send className="w-3.5 h-3.5 mr-1" />Quick Transfer</Button>
               <Button size="sm" variant="outline" aria-label="Delete beneficiary" onClick={() => setDeleteOpen(true)}><Trash2 className="w-3.5 h-3.5" /></Button>
             </div>
           </Card>
