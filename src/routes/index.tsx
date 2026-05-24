@@ -200,7 +200,7 @@ function Dashboard() {
         <Card className="lg:col-span-2 p-3">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-sm font-bold">Recent Transactions</h2>
-            <Link to="/accounts/cur/statement" className="text-xs text-primary font-semibold hover:underline">View all →</Link>
+            <Link to="/transactions" className="text-xs text-primary font-semibold hover:underline">View all →</Link>
           </div>
           <div className="divide-y text-[12px]">
             {transactions.slice(0, 6).map((t) => (
