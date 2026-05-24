@@ -14,28 +14,56 @@ export const accounts = [
   },
 ];
 
-export const transactions = Array.from({ length: 28 }).map((_, i) => {
-  const isCredit = i % 3 === 0;
-  const amt = Math.round((Math.random() * 9000 + 250) * 100) / 100;
-  return {
-    id: `TXN${1000000 + i}`,
-    date: new Date(Date.now() - i * 86400000 * 1.5).toLocaleDateString("en-IN"),
-    narration: [
-      "UPI/PAY/AMAZON",
-      "NEFT/HDFC/SALARY",
-      "IMPS/ICICI/Rahul Kumar",
-      "ATM Withdrawal - HYD",
-      "POS/SWIGGY BANGALORE",
-      "Bill Payment - Airtel",
-      "Interest Credit",
-      "UPI/GPAY/Shop",
-    ][i % 8],
-    type: isCredit ? "Credit" : "Debit",
-    debit: isCredit ? 0 : amt,
-    credit: isCredit ? amt : 0,
-    balance: 284562 - i * 1234.5,
-  };
-});
+const transactionSeeds = [
+  ["2026-05-23", "23 May 2026", "UPI/PAY/AMAZON SELLER SERVICES", "Debit", 2489, "UPI"],
+  ["2026-05-22", "22 May 2026", "NEFT/HDFC/SALARY CREDIT", "Credit", 185000, "NEFT"],
+  ["2026-05-21", "21 May 2026", "IMPS/ICICI/RAHUL KUMAR", "Debit", 12500, "IMPS"],
+  ["2026-05-20", "20 May 2026", "ATM WDL CHENNAI ANNA NAGAR", "Debit", 10000, "ATM"],
+  ["2026-05-19", "19 May 2026", "POS/SWIGGY BANGALORE", "Debit", 874, "POS"],
+  ["2026-05-18", "18 May 2026", "BBPS/AIRTEL BROADBAND", "Debit", 1499, "BBPS"],
+  ["2026-05-17", "17 May 2026", "INTEREST CREDIT", "Credit", 923, "SYSTEM"],
+  ["2026-05-16", "16 May 2026", "UPI/GPAY/KIRANA STORES", "Debit", 1260, "UPI"],
+  ["2026-05-15", "15 May 2026", "RTGS/AXIS/VENDOR PAYMENT", "Debit", 78250, "RTGS"],
+  ["2026-05-14", "14 May 2026", "UPI/PHONEPE/METRO CARD", "Debit", 450, "UPI"],
+  ["2026-05-13", "13 May 2026", "NEFT/SBI/CLIENT RECEIPT", "Credit", 94500, "NEFT"],
+  ["2026-05-12", "12 May 2026", "POS/RELIANCE RETAIL", "Debit", 6230, "POS"],
+  ["2026-05-11", "11 May 2026", "IMPS/KOTAK/MEERA IYER", "Credit", 25000, "IMPS"],
+  ["2026-05-10", "10 May 2026", "BBPS/TNEB ELECTRICITY", "Debit", 5380, "BBPS"],
+  ["2026-05-09", "09 May 2026", "UPI/PAYTM/FUEL STATION", "Debit", 3200, "UPI"],
+  ["2026-05-08", "08 May 2026", "GST CHALLAN PAYMENT", "Debit", 45890, "TAX"],
+  ["2026-05-07", "07 May 2026", "CASH DEPOSIT ANNA NAGAR", "Credit", 70000, "BRANCH"],
+  ["2026-05-06", "06 May 2026", "UPI/ZOMATO LIMITED", "Debit", 1168, "UPI"],
+  ["2026-05-05", "05 May 2026", "ACH/SIP MUTUAL FUND", "Debit", 15000, "ACH"],
+  ["2026-05-04", "04 May 2026", "IMPS/HDFC/SUPPLIER SETTLEMENT", "Debit", 34500, "IMPS"],
+  ["2026-05-03", "03 May 2026", "UPI/BOOKMYSHOW", "Debit", 1320, "UPI"],
+  ["2026-05-02", "02 May 2026", "NEFT/CLIENT INVOICE BB-1421", "Credit", 128400, "NEFT"],
+  ["2026-05-01", "01 May 2026", "BANK CHARGES GST", "Debit", 236, "SYSTEM"],
+  ["2026-04-30", "30 Apr 2026", "POS/APOLLO PHARMACY", "Debit", 2860, "POS"],
+  ["2026-04-29", "29 Apr 2026", "UPI/DMART AVENUE", "Debit", 4124, "UPI"],
+  ["2026-04-28", "28 Apr 2026", "RTGS/CITI/PROJECT ADVANCE", "Credit", 215000, "RTGS"],
+  ["2026-04-27", "27 Apr 2026", "CHEQUE CLEARING 482915", "Debit", 65000, "CHEQUE"],
+  ["2026-04-26", "26 Apr 2026", "BBPS/JIO POSTPAID", "Debit", 799, "BBPS"],
+  ["2026-04-25", "25 Apr 2026", "UPI/UBER INDIA", "Debit", 684, "UPI"],
+  ["2026-04-24", "24 Apr 2026", "NEFT/REFUND GST", "Credit", 18320, "NEFT"],
+  ["2026-04-23", "23 Apr 2026", "ATM WDL T NAGAR CHENNAI", "Debit", 8000, "ATM"],
+  ["2026-04-22", "22 Apr 2026", "IMPS/AXIS/STAFF REIMBURSEMENT", "Debit", 9200, "IMPS"],
+  ["2026-04-21", "21 Apr 2026", "UPI/AMAZON PAY", "Debit", 2599, "UPI"],
+  ["2026-04-20", "20 Apr 2026", "CASH DEPOSIT CDM CHENNAI", "Credit", 54000, "CDM"],
+  ["2026-04-19", "19 Apr 2026", "POS/HOTEL SARAVANA BHAVAN", "Debit", 2140, "POS"],
+  ["2026-04-18", "18 Apr 2026", "BBPS/CHENNAI METRO WATER", "Debit", 1265, "BBPS"],
+] as const;
+
+export const transactions = transactionSeeds.map(([isoDate, date, narration, type, amount, channel], i) => ({
+  id: `BBTXN${2605000 + i}`,
+  isoDate,
+  date,
+  narration,
+  channel,
+  type,
+  debit: type === "Debit" ? amount : 0,
+  credit: type === "Credit" ? amount : 0,
+  balance: 1248903.1 - i * 11372.85 + (type === "Credit" ? amount * 0.12 : -amount * 0.04),
+}));
 
 export const beneficiaries = [
   { id: "b1", name: "Jignesh Sahar", bank: "HDFC Bank", acc: "XXXX 6831", last: "18 May 2026" },
