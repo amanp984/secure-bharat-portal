@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { transactions, accounts, profile } from "@/lib/banking-data";
+import { downloadStatementPDF } from "@/lib/pdf-statement";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
