@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
@@ -12,7 +12,8 @@ import { AppLayout } from "@/components/banking/AppLayout";
 import { accounts, transactions } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-
+import { useState } from "react";
+import { AccountDetailsDialog } from "@/components/banking/AccountDetailsDialog";
 
 import { downloadStatementPDF } from "@/lib/pdf-statement";
 
@@ -57,7 +58,7 @@ const bills = [
 function Dashboard() {
   const acc = accounts[0];
   
-  const navigate = useNavigate();
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
     <AppLayout>
@@ -93,7 +94,7 @@ function Dashboard() {
           className="lg:col-span-2"
         >
           <div
-            onClick={() => navigate({ to: "/accounts/$id", params: { id: acc.id } })}
+            onClick={() => setDetailsOpen(true)}
             className={`relative rounded-xl p-4 text-white shadow-md bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group`}
           >
             <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
@@ -152,16 +153,24 @@ function Dashboard() {
 
           <div className="grid grid-cols-2 gap-2 mt-2">
             {[
-              { label: "Account Details", to: "/accounts/cur", icon: Wallet },
-              { label: "Statement", to: "/transactions", icon: FileText },
-            ].map((o) => (
-              <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
-                <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  <o.icon className="w-3.5 h-3.5" />
-                </div>
-                <span>{o.label}</span>
-              </Link>
-            ))}
+              { label: "Account Details", icon: Wallet, onClick: () => setDetailsOpen(true) },
+              { label: "Statement", icon: FileText, to: "/transactions" as const },
+            ].map((o) => {
+              const inner = (
+                <>
+                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <o.icon className="w-3.5 h-3.5" />
+                  </div>
+                  <span>{o.label}</span>
+                </>
+              );
+              const cls = "bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group";
+              return o.to ? (
+                <Link key={o.label} to={o.to} className={cls}>{inner}</Link>
+              ) : (
+                <button key={o.label} onClick={o.onClick} className={cls + " text-left"}>{inner}</button>
+              );
+            })}
           </div>
         </motion.div>
 
@@ -267,6 +276,7 @@ function Dashboard() {
           ))}
         </div>
       </Card>
+      <AccountDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} />
     </AppLayout>
   );
 }
