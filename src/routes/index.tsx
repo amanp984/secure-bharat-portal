@@ -276,6 +276,7 @@ function Dashboard() {
           ))}
         </div>
       </Card>
+      <AccountDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} />
     </AppLayout>
   );
 }
