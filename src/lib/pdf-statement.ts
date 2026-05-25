@@ -1,60 +1,129 @@
 import { toast } from "sonner";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { accounts, profile, transactions } from "./banking-data";
 
-const fmt = (n: number) =>
-  new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
+const fmtINR = (n: number) =>
+  new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export function downloadStatementPDF() {
-  const acc = accounts[0];
-  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Bharat Bank Statement</title><style>
-    body{font-family:Helvetica,Arial,sans-serif;margin:24px 28px;color:#0f172a}
-    .header{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #1e3a8a;padding-bottom:10px;margin-bottom:14px}
-    .logo{display:flex;align-items:center;gap:10px}
-    .mark{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#1d4ed8,#312e81);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
-    h1{color:#1e3a8a;margin:0;font-size:18px}
-    .sub{font-size:10px;letter-spacing:3px;color:#b45309;font-weight:700}
-    .gen{font-size:10px;color:#64748b;text-align:right}
-    h2{font-size:12px;color:#1e3a8a;text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 6px;border-bottom:1px solid #cbd5e1;padding-bottom:3px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:11px}
-    .grid div span{color:#64748b;display:inline-block;min-width:120px}
-    table{width:100%;border-collapse:collapse;font-size:10px;margin-top:6px}
-    th{background:#1e3a8a;color:#fff;text-align:left;padding:6px 8px}
-    td{border-bottom:1px solid #e2e8f0;padding:6px 8px}
-    tr:nth-child(even) td{background:#f8fafc}
-    .credit{color:#15803d;font-weight:600}.debit{color:#b91c1c;font-weight:600}
-    .footer{margin-top:18px;border-top:2px solid #1e3a8a;padding-top:8px;text-align:center;font-size:10px;color:#64748b}
-    @page{size:A4;margin:14mm}
-  </style></head><body>
-    <div class="header">
-      <div class="logo"><div class="mark">B</div><div><h1>Bharat Bank</h1><div class="sub">NET BANKING · INDIA</div></div></div>
-      <div class="gen"><b>Account Statement</b><br/>Generated: ${new Date().toLocaleString("en-IN")}</div>
-    </div>
-    <h2>Customer & Account Details</h2>
-    <div class="grid">
-      <div><span>Customer Name</span><b>${profile.fullName}</b></div>
-      <div><span>Account Number</span><b>${profile.accountNumber}</b></div>
-      <div><span>CIF ID</span><b>${profile.customerId}</b></div>
-      <div><span>IFSC</span><b>${profile.ifsc}</b></div>
-      <div><span>Branch</span><b>${profile.branch}</b></div>
-      <div><span>Available Balance</span><b>${fmt(acc.balance)}</b></div>
-    </div>
-    <h2>Transaction Records (${transactions.length})</h2>
-    <table><thead><tr>
-      <th>Date</th><th>Narration</th><th>Reference</th>
-      <th style="text-align:right">Debit</th><th style="text-align:right">Credit</th><th style="text-align:right">Balance</th>
-    </tr></thead><tbody>
-      ${transactions.map((t) => `<tr>
-        <td>${t.date}</td><td>${t.narration}</td><td style="font-family:monospace">${t.id}</td>
-        <td style="text-align:right" class="debit">${t.debit ? fmt(t.debit) : "—"}</td>
-        <td style="text-align:right" class="credit">${t.credit ? fmt(t.credit) : "—"}</td>
-        <td style="text-align:right">${fmt(t.balance)}</td>
-      </tr>`).join("")}
-    </tbody></table>
-    <div class="footer">This is a system generated statement and does not require a signature.<br/><b>Bharat Bank Ltd.</b> · Customer Care 1800-123-4567</div>
-    <script>window.onload=()=>setTimeout(()=>window.print(),300)</script>
-  </body></html>`;
-  const w = window.open("", "_blank");
-  if (!w) { toast.error("Popup blocked — allow popups to download the PDF"); return; }
-  w.document.write(html); w.document.close();
-  toast.success("Statement ready — print or save as PDF");
+  const loadingId = toast.loading("Generating Statement...");
+  try {
+    const acc = accounts[0];
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 36;
+
+    // Header bar
+    doc.setFillColor(30, 58, 138);
+    doc.rect(0, 0, pageW, 70, "F");
+
+    // Logo box
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(margin, 18, 36, 36, 6, 6, "F");
+    doc.setTextColor(30, 58, 138);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("B", margin + 18, 44, { align: "center" });
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.text("Bharat Bank", margin + 48, 36);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.text("NET BANKING STATEMENT", margin + 48, 52);
+
+    doc.setFontSize(9);
+    doc.text(`Generated: ${new Date().toLocaleString("en-IN")}`, pageW - margin, 36, { align: "right" });
+    doc.text(`IFSC: ${acc.ifsc}  |  Branch: ${profile.branch}`, pageW - margin, 52, { align: "right" });
+
+    // Account details block
+    let y = 96;
+    doc.setTextColor(30, 58, 138);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("ACCOUNT DETAILS", margin, y);
+    doc.setDrawColor(203, 213, 225);
+    doc.line(margin, y + 4, pageW - margin, y + 4);
+
+    const details: [string, string][] = [
+      ["Account Holder", profile.fullName],
+      ["Customer ID / CIF", profile.customerId],
+      ["Account Number", profile.accountNumber],
+      ["Account Type", acc.type],
+      ["Available Balance", `INR ${fmtINR(acc.balance)}`],
+      ["Branch Address", profile.branchAddress],
+      ["Registered Mobile", profile.mobile],
+      ["Email", profile.email],
+    ];
+
+    y += 16;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(15, 23, 42);
+    const colW = (pageW - margin * 2) / 2;
+    details.forEach((row, i) => {
+      const col = i % 2;
+      const rowY = y + Math.floor(i / 2) * 18;
+      doc.setTextColor(100, 116, 139);
+      doc.text(row[0], margin + col * colW, rowY);
+      doc.setTextColor(15, 23, 42);
+      doc.setFont("helvetica", "bold");
+      doc.text(String(row[1]), margin + col * colW + 110, rowY, { maxWidth: colW - 110 });
+      doc.setFont("helvetica", "normal");
+    });
+
+    const tableStartY = y + Math.ceil(details.length / 2) * 18 + 12;
+
+    autoTable(doc, {
+      startY: tableStartY,
+      head: [["Date", "Narration", "Transaction ID", "Debit (INR)", "Credit (INR)", "Balance (INR)"]],
+      body: transactions.map((t) => [
+        t.date,
+        t.narration,
+        t.id,
+        t.debit ? fmtINR(t.debit) : "-",
+        t.credit ? fmtINR(t.credit) : "-",
+        fmtINR(t.balance),
+      ]),
+      theme: "grid",
+      styles: { fontSize: 8, cellPadding: 4, textColor: [15, 23, 42] },
+      headStyles: { fillColor: [30, 58, 138], textColor: 255, fontStyle: "bold", fontSize: 8.5 },
+      alternateRowStyles: { fillColor: [248, 250, 252] },
+      columnStyles: {
+        0: { cellWidth: 60 },
+        2: { cellWidth: 72, font: "courier" },
+        3: { halign: "right", textColor: [185, 28, 28] },
+        4: { halign: "right", textColor: [21, 128, 61] },
+        5: { halign: "right", fontStyle: "bold" },
+      },
+      margin: { left: margin, right: margin },
+      didDrawPage: () => {
+        // Footer on every page
+        const fy = pageH - 30;
+        doc.setDrawColor(30, 58, 138);
+        doc.setLineWidth(1.5);
+        doc.line(margin, fy - 10, pageW - margin, fy - 10);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Computer generated statement - does not require signature.", pageW / 2, fy, { align: "center" });
+        doc.text("Bharat Bank Ltd. - Secure Net Banking - Customer Care 1800-123-4567", pageW / 2, fy + 11, { align: "center" });
+      },
+    });
+
+    const now = new Date();
+    const filename = `BharatBank_Statement_${MONTHS[now.getMonth()]}${now.getFullYear()}.pdf`;
+    doc.save(filename);
+
+    toast.dismiss(loadingId);
+    toast.success("Statement downloaded successfully");
+  } catch (err) {
+    console.error(err);
+    toast.dismiss(loadingId);
+    toast.error("Failed to generate statement");
+  }
 }
