@@ -58,7 +58,7 @@ const bills = [
 function Dashboard() {
   const acc = accounts[0];
   
-  const navigate = useNavigate();
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
     <AppLayout>
