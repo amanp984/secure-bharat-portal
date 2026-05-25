@@ -76,6 +76,7 @@ export const profile = {
   customerId: "5489221",
   accountNumber: "502178947812",
   ifsc: "BHAR0000123",
+  micr: "600240012",
   mobile: "+91 98xxxxxx21",
   email: "arjun.r@example.com",
   address: "Flat 8C, Vaigai Towers, 2nd Avenue, Anna Nagar West, Chennai – 600040",
@@ -89,7 +90,24 @@ export const profile = {
   nominee: "Lakshmi Iyer (Mother)",
   openedOn: "14 March 2018",
   lastLogin: "21 May 2026, 09:42 AM · Chennai",
+  occupation: "Business Owner",
+  customerCategory: "Priority Banking",
 };
+
+export const tickets = [
+  { id: "SR248921", subject: "Debit card PIN reset", status: "Resolved", createdAt: "18 May 2026", resolution: "PIN reset successfully" },
+  { id: "SR248755", subject: "Failed UPI transaction refund", status: "In Progress", createdAt: "20 May 2026", resolution: "Awaiting bank reversal" },
+  { id: "SR248610", subject: "Cheque book request", status: "Resolved", createdAt: "12 May 2026", resolution: "Dispatched via Speed Post" },
+  { id: "SR248455", subject: "Net Banking login issue", status: "Resolved", createdAt: "08 May 2026", resolution: "Password regenerated" },
+];
+
+export const faqs = [
+  { q: "How do I reset my Net Banking password?", a: "Visit the login page, click 'Forgot Password' and follow the OTP-based verification using your registered mobile and Debit Card." },
+  { q: "What is the daily IMPS transfer limit?", a: "The default daily IMPS limit is ₹5,00,000 per day. You can request a higher limit via Mobile Banking." },
+  { q: "How long does NEFT take?", a: "NEFT transactions are processed in half-hourly batches between 00:30 AM and 11:30 PM on all 365 days." },
+  { q: "How do I block a lost Debit Card?", a: "Go to Debit Card → Block Card, or call our 24x7 toll-free 1800-123-4567 to block instantly." },
+  { q: "Is my money safe with Bharat Bank?", a: "All deposits are insured under DICGC up to ₹5,00,000 per depositor per bank." },
+];
 
 export const billers = [
   { name: "Electricity", icon: "Zap" },
