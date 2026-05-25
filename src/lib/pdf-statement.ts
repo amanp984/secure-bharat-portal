@@ -16,6 +16,7 @@ let activeDownloadPromise: Promise<boolean> | null = null;
 const statementDownloadListeners = new Set<() => void>();
 const STATEMENT_LOADING_TOAST_ID = "statement-download-loading";
 const STATEMENT_SUCCESS_TOAST_ID = "statement-download-success";
+const MAX_LOADING_TOAST_MS = 750;
 
 function emitStatementDownloadState() {
   statementDownloadListeners.forEach((listener) => listener());
@@ -45,9 +46,13 @@ export async function downloadStatementPDF(txns: StatementTxn[] = transactions) 
   if (activeDownloadPromise) return activeDownloadPromise;
 
   activeDownloadPromise = (async () => {
+    let loadingToastTimeout: number | undefined;
     toast.dismiss(STATEMENT_SUCCESS_TOAST_ID);
     toast.dismiss(STATEMENT_LOADING_TOAST_ID);
     toast.loading("Generating Statement...", { id: STATEMENT_LOADING_TOAST_ID });
+    loadingToastTimeout = window.setTimeout(() => {
+      toast.dismiss(STATEMENT_LOADING_TOAST_ID);
+    }, MAX_LOADING_TOAST_MS);
     setStatementDownloadState(true);
 
     await waitForNextPaint();
@@ -197,6 +202,8 @@ export async function downloadStatementPDF(txns: StatementTxn[] = transactions) 
     toast.error("Failed to generate statement");
     return false;
   } finally {
+    if (loadingToastTimeout) window.clearTimeout(loadingToastTimeout);
+    toast.dismiss(STATEMENT_LOADING_TOAST_ID);
     activeDownloadPromise = null;
   }
   })();
