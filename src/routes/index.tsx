@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
@@ -55,6 +55,7 @@ const bills = [
 function Dashboard() {
   const acc = accounts[0];
   const profilePanel = useProfilePanel();
+  const navigate = useNavigate();
 
   return (
     <AppLayout>
@@ -90,7 +91,7 @@ function Dashboard() {
           className="lg:col-span-2"
         >
           <div
-            onClick={profilePanel.open}
+            onClick={() => navigate({ to: "/accounts/$id", params: { id: acc.id } })}
             className={`relative rounded-xl p-4 text-white shadow-md bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group`}
           >
             <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
@@ -149,24 +150,15 @@ function Dashboard() {
 
           <div className="grid grid-cols-2 gap-2 mt-2">
             {[
-              { label: "Account Details", action: profilePanel.open, icon: Wallet },
+              { label: "Account Details", to: "/accounts/cur", icon: Wallet },
               { label: "Statement", to: "/transactions", icon: FileText },
             ].map((o) => (
-              "to" in o ? (
-                <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
-                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <o.icon className="w-3.5 h-3.5" />
-                  </div>
-                  <span>{o.label}</span>
-                </Link>
-              ) : (
-                <button key={o.label} onClick={o.action} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group text-left">
-                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <o.icon className="w-3.5 h-3.5" />
-                  </div>
-                  <span>{o.label}</span>
-                </button>
-              )
+              <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
+                <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <o.icon className="w-3.5 h-3.5" />
+                </div>
+                <span>{o.label}</span>
+              </Link>
             ))}
           </div>
         </motion.div>
