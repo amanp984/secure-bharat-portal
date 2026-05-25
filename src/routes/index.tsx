@@ -37,9 +37,9 @@ export const Route = createFileRoute("/")({
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
 
-const quickActions = [
+const quickActions: { label: string; icon: any; to?: string; action?: () => void; color: string }[] = [
   { label: "Bill Payment", icon: Receipt, to: "/bills", color: "from-amber-500 to-orange-600" },
-  { label: "Debit Card", icon: CreditCard, to: "/cards", color: "from-blue-600 to-indigo-700" },
+  { label: "Download Statement", icon: Download, action: () => downloadStatementPDF(), color: "from-blue-600 to-indigo-700" },
   { label: "Open FD", icon: PiggyBank, to: "/deposits", color: "from-emerald-600 to-teal-700" },
   { label: "Contact Us", icon: Phone, to: "/support", color: "from-purple-600 to-pink-600" },
   { label: "Loan Apply", icon: HandCoins, to: "/loans", color: "from-rose-600 to-red-700" },
