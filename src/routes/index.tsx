@@ -12,7 +12,8 @@ import { AppLayout } from "@/components/banking/AppLayout";
 import { accounts, transactions } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { useProfilePanel } from "@/components/banking/ProfileContext";
+import { downloadStatementPDF as _kept } from "@/lib/pdf-statement";
+void _kept;
 import { downloadStatementPDF } from "@/lib/pdf-statement";
 
 export const Route = createFileRoute("/")({
