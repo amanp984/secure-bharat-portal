@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
+import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { transactions, accounts, profile } from "@/lib/banking-data";
-import { downloadStatementPDF } from "@/lib/pdf-statement";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,11 +87,6 @@ function StatementPage() {
     toast.success("CSV downloaded");
   };
 
-  const exportPDF = () => {
-    downloadStatementPDF(filtered);
-  };
-
-
   const pageNumbers = useMemo(() => {
     const max = Math.min(totalPages, 5);
     let start = Math.max(1, page - 2);
@@ -108,9 +103,7 @@ function StatementPage() {
         action={
           <div className="flex gap-2">
             <Button variant="outline" onClick={exportCSV}><FileSpreadsheet className="w-4 h-4 mr-1.5" />Download CSV</Button>
-            <Button className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white hover:opacity-95" onClick={exportPDF}>
-              <Download className="w-4 h-4 mr-1.5" />Download PDF
-            </Button>
+            <StatementDownloadButton className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white hover:opacity-95" idleIcon={Download} idleLabel="Download PDF" loadingLabel="Generating Statement..." txns={filtered} />
           </div>
         }
       />

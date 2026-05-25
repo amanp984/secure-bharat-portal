@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
+import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { accounts, transactions, profile } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { downloadStatementPDF } from "@/lib/pdf-statement";
 
 export const Route = createFileRoute("/accounts/$id")({
   component: AccountDetails,
@@ -68,9 +68,7 @@ function AccountDetails() {
             <Button variant="outline" size="sm" onClick={() => { navigator.clipboard?.writeText(window.location.href); toast.success("Link copied"); }}>
               <Share2 className="w-3.5 h-3.5 mr-1" />Share
             </Button>
-            <Button size="sm" className="bg-gradient-primary text-primary-foreground" onClick={() => downloadStatementPDF()}>
-              <Download className="w-3.5 h-3.5 mr-1" />Download Statement
-            </Button>
+            <StatementDownloadButton size="sm" className="bg-gradient-primary text-primary-foreground" idleIcon={Download} idleLabel="Download Statement" loadingLabel="Generating Statement..." />
           </div>
         }
       />
@@ -121,9 +119,7 @@ function AccountDetails() {
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <Button size="sm" variant="secondary" className="bg-white/15 hover:bg-white/25 text-white border-0" onClick={() => downloadStatementPDF()}>
-                <Download className="w-3.5 h-3.5 mr-1" />Statement
-              </Button>
+              <StatementDownloadButton size="sm" variant="secondary" className="bg-white/15 hover:bg-white/25 text-white border-0" idleIcon={Download} idleLabel="Statement" loadingLabel="Generating..." />
               <Link to="/transactions">
                 <Button size="sm" variant="secondary" className="w-full bg-white/15 hover:bg-white/25 text-white border-0">
                   <FileText className="w-3.5 h-3.5 mr-1" />Transactions

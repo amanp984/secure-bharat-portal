@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from "react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -8,10 +9,54 @@ const fmtINR = (n: number) =>
 
 
 
-type Txn = (typeof transactions)[number];
+export type StatementTxn = (typeof transactions)[number];
 
-export function downloadStatementPDF(txns: Txn[] = transactions) {
-  const loadingId = toast.loading("Generating Statement...");
+let isStatementDownloading = false;
+let activeDownloadPromise: Promise<boolean> | null = null;
+const statementDownloadListeners = new Set<() => void>();
+const STATEMENT_LOADING_TOAST_ID = "statement-download-loading";
+const STATEMENT_SUCCESS_TOAST_ID = "statement-download-success";
+const MAX_LOADING_TOAST_MS = 750;
+
+function emitStatementDownloadState() {
+  statementDownloadListeners.forEach((listener) => listener());
+}
+
+function setStatementDownloadState(next: boolean) {
+  isStatementDownloading = next;
+  emitStatementDownloadState();
+}
+
+export function useStatementDownloadState() {
+  return useSyncExternalStore(
+    (listener) => {
+      statementDownloadListeners.add(listener);
+      return () => statementDownloadListeners.delete(listener);
+    },
+    () => isStatementDownloading,
+    () => false,
+  );
+}
+
+async function waitForNextPaint() {
+  await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+}
+
+export async function downloadStatementPDF(txns: StatementTxn[] = transactions) {
+  if (activeDownloadPromise) return activeDownloadPromise;
+
+  activeDownloadPromise = (async () => {
+    let loadingToastTimeout: number | undefined;
+    toast.dismiss(STATEMENT_SUCCESS_TOAST_ID);
+    toast.dismiss(STATEMENT_LOADING_TOAST_ID);
+    toast.loading("Generating Statement...", { id: STATEMENT_LOADING_TOAST_ID });
+    loadingToastTimeout = window.setTimeout(() => {
+      toast.dismiss(STATEMENT_LOADING_TOAST_ID);
+    }, MAX_LOADING_TOAST_MS);
+    setStatementDownloadState(true);
+
+    await waitForNextPaint();
+
   try {
     const statementRows =
       txns.length > 0
@@ -143,11 +188,25 @@ export function downloadStatementPDF(txns: Txn[] = transactions) {
     link.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-    toast.dismiss(loadingId);
-    toast.success("Statement downloaded successfully");
+    toast.dismiss(STATEMENT_LOADING_TOAST_ID);
+    setStatementDownloadState(false);
+    toast.success("Statement downloaded successfully", {
+      id: STATEMENT_SUCCESS_TOAST_ID,
+      duration: 1000,
+    });
+    return true;
   } catch (err) {
     console.error(err);
-    toast.dismiss(loadingId);
+    toast.dismiss(STATEMENT_LOADING_TOAST_ID);
+    setStatementDownloadState(false);
     toast.error("Failed to generate statement");
+    return false;
+  } finally {
+    if (loadingToastTimeout) window.clearTimeout(loadingToastTimeout);
+    toast.dismiss(STATEMENT_LOADING_TOAST_ID);
+    activeDownloadPromise = null;
   }
+  })();
+
+  return activeDownloadPromise;
 }

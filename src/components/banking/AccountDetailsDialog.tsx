@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Link } from "@tanstack/react-router";
 import { Copy, Download, ShieldCheck, ArrowUpRight, ArrowDownLeft, Building2, User, Wallet, FileText } from "lucide-react";
+import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { toast } from "sonner";
 import { accounts, transactions, profile } from "@/lib/banking-data";
-import { downloadStatementPDF } from "@/lib/pdf-statement";
 import { motion } from "framer-motion";
 
 const fmt = (n: number) =>
@@ -73,9 +73,7 @@ export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; on
             <Link to="/transactions" onClick={() => onOpenChange(false)} className="border rounded-lg p-2.5 flex flex-col items-center gap-1 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold">
               <FileText className="w-4 h-4 text-primary" /> Statement
             </Link>
-            <button onClick={() => downloadStatementPDF()} className="border rounded-lg p-2.5 flex flex-col items-center gap-1 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold">
-              <Download className="w-4 h-4 text-primary" /> Download PDF
-            </button>
+            <StatementDownloadButton variant="outline" idleIcon={Download} idleLabel="Download PDF" loadingLabel="Generating..." className="h-auto min-h-[58px] flex-col gap-1 rounded-lg p-2.5 text-[11px] font-semibold shadow-none hover:border-primary/40 hover:shadow-sm" />
           </div>
 
           {/* Account info */}
