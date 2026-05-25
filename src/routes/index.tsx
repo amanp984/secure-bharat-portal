@@ -172,18 +172,25 @@ function Dashboard() {
             </h2>
           </div>
           <div className="grid grid-cols-3 gap-2.5">
-            {quickActions.map((q, i) => (
-              <motion.div key={q.label} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04 }}>
-                <Link to={q.to} className="block group">
-                  <div className="border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20 flex flex-col items-center text-center gap-1.5">
-                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${q.color} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
-                      <q.icon className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="text-[10.5px] font-semibold text-foreground leading-tight">{q.label}</div>
+            {quickActions.map((q, i) => {
+              const inner = (
+                <div className="border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20 flex flex-col items-center text-center gap-1.5">
+                  <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${q.color} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
+                    <q.icon className="w-4 h-4 text-white" />
                   </div>
-                </Link>
-              </motion.div>
-            ))}
+                  <div className="text-[10.5px] font-semibold text-foreground leading-tight">{q.label}</div>
+                </div>
+              );
+              return (
+                <motion.div key={q.label} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04 }}>
+                  {q.to ? (
+                    <Link to={q.to} className="block group">{inner}</Link>
+                  ) : (
+                    <button onClick={q.action} className="block w-full text-left group">{inner}</button>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </Card>
       </div>
