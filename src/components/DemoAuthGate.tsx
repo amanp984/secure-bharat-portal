@@ -62,24 +62,27 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId.trim() || !pwd) return toast.error("Please enter User ID and Password");
-    if (captcha.toUpperCase() !== captchaCode) {
-      toast.error("Invalid CAPTCHA. Please try again.");
+    const uid = userId.trim();
+    const pass = pwd;
+    if (!uid || !pass) return toast.error("Please enter User ID and Password");
+    if (captcha.trim().toUpperCase() !== captchaCode) {
+      toast.error("Invalid CAPTCHA entered");
       refreshCaptcha();
       return;
     }
     setLoading(true);
     setTimeout(() => {
-      if (userId === DEMO_USER && pwd === DEMO_PASS) {
-        localStorage.setItem(AUTH_KEY, "1");
+      if (uid === DEMO_USER && pass === DEMO_PASS) {
+        try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
         toast.success("Login successful. Welcome to Bharat Bank.");
+        setLoading(false);
         onSuccess();
       } else {
-        toast.error("Invalid credentials. Please try again.");
+        setLoading(false);
+        toast.error("Invalid User ID or Password");
         refreshCaptcha();
       }
-      setLoading(false);
-    }, 900);
+    }, 700);
   };
 
   const currentSlide = useMemo(() => slides[slide], [slide]);
