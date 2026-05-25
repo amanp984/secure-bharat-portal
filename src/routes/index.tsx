@@ -153,16 +153,24 @@ function Dashboard() {
 
           <div className="grid grid-cols-2 gap-2 mt-2">
             {[
-              { label: "Account Details", to: "/accounts/cur", icon: Wallet },
-              { label: "Statement", to: "/transactions", icon: FileText },
-            ].map((o) => (
-              <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
-                <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  <o.icon className="w-3.5 h-3.5" />
-                </div>
-                <span>{o.label}</span>
-              </Link>
-            ))}
+              { label: "Account Details", icon: Wallet, onClick: () => setDetailsOpen(true) },
+              { label: "Statement", icon: FileText, to: "/transactions" as const },
+            ].map((o) => {
+              const inner = (
+                <>
+                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <o.icon className="w-3.5 h-3.5" />
+                  </div>
+                  <span>{o.label}</span>
+                </>
+              );
+              const cls = "bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group";
+              return o.to ? (
+                <Link key={o.label} to={o.to} className={cls}>{inner}</Link>
+              ) : (
+                <button key={o.label} onClick={o.onClick} className={cls + " text-left"}>{inner}</button>
+              );
+            })}
           </div>
         </motion.div>
 
