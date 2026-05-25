@@ -13,11 +13,30 @@ type Txn = (typeof transactions)[number];
 export function downloadStatementPDF(txns: Txn[] = transactions) {
   const loadingId = toast.loading("Generating Statement...");
   try {
+    const statementRows =
+      txns.length > 0
+        ? txns.map((t) => [
+            t.date,
+            t.narration,
+            t.id,
+            t.debit ? fmtINR(t.debit) : "-",
+            t.credit ? fmtINR(t.credit) : "-",
+            fmtINR(t.balance),
+          ])
+        : [["-", "No transactions found for selected filters", "-", "-", "-", fmtINR(accounts[0].balance)]];
+
     const acc = accounts[0];
     const doc = new jsPDF({ unit: "pt", format: "a4" });
     const pageW = doc.internal.pageSize.getWidth();
     const pageH = doc.internal.pageSize.getHeight();
     const margin = 36;
+
+    doc.setProperties({
+      title: "Bharat Bank Statement",
+      subject: "Account statement",
+      author: "Bharat Bank",
+      creator: "Bharat Bank Net Banking",
+    });
 
     // Header bar
     doc.setFillColor(30, 58, 138);
@@ -83,14 +102,7 @@ export function downloadStatementPDF(txns: Txn[] = transactions) {
     autoTable(doc, {
       startY: tableStartY,
       head: [["Date", "Narration", "Transaction ID", "Debit (INR)", "Credit (INR)", "Balance (INR)"]],
-      body: transactions.map((t) => [
-        t.date,
-        t.narration,
-        t.id,
-        t.debit ? fmtINR(t.debit) : "-",
-        t.credit ? fmtINR(t.credit) : "-",
-        fmtINR(t.balance),
-      ]),
+      body: statementRows,
       theme: "grid",
       styles: { fontSize: 8, cellPadding: 4, textColor: [15, 23, 42] },
       headStyles: { fillColor: [30, 58, 138], textColor: 255, fontStyle: "bold", fontSize: 8.5 },
@@ -120,7 +132,16 @@ export function downloadStatementPDF(txns: Txn[] = transactions) {
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, "0");
     const filename = `BharatBank_Statement_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}.pdf`;
-    doc.save(filename);
+    const blob = doc.output("blob");
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     toast.dismiss(loadingId);
     toast.success("Statement downloaded successfully");
