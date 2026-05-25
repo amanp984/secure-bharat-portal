@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDownLeft,
@@ -15,7 +15,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
-import { accounts, transactions } from "@/lib/banking-data";
+import { accounts, profile, transactions } from "@/lib/banking-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/transactions")({
   },
 });
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 10;
 
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
@@ -78,9 +78,9 @@ function TransactionsPage() {
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1).slice(0, 5);
 
   const downloadCSV = () => {
-    const headers = ["Date", "Narration", "Reference", "Channel", "Debit", "Credit", "Balance"];
+    const headers = ["Date", "Narration", "Transaction ID", "Debit", "Credit", "Balance", "Status"];
     const rows = filtered.map((txn) =>
-      [txn.date, `"${txn.narration.replace(/"/g, '""')}"`, txn.id, txn.channel, txn.debit, txn.credit, txn.balance.toFixed(2)].join(","),
+      [txn.date, `"${txn.narration.replace(/"/g, '""')}"`, txn.id, txn.debit, txn.credit, txn.balance.toFixed(2), "Success"].join(","),
     );
     const blob = new Blob([[headers.join(","), ...rows].join("\n")], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -94,6 +94,19 @@ function TransactionsPage() {
     toast.success("Transaction history downloaded");
   };
 
+  const downloadPDF = () => {
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>Bharat Bank Transaction Statement</title><style>
+      body{font-family:Arial,Helvetica,sans-serif;margin:24px;color:#0f172a}.head{display:flex;justify-content:space-between;border-bottom:3px solid #1e3a8a;padding-bottom:10px}.brand{font-size:22px;font-weight:800;color:#1e3a8a}.sub{font-size:10px;color:#b45309;letter-spacing:2px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 22px;margin:14px 0;font-size:11px}.grid span{color:#64748b;display:inline-block;min-width:120px}h2{font-size:12px;text-transform:uppercase;color:#1e3a8a;letter-spacing:1px;border-bottom:1px solid #cbd5e1;padding-bottom:4px}table{width:100%;border-collapse:collapse;font-size:10px}th{background:#1e3a8a;color:white;text-align:left;padding:7px}td{border-bottom:1px solid #e2e8f0;padding:6px}tr:nth-child(even) td{background:#f8fafc}.r{text-align:right}.cr{color:#15803d;font-weight:700}.dr{color:#b91c1c;font-weight:700}.status{color:#15803d;font-weight:700}.foot{margin-top:18px;text-align:center;border-top:2px solid #1e3a8a;padding-top:8px;font-size:10px;color:#64748b}@page{size:A4;margin:14mm}
+    </style></head><body><div class="head"><div><div class="brand">Bharat Bank</div><div class="sub">NET BANKING · INDIA</div></div><div style="text-align:right;font-size:11px"><b>Transaction Statement</b><br/>Generated ${new Date().toLocaleString("en-IN")}</div></div>
+    <h2>Customer & Account Details</h2><div class="grid"><div><span>Customer Name</span><b>${profile.fullName}</b></div><div><span>Account Number</span><b>${profile.accountNumber}</b></div><div><span>CIF ID</span><b>${profile.customerId}</b></div><div><span>IFSC</span><b>${profile.ifsc}</b></div><div><span>Branch</span><b>${profile.branch}</b></div><div><span>Available Balance</span><b>${fmt(acc.balance)}</b></div></div>
+    <h2>Full Transaction History</h2><table><thead><tr><th>Date</th><th>Narration</th><th>Transaction ID</th><th class="r">Debit</th><th class="r">Credit</th><th class="r">Balance</th><th>Status</th></tr></thead><tbody>${filtered.map((txn) => `<tr><td>${txn.date}</td><td>${txn.narration}</td><td>${txn.id}</td><td class="r dr">${txn.debit ? fmt(txn.debit) : "—"}</td><td class="r cr">${txn.credit ? fmt(txn.credit) : "—"}</td><td class="r">${fmt(txn.balance)}</td><td class="status">Success</td></tr>`).join("")}</tbody></table><div class="foot">This is a system generated statement and does not require signature.</div><script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`;
+    const win = window.open("", "_blank");
+    if (!win) return toast.error("Popup blocked — allow popups to download PDF");
+    win.document.write(html);
+    win.document.close();
+    toast.success("PDF statement ready");
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -101,11 +114,11 @@ function TransactionsPage() {
         subtitle={`${acc.type} · A/c ${acc.masked} · ${filtered.length} matching records`}
         action={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/accounts/cur/statement"><FileText className="w-4 h-4 mr-1.5" />Statement</Link>
+            <Button variant="outline" onClick={downloadPDF}>
+              <FileText className="w-4 h-4 mr-1.5" />Download PDF Statement
             </Button>
             <Button onClick={downloadCSV} className="bg-gradient-to-r from-primary to-primary-glow text-primary-foreground hover:opacity-95">
-              <Download className="w-4 h-4 mr-1.5" />Download CSV
+              <Download className="w-4 h-4 mr-1.5" />Download CSV Statement
             </Button>
           </div>
         }
@@ -176,12 +189,12 @@ function TransactionsPage() {
             <thead className="bg-secondary/70 text-[10px] uppercase tracking-wider text-muted-foreground border-b">
               <tr>
                 <th className="text-left px-3 py-2.5 font-bold">Date</th>
-                <th className="text-left px-3 py-2.5 font-bold min-w-[230px]">Transaction Details</th>
-                <th className="text-left px-3 py-2.5 font-bold">Reference ID</th>
-                <th className="text-center px-3 py-2.5 font-bold">Channel</th>
+                <th className="text-left px-3 py-2.5 font-bold min-w-[230px]">Narration</th>
+                <th className="text-left px-3 py-2.5 font-bold">Transaction ID</th>
                 <th className="text-right px-3 py-2.5 font-bold">Debit</th>
                 <th className="text-right px-3 py-2.5 font-bold">Credit</th>
                 <th className="text-right px-3 py-2.5 font-bold">Balance</th>
+                <th className="text-center px-3 py-2.5 font-bold">Status</th>
               </tr>
             </thead>
             <AnimatePresence mode="wait">
@@ -213,10 +226,10 @@ function TransactionsPage() {
                         </div>
                       </td>
                       <td className="px-3 py-2.5 font-mono text-[11px] text-muted-foreground">{txn.id}</td>
-                      <td className="px-3 py-2.5 text-center"><Badge variant="outline" className="text-[10px]">{txn.channel}</Badge></td>
                       <td className="px-3 py-2.5 text-right font-bold text-destructive whitespace-nowrap">{txn.debit ? fmt(txn.debit) : "—"}</td>
                       <td className="px-3 py-2.5 text-right font-bold text-success whitespace-nowrap">{txn.credit ? fmt(txn.credit) : "—"}</td>
                       <td className="px-3 py-2.5 text-right font-semibold whitespace-nowrap">{fmt(txn.balance)}</td>
+                      <td className="px-3 py-2.5 text-center"><Badge variant="outline" className="border-success/30 bg-success/10 text-success text-[10px]">Success</Badge></td>
                     </tr>
                   ))
                 )}
