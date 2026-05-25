@@ -8,7 +8,9 @@ const fmtINR = (n: number) =>
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export function downloadStatementPDF() {
+type Txn = (typeof transactions)[number];
+
+export function downloadStatementPDF(txns: Txn[] = transactions) {
   const loadingId = toast.loading("Generating Statement...");
   try {
     const acc = accounts[0];
