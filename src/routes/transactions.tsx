@@ -114,11 +114,11 @@ function TransactionsPage() {
         subtitle={`${acc.type} · A/c ${acc.masked} · ${filtered.length} matching records`}
         action={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/accounts/cur/statement"><FileText className="w-4 h-4 mr-1.5" />Statement</Link>
+            <Button variant="outline" onClick={downloadPDF}>
+              <FileText className="w-4 h-4 mr-1.5" />Download PDF Statement
             </Button>
             <Button onClick={downloadCSV} className="bg-gradient-to-r from-primary to-primary-glow text-primary-foreground hover:opacity-95">
-              <Download className="w-4 h-4 mr-1.5" />Download CSV
+              <Download className="w-4 h-4 mr-1.5" />Download CSV Statement
             </Button>
           </div>
         }
@@ -189,12 +189,12 @@ function TransactionsPage() {
             <thead className="bg-secondary/70 text-[10px] uppercase tracking-wider text-muted-foreground border-b">
               <tr>
                 <th className="text-left px-3 py-2.5 font-bold">Date</th>
-                <th className="text-left px-3 py-2.5 font-bold min-w-[230px]">Transaction Details</th>
-                <th className="text-left px-3 py-2.5 font-bold">Reference ID</th>
-                <th className="text-center px-3 py-2.5 font-bold">Channel</th>
+                <th className="text-left px-3 py-2.5 font-bold min-w-[230px]">Narration</th>
+                <th className="text-left px-3 py-2.5 font-bold">Transaction ID</th>
                 <th className="text-right px-3 py-2.5 font-bold">Debit</th>
                 <th className="text-right px-3 py-2.5 font-bold">Credit</th>
                 <th className="text-right px-3 py-2.5 font-bold">Balance</th>
+                <th className="text-center px-3 py-2.5 font-bold">Status</th>
               </tr>
             </thead>
             <AnimatePresence mode="wait">
@@ -226,10 +226,10 @@ function TransactionsPage() {
                         </div>
                       </td>
                       <td className="px-3 py-2.5 font-mono text-[11px] text-muted-foreground">{txn.id}</td>
-                      <td className="px-3 py-2.5 text-center"><Badge variant="outline" className="text-[10px]">{txn.channel}</Badge></td>
                       <td className="px-3 py-2.5 text-right font-bold text-destructive whitespace-nowrap">{txn.debit ? fmt(txn.debit) : "—"}</td>
                       <td className="px-3 py-2.5 text-right font-bold text-success whitespace-nowrap">{txn.credit ? fmt(txn.credit) : "—"}</td>
                       <td className="px-3 py-2.5 text-right font-semibold whitespace-nowrap">{fmt(txn.balance)}</td>
+                      <td className="px-3 py-2.5 text-center"><Badge variant="outline" className="border-success/30 bg-success/10 text-success text-[10px]">Success</Badge></td>
                     </tr>
                   ))
                 )}
