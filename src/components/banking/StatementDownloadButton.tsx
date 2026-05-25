@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LoaderCircle } from "lucide-react";
 import { type ButtonProps, Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { downloadStatementPDF, useStatementDownloadState, type StatementTxn } from "@/lib/pdf-statement";
 
 type StatementDownloadButtonProps = ButtonProps & {
-  idleIcon: React.ComponentType<{ className?: string }>;
+  idleIcon: ComponentType<{ className?: string }>;
   idleLabel: string;
   loadingLabel?: string;
   txns?: StatementTxn[];
@@ -33,7 +34,7 @@ export function StatementDownloadButton({
         if (event.defaultPrevented || isDownloading) return;
         await downloadStatementPDF(txns);
       }}
-      className={cn("relative", isDownloading && "opacity-85", className)}
+      className={cn("relative", isDownloading && "opacity-80", className)}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
