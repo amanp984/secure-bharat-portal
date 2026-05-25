@@ -18,7 +18,6 @@ const sections: { title: string; items: Item[] }[] = [
     items: [
       { label: "Dashboard", icon: LayoutDashboard, to: "/" },
       { label: "Account Summary", icon: Wallet, to: "/accounts" },
-      { label: "Mini Statement", icon: FileText, to: "/transactions" },
       { label: "Full Statement", icon: ScrollText, to: "/transactions" },
     ],
   },
