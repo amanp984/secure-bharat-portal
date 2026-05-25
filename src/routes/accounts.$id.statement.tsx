@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { transactions, accounts, profile } from "@/lib/banking-data";
+import { downloadStatementPDF } from "@/lib/pdf-statement";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,91 +88,9 @@ function StatementPage() {
   };
 
   const exportPDF = () => {
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>Bharat Bank Statement</title>
-<style>
-  *{box-sizing:border-box}
-  body{font-family:Helvetica,Arial,sans-serif;margin:24px 28px;color:#0f172a;}
-  .header{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #1e3a8a;padding-bottom:10px;margin-bottom:14px;}
-  .logo{display:flex;align-items:center;gap:10px;}
-  .logo .mark{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#1d4ed8,#312e81);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;}
-  h1{color:#1e3a8a;margin:0;font-size:18px;}
-  .sub{font-size:10px;letter-spacing:3px;color:#b45309;font-weight:700;}
-  .gen{font-size:10px;color:#64748b;text-align:right;}
-  h2{font-size:12px;color:#1e3a8a;text-transform:uppercase;letter-spacing:1.5px;margin:14px 0 6px;border-bottom:1px solid #cbd5e1;padding-bottom:3px;}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:11px;}
-  .grid div span{color:#64748b;display:inline-block;min-width:120px;}
-  .grid div b{color:#0f172a;}
-  .summary{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:4px;}
-  .summary .box{border:1px solid #e2e8f0;border-radius:6px;padding:8px;font-size:10px;}
-  .summary .box span{color:#64748b;display:block;text-transform:uppercase;letter-spacing:1px;font-size:9px;}
-  .summary .box b{font-size:12px;color:#0f172a;}
-  table{width:100%;border-collapse:collapse;font-size:10px;margin-top:6px;}
-  th{background:#1e3a8a;color:#fff;text-align:left;padding:6px 8px;font-size:10px;}
-  td{border-bottom:1px solid #e2e8f0;padding:6px 8px;}
-  tr:nth-child(even) td{background:#f8fafc;}
-  .credit{color:#15803d;font-weight:600;} .debit{color:#b91c1c;font-weight:600;}
-  .type{font-size:9px;padding:2px 6px;border-radius:10px;background:#e0e7ff;color:#3730a3;font-weight:600;}
-  .footer{margin-top:18px;border-top:2px solid #1e3a8a;padding-top:8px;text-align:center;font-size:10px;color:#64748b;}
-  .footer b{color:#1e3a8a;}
-  @page{size:A4;margin:14mm;}
-</style></head><body>
-  <div class="header">
-    <div class="logo"><div class="mark">B</div><div><h1>Bharat Bank</h1><div class="sub">NET BANKING · INDIA</div></div></div>
-    <div class="gen"><b>Account Statement</b><br/>Generated: ${new Date().toLocaleString("en-IN")}</div>
-  </div>
-
-  <h2>Customer Details</h2>
-  <div class="grid">
-    <div><span>Customer Name</span><b>${profile.fullName}</b></div>
-    <div><span>Account Number</span><b>${profile.accountNumber}</b></div>
-    <div><span>CIF / Customer ID</span><b>${profile.customerId}</b></div>
-    <div><span>IFSC Code</span><b>${profile.ifsc}</b></div>
-    <div><span>Branch</span><b>${profile.branch}</b></div>
-    <div><span>Account Type</span><b>${profile.accountType}</b></div>
-    <div><span>Registered Mobile</span><b>${profile.mobile}</b></div>
-    <div><span>Email</span><b>${profile.email}</b></div>
-  </div>
-
-  <h2>Account Summary</h2>
-  <div class="summary">
-    <div class="box"><span>Available Balance</span><b>${fmt(summary.available)}</b></div>
-    <div class="box"><span>Opening Balance</span><b>${fmt(summary.opening)}</b></div>
-    <div class="box"><span>Closing Balance</span><b>${fmt(summary.closing)}</b></div>
-    <div class="box"><span>Total Credits</span><b style="color:#15803d">${fmt(summary.totalCredit)}</b></div>
-    <div class="box"><span>Total Debits</span><b style="color:#b91c1c">${fmt(summary.totalDebit)}</b></div>
-  </div>
-
-  <h2>Transaction History (${filtered.length} records)</h2>
-  <table>
-    <thead><tr>
-      <th>Date</th><th>Narration</th><th>Reference ID</th><th>Type</th>
-      <th style="text-align:right">Debit</th><th style="text-align:right">Credit</th><th style="text-align:right">Balance</th>
-    </tr></thead>
-    <tbody>
-      ${filtered.map((t) => `<tr>
-        <td>${t.date}</td>
-        <td>${t.narration}</td>
-        <td style="font-family:monospace">${t.id}</td>
-        <td><span class="type">${t.type}</span></td>
-        <td style="text-align:right" class="debit">${t.debit ? fmt(t.debit) : "—"}</td>
-        <td style="text-align:right" class="credit">${t.credit ? fmt(t.credit) : "—"}</td>
-        <td style="text-align:right">${fmt(t.balance)}</td>
-      </tr>`).join("")}
-    </tbody>
-  </table>
-
-  <div class="footer">
-    This is a system generated statement and does not require a signature.<br/>
-    <b>Bharat Bank Ltd.</b> · Regd. Office: Anna Nagar, Chennai · Customer Care 1800-XXX-XXXX · www.bharatbank.example
-  </div>
-
-  <script>window.onload=()=>{setTimeout(()=>window.print(),300)}</script>
-</body></html>`;
-    const w = window.open("", "_blank");
-    if (!w) { toast.error("Popup blocked — please allow popups to download the PDF"); return; }
-    w.document.write(html); w.document.close();
-    toast.success("Statement ready — print/save as PDF");
+    downloadStatementPDF(filtered);
   };
+
 
   const pageNumbers = useMemo(() => {
     const max = Math.min(totalPages, 5);

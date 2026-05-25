@@ -6,9 +6,11 @@ import { accounts, profile, transactions } from "./banking-data";
 const fmtINR = (n: number) =>
   new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export function downloadStatementPDF() {
+
+type Txn = (typeof transactions)[number];
+
+export function downloadStatementPDF(txns: Txn[] = transactions) {
   const loadingId = toast.loading("Generating Statement...");
   try {
     const acc = accounts[0];
@@ -116,7 +118,8 @@ export function downloadStatementPDF() {
     });
 
     const now = new Date();
-    const filename = `BharatBank_Statement_${MONTHS[now.getMonth()]}${now.getFullYear()}.pdf`;
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const filename = `BharatBank_Statement_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}.pdf`;
     doc.save(filename);
 
     toast.dismiss(loadingId);

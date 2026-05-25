@@ -5,7 +5,7 @@ import { accounts, transactions, profile } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Download, Printer, Share2, FileText, Send, Copy, ShieldCheck,
+  Download, Share2, FileText, Send, Copy, ShieldCheck,
   BadgeCheck, Building2, User, Wallet, Clock,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -65,14 +65,11 @@ function AccountDetails() {
         subtitle={`${acc.type} · ${acc.masked}`}
         action={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm" onClick={() => window.print()}>
-              <Printer className="w-3.5 h-3.5 mr-1" />Print
-            </Button>
             <Button variant="outline" size="sm" onClick={() => { navigator.clipboard?.writeText(window.location.href); toast.success("Link copied"); }}>
               <Share2 className="w-3.5 h-3.5 mr-1" />Share
             </Button>
-            <Button size="sm" className="bg-gradient-primary text-primary-foreground" onClick={downloadStatementPDF}>
-              <Download className="w-3.5 h-3.5 mr-1" />Download Profile
+            <Button size="sm" className="bg-gradient-primary text-primary-foreground" onClick={() => downloadStatementPDF()}>
+              <Download className="w-3.5 h-3.5 mr-1" />Download Statement
             </Button>
           </div>
         }
@@ -124,7 +121,7 @@ function AccountDetails() {
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <Button size="sm" variant="secondary" className="bg-white/15 hover:bg-white/25 text-white border-0" onClick={downloadStatementPDF}>
+              <Button size="sm" variant="secondary" className="bg-white/15 hover:bg-white/25 text-white border-0" onClick={() => downloadStatementPDF()}>
                 <Download className="w-3.5 h-3.5 mr-1" />Statement
               </Button>
               <Link to="/transactions">
