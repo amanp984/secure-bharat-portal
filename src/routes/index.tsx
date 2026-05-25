@@ -94,7 +94,7 @@ function Dashboard() {
           className="lg:col-span-2"
         >
           <div
-            onClick={() => navigate({ to: "/accounts/$id", params: { id: acc.id } })}
+            onClick={() => setDetailsOpen(true)}
             className={`relative rounded-xl p-4 text-white shadow-md bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group`}
           >
             <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
