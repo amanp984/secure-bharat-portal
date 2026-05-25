@@ -20,13 +20,13 @@ export const Route = createFileRoute("/fund-transfer")({
   validateSearch: transferSearch,
   head: () => ({
     meta: [
-      { title: "Fund Transfer — Bharat Bank" },
-      { name: "description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Bharat Bank accounts." },
-      { property: "og:title", content: "Fund Transfer — Bharat Bank" },
-      { property: "og:description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Bharat Bank accounts." },
-      { property: "og:url", content: "https://indbanksample.lovable.app/fund-transfer" },
+      { title: "Fund Transfer — Indian Bank One" },
+      { name: "description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Indian Bank One accounts." },
+      { property: "og:title", content: "Fund Transfer — Indian Bank One" },
+      { property: "og:description", content: "Transfer money instantly via IMPS, NEFT, RTGS or within Indian Bank One accounts." },
+      { property: "og:url", content: "https://www.indianbankone.in/fund-transfer" },
     ],
-    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/fund-transfer" }],
+    links: [{ rel: "canonical", href: "https://www.indianbankone.in/fund-transfer" }],
   }),
 });
 

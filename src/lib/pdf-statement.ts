@@ -77,10 +77,10 @@ export async function downloadStatementPDF(txns: StatementTxn[] = transactions) 
     const margin = 36;
 
     doc.setProperties({
-      title: "Bharat Bank Statement",
+      title: "Indian Bank One Statement",
       subject: "Account statement",
-      author: "Bharat Bank",
-      creator: "Bharat Bank Net Banking",
+      author: "Indian Bank One",
+      creator: "Indian Bank One Net Banking",
     });
 
     // Header bar
@@ -97,7 +97,7 @@ export async function downloadStatementPDF(txns: StatementTxn[] = transactions) 
 
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(16);
-    doc.text("Bharat Bank", margin + 48, 36);
+    doc.text("Indian Bank One", margin + 48, 36);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     doc.text("NET BANKING STATEMENT", margin + 48, 52);
@@ -170,13 +170,13 @@ export async function downloadStatementPDF(txns: StatementTxn[] = transactions) 
         doc.setFontSize(8);
         doc.setTextColor(100, 116, 139);
         doc.text("Computer generated statement - does not require signature.", pageW / 2, fy, { align: "center" });
-        doc.text("Bharat Bank Ltd. - Secure Net Banking - Customer Care 1800-123-4567", pageW / 2, fy + 11, { align: "center" });
+        doc.text("Indian Bank One Ltd. - Secure Net Banking - Customer Care 1800-572-9900", pageW / 2, fy + 11, { align: "center" });
       },
     });
 
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, "0");
-    const filename = `BharatBank_Statement_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}.pdf`;
+    const filename = `IndianBankOne_Statement_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}.pdf`;
     const blob = doc.output("blob");
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

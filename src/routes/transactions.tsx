@@ -25,8 +25,8 @@ import { Input } from "@/components/ui/input";
 export const Route = createFileRoute("/transactions")({
   component: TransactionsPage,
   head: () => {
-    const title = "Full Transaction History — Bharat Bank";
-    const desc = "Search, filter and review Bharat Bank debit and credit transactions with secure net banking pagination.";
+    const title = "Full Transaction History — Indian Bank One";
+    const desc = "Search, filter and review Indian Bank One debit and credit transactions with secure net banking pagination.";
     return {
       meta: [
         { title },
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/transactions")({
         { property: "og:title", content: title },
         { property: "og:description", content: desc },
       ],
-      links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/transactions" }],
+      links: [{ rel: "canonical", href: "https://www.indianbankone.in/transactions" }],
     };
   },
 });
@@ -87,7 +87,7 @@ function TransactionsPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `BharatBank_Transactions_${Date.now()}.csv`;
+    link.download = `IndianBankOne_Transactions_${Date.now()}.csv`;
     document.body.appendChild(link);
     link.click();
     link.remove();

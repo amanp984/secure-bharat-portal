@@ -17,13 +17,13 @@ export const Route = createFileRoute("/beneficiary")({
   component: BeneficiaryPage,
   head: () => ({
     meta: [
-      { title: "Manage Beneficiary — Bharat Bank" },
+      { title: "Manage Beneficiary — Indian Bank One" },
       { name: "description", content: "Search, filter and manage verified payment beneficiaries for IMPS, NEFT and RTGS transfers." },
-      { property: "og:title", content: "Manage Beneficiary — Bharat Bank" },
+      { property: "og:title", content: "Manage Beneficiary — Indian Bank One" },
       { property: "og:description", content: "Search, filter and manage verified payment beneficiaries for IMPS, NEFT and RTGS transfers." },
-      { property: "og:url", content: "https://indbanksample.lovable.app/beneficiary" },
+      { property: "og:url", content: "https://www.indianbankone.in/beneficiary" },
     ],
-    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/beneficiary" }],
+    links: [{ rel: "canonical", href: "https://www.indianbankone.in/beneficiary" }],
   }),
 });
 

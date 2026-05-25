@@ -19,9 +19,9 @@ import { AccountDetailsDialog } from "@/components/banking/AccountDetailsDialog"
 export const Route = createFileRoute("/")({
   component: Dashboard,
   head: () => {
-    const url = "https://indbanksample.lovable.app/";
-    const title = "Dashboard — Bharat Bank Net Banking";
-    const desc = "Your Bharat Bank net banking dashboard: account balance, quick actions, recent transactions and bill payments.";
+    const url = "https://www.indianbankone.in/";
+    const title = "Dashboard — Indian Bank One Net Banking";
+    const desc = "Your Indian Bank One net banking dashboard: account balance, quick actions, recent transactions and bill payments.";
     return {
       meta: [
         { title },
@@ -60,7 +60,7 @@ function Dashboard() {
 
   return (
     <AppLayout>
-      <h1 className="sr-only">Dashboard — Bharat Bank Net Banking</h1>
+      <h1 className="sr-only">Dashboard — Indian Bank One Net Banking</h1>
       {/* Thin compact greeting strip */}
       <motion.div
         initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
@@ -98,7 +98,7 @@ function Dashboard() {
             <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
             <div className="relative flex items-start justify-between mb-3">
               <div>
-                <div className="text-[9px] uppercase tracking-widest text-white/60">Bharat Bank</div>
+                <div className="text-[9px] uppercase tracking-widest text-white/60">Indian Bank One</div>
                 <div className="text-[13px] font-bold flex items-center gap-1.5">
                   {acc.type}
                   <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 font-semibold tracking-wider">PRIMARY</span>

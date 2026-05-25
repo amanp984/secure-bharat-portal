@@ -4,6 +4,7 @@ import { Bell, LogOut, Search, Menu, Landmark, ChevronDown, ShieldCheck } from "
 import { toast } from "sonner";
 import { useProfilePanel } from "./ProfileContext";
 import { profile } from "@/lib/banking-data";
+import { brand } from "@/lib/brand";
 
 const navItems = [
   { label: "Dashboard", to: "/" },
@@ -23,7 +24,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.removeItem("bharat_bank_demo_auth");
+    localStorage.removeItem("indian_bank_one_demo_auth");
     toast.success("Logged out securely");
     setTimeout(() => navigate({ to: "/" }), 400);
     setTimeout(() => window.location.reload(), 600);
@@ -31,8 +32,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
 
   return (
     <header className="sticky top-0 z-40 bg-card/95 backdrop-blur border-b shadow-sm">
-      {/* Top thin accent bar */}
-      <div className="h-1 bg-gradient-to-r from-blue-700 via-indigo-700 to-amber-500" />
+      <div className="h-0.5 bg-gradient-primary" />
 
       <div className="flex items-center gap-3 px-3 sm:px-6 h-14">
         <button onClick={onMenuClick} className="p-2 rounded-lg hover:bg-primary/10 text-foreground" aria-label="Open menu">
@@ -40,12 +40,12 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
         </button>
 
         <Link to="/" className="flex items-center gap-2 mr-2">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center shadow-sm">
+          <div className="w-9 h-9 rounded-md bg-gradient-primary flex items-center justify-center shadow-sm">
             <Landmark className="w-5 h-5 text-white" />
           </div>
           <div className="hidden sm:block leading-tight">
-            <div className="font-bold text-foreground tracking-tight text-sm">Bharat Bank</div>
-            <div className="text-[9px] text-amber-600 font-semibold tracking-widest">NET BANKING · INDIA</div>
+            <div className="font-bold text-foreground tracking-tight text-sm">{brand.name}</div>
+            <div className="text-[9px] text-muted-foreground font-semibold tracking-widest">{brand.tagline.toUpperCase()}</div>
           </div>
         </Link>
 
@@ -78,7 +78,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           onClick={open}
           className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 ml-1 border rounded-full hover:bg-primary/5 transition-colors"
         >
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shadow-sm">
             AR
           </div>
           <div className="hidden md:block leading-tight text-left">

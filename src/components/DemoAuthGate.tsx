@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
-const AUTH_KEY = "bharat_bank_demo_auth";
+const AUTH_KEY = "indian_bank_one_demo_auth";
 const DEMO_USER = "Anni7021";
 const DEMO_PASS = "Anni@2026";
 
@@ -22,7 +22,7 @@ function genCaptcha() {
 
 const slides = [
   { title: "Earn 7.25% p.a. on Fixed Deposits", sub: "Special rates for senior citizens · Insured up to ₹5 Lakh", grad: "from-blue-700 to-indigo-900" },
-  { title: "Bharat Bank Personal Loan", sub: "Quick disbursal · Attractive interest from 10.50% p.a.", grad: "from-indigo-700 to-purple-900" },
+  { title: "Indian Bank One Personal Loan", sub: "Quick disbursal · Attractive interest from 10.50% p.a.", grad: "from-indigo-700 to-purple-900" },
   { title: "Digital RuPay Debit Card", sub: "Tap & Pay · Zero issuance fee · Worldwide acceptance", grad: "from-amber-600 to-orange-800" },
   { title: "Apply for Home Loan online", sub: "Loans up to ₹5 Cr · Tenure up to 30 years · Doorstep service", grad: "from-emerald-700 to-teal-900" },
 ];
@@ -74,7 +74,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
     setTimeout(() => {
       if (uid === DEMO_USER && pass === DEMO_PASS) {
         try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
-        toast.success("Login successful. Welcome to Bharat Bank.");
+        toast.success("Login successful. Welcome to Indian Bank One.");
         setLoading(false);
         onSuccess();
       } else {
@@ -97,7 +97,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
               <Building2 className="w-5 h-5" />
             </div>
             <div className="leading-tight">
-              <div className="font-bold text-base tracking-tight">Bharat Bank</div>
+              <div className="font-bold text-base tracking-tight">Indian Bank One</div>
               <div className="text-[10px] text-amber-300 tracking-widest font-semibold">YOUR OWN BANK · सत्यमेव जयते</div>
             </div>
           </div>
@@ -114,7 +114,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 ))}
               </select>
             </div>
-            <span className="hidden md:inline text-[10px] text-white/70">Toll Free: 1800-425-0018</span>
+            <span className="hidden md:inline text-[10px] text-white/70">Toll Free: 1800-572-9900</span>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 <h4 className="font-bold text-sm">Security Tips</h4>
               </div>
               <ul className="text-[11px] text-muted-foreground space-y-1 list-disc list-inside">
-                <li>Bharat Bank will never ask for OTP, PIN or password.</li>
+                <li>Indian Bank One will never ask for OTP, PIN or password.</li>
                 <li>Always check the URL begins with <span className="font-mono">https://</span>.</li>
                 <li>Avoid public Wi-Fi for Net Banking transactions.</li>
                 <li>Report suspicious calls to 1930 (Cyber Crime Helpline).</li>
@@ -268,7 +268,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             <div className="rounded-xl border bg-white p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center"><Smartphone className="w-4 h-4" /></div>
-                <h4 className="font-bold text-sm">Download Bharat Bank App</h4>
+                <h4 className="font-bold text-sm">Download Indian Bank One App</h4>
               </div>
               <div className="flex gap-2">
                 <button className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90">
@@ -278,7 +278,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                   <span className="text-base">▶</span> Google Play
                 </button>
               </div>
-              <p className="text-[10px] text-muted-foreground mt-2">Scan the QR on bharatbank.in/app to install instantly.</p>
+              <p className="text-[10px] text-muted-foreground mt-2">Scan the QR on indianbankone.in/app to install instantly.</p>
             </div>
           </div>
         </div>
@@ -286,7 +286,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
       <footer className="bg-slate-900 text-white/70 text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2">
-          <div>© 2026 Bharat Bank Ltd. All rights reserved. Regulated by Reserve Bank of India.</div>
+          <div>© 2026 Indian Bank One Ltd. All rights reserved. Regulated by Reserve Bank of India.</div>
           <div className="flex gap-4"><span>Privacy</span><span>Terms</span><span>Disclaimer</span><span>Contact</span></div>
         </div>
       </footer>

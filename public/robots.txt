@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://digital-dhan-portal-new.lovable.app/sitemap.xml
+Sitemap: https://www.indianbankone.in/sitemap.xml
