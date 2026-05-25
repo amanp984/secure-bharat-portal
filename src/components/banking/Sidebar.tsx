@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useBankingModal } from "./ModalContext";
 import { toast } from "sonner";
+import { brand } from "@/lib/brand";
 
 type Item = { label: string; icon: any; to?: string; action?: "mobile-only" | "beneficiary-restricted" | "logout" };
 
@@ -100,16 +101,16 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 220 }}
-            className="fixed left-0 top-0 bottom-0 z-50 w-80 max-w-[85vw] bg-card shadow-elegant flex flex-col"
+            className="fixed left-0 top-0 bottom-0 z-50 w-80 max-w-[85vw] bg-card shadow-elegant flex flex-col border-r"
           >
-            <div className="bg-gradient-hero text-primary-foreground p-5 flex items-center justify-between">
+            <div className="bg-primary text-primary-foreground p-5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
                   <Landmark className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="font-bold text-lg">Indian Bank One</div>
-                  <div className="text-[11px] text-white/80">Welcome, Arjun R.</div>
+                  <div className="font-bold text-lg">{brand.name}</div>
+                  <div className="text-[11px] text-white/80">{brand.tagline}</div>
                 </div>
               </div>
               <button onClick={onClose} aria-label="Close menu" className="p-2 rounded-lg hover:bg-white/10">

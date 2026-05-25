@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { DemoAuthGate } from "@/components/DemoAuthGate";
+import { brand, brandMeta } from "@/lib/brand";
 
 function NotFoundComponent() {
   return (
@@ -73,16 +74,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Indian Bank One — Secure Net Banking" },
-      { name: "description", content: "Smart Digital Solutions | Secure • Reliable • Seamless User Experience" },
+      { title: brandMeta.title },
+      { name: "description", content: brandMeta.description },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Indian Bank One — Secure Net Banking" },
-      { property: "og:description", content: "Smart Digital Solutions | Secure • Reliable • Seamless User Experience" },
+      { property: "og:title", content: brandMeta.title },
+      { property: "og:description", content: brandMeta.description },
+      { property: "og:url", content: brand.website },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Indian Bank One — Secure Net Banking" },
-      { name: "twitter:description", content: "Smart Digital Solutions | Secure • Reliable • Seamless User Experience" },
+      { name: "twitter:title", content: brandMeta.title },
+      { name: "twitter:description", content: brandMeta.description },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5d6381ee-e063-4f0e-b2ef-207898fb2fa4" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5d6381ee-e063-4f0e-b2ef-207898fb2fa4" },
     ],
@@ -91,6 +92,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      {
+        rel: "canonical",
+        href: brand.website,
+      },
     ],
     scripts: [
       {
@@ -98,10 +103,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BankOrCreditUnion",
-          name: "Indian Bank One",
-          url: "https://www.indianbankone.in",
-          description:
-            "Indian Bank One Net Banking — secure transfers, cards, deposits, loans, bill payments and more.",
+          name: brand.name,
+          url: brand.website,
+          description: brandMeta.description,
+          email: brand.supportEmail,
+          telephone: brand.customerCare,
         }),
       },
     ],

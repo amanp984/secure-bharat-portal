@@ -10,17 +10,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
   return (
     <BankingModalProvider>
       <ProfilePanelProvider>
-        <div className="min-h-screen bg-background relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 opacity-40">
-            <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/20 blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full bg-gold/20 blur-3xl" />
-          </div>
+        <div className="min-h-screen bg-background">
           <TopNavbar onMenuClick={() => setOpen(true)} />
           <Sidebar open={open} onClose={() => setOpen(false)} />
-          <main className="mx-auto max-w-7xl p-4 sm:p-6">{children}</main>
+          <main className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-7">{children}</main>
         </div>
       </ProfilePanelProvider>
-      <Toaster position="top-right" richColors />
+      <Toaster position="top-right" />
     </BankingModalProvider>
   );
 }
