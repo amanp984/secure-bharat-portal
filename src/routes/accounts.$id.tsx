@@ -121,7 +121,7 @@ function AccountDetails() {
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <Button size="sm" variant="secondary" className="bg-white/15 hover:bg-white/25 text-white border-0" onClick={downloadStatementPDF}>
+              <Button size="sm" variant="secondary" className="bg-white/15 hover:bg-white/25 text-white border-0" onClick={() => downloadStatementPDF()}>
                 <Download className="w-3.5 h-3.5 mr-1" />Statement
               </Button>
               <Link to="/transactions">
