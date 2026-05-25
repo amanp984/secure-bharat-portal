@@ -5,7 +5,7 @@ export const accounts = [
     masked: "5021 7894 7812",
     accountNumber: "502178947812",
     ifsc: "BHAR0000123",
-    branch: "Anna Nagar, Chennai",
+    branch: "Anna Nagar Main Branch",
     customerId: "5489221",
     status: "Active",
     balance: 1248903.1,
@@ -82,7 +82,7 @@ export const profile = {
   address: "Flat 8C, Vaigai Towers, 2nd Avenue, Anna Nagar West, Chennai – 600040",
   aadhaar: "XXXX XXXX 4892",
   pan: "AXXXX1234R",
-  branch: "Anna Nagar Branch",
+  branch: "Anna Nagar Main Branch",
   branchAddress: "12, 2nd Avenue, Anna Nagar West, Chennai – 600040",
   accountType: "Current Account",
   kycStatus: "Verified",
@@ -105,8 +105,8 @@ export const faqs = [
   { q: "How do I reset my Net Banking password?", a: "Visit the login page, click 'Forgot Password' and follow the OTP-based verification using your registered mobile and Debit Card." },
   { q: "What is the daily IMPS transfer limit?", a: "The default daily IMPS limit is ₹5,00,000 per day. You can request a higher limit via Mobile Banking." },
   { q: "How long does NEFT take?", a: "NEFT transactions are processed in half-hourly batches between 00:30 AM and 11:30 PM on all 365 days." },
-  { q: "How do I block a lost Debit Card?", a: "Go to Debit Card → Block Card, or call our 24x7 toll-free 1800-123-4567 to block instantly." },
-  { q: "Is my money safe with Bharat Bank?", a: "All deposits are insured under DICGC up to ₹5,00,000 per depositor per bank." },
+  { q: "How do I block a lost Debit Card?", a: "Go to Debit Card → Block Card, or call our 24x7 toll-free 1800-572-9900 to block instantly." },
+  { q: "Is my money safe with Indian Bank One?", a: "All deposits are insured under DICGC up to ₹5,00,000 per depositor per bank." },
 ];
 
 export const billers = [

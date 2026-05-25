@@ -22,13 +22,13 @@ export const Route = createFileRoute("/support")({
   component: Support,
   head: () => ({
     meta: [
-      { title: "Service Requests & Support — Bharat Bank" },
-      { name: "description", content: "Raise complaints, track service requests and get 24x7 support for Bharat Bank Net Banking." },
-      { property: "og:title", content: "Service Requests & Support — Bharat Bank" },
-      { property: "og:description", content: "Raise complaints, track service requests and get 24x7 support for Bharat Bank Net Banking." },
-      { property: "og:url", content: "https://indbanksample.lovable.app/support" },
+      { title: "Service Requests & Support — Indian Bank One" },
+      { name: "description", content: "Raise complaints, track service requests and get 24x7 support for Indian Bank One Net Banking." },
+      { property: "og:title", content: "Service Requests & Support — Indian Bank One" },
+      { property: "og:description", content: "Raise complaints, track service requests and get 24x7 support for Indian Bank One Net Banking." },
+      { property: "og:url", content: "https://www.indianbankone.in/support" },
     ],
-    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/support" }],
+    links: [{ rel: "canonical", href: "https://www.indianbankone.in/support" }],
   }),
 });
 
@@ -96,8 +96,8 @@ function Support() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x text-center">
             {[
-              { i: Phone, l: "Toll Free", v: "1800-123-4567" },
-              { i: Mail, l: "Email", v: "care@bharatbank.in" },
+              { i: Phone, l: "Toll Free", v: "1800-572-9900" },
+              { i: Mail, l: "Email", v: "support@indianbankone.in" },
               { i: MapPin, l: "Branches", v: "200+ locations" },
               { i: MessageSquare, l: "WhatsApp", v: "+91 70xxxxxx00" },
             ].map((x) => (

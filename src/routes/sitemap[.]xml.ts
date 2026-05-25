@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { accounts } from "@/lib/banking-data";
 
-const BASE_URL = "https://digital-dhan-portal-new.lovable.app";
+const BASE_URL = "https://www.indianbankone.in";
 
 const staticPaths = [
   "/",

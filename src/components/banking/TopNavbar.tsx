@@ -23,7 +23,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.removeItem("bharat_bank_demo_auth");
+    localStorage.removeItem("indian_bank_one_demo_auth");
     toast.success("Logged out securely");
     setTimeout(() => navigate({ to: "/" }), 400);
     setTimeout(() => window.location.reload(), 600);
@@ -44,7 +44,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
             <Landmark className="w-5 h-5 text-white" />
           </div>
           <div className="hidden sm:block leading-tight">
-            <div className="font-bold text-foreground tracking-tight text-sm">Bharat Bank</div>
+            <div className="font-bold text-foreground tracking-tight text-sm">Indian Bank One</div>
             <div className="text-[9px] text-amber-600 font-semibold tracking-widest">NET BANKING · INDIA</div>
           </div>
         </Link>

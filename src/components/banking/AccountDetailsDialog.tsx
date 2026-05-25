@@ -47,7 +47,7 @@ export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; on
           <div className="absolute -right-12 -top-12 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
           <div className="relative flex items-start justify-between mb-4">
             <div>
-              <div className="text-[10px] uppercase tracking-widest text-white/70">Bharat Bank</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/70">Indian Bank One</div>
               <h2 className="text-lg font-bold flex items-center gap-2">
                 {acc.type}
                 <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 font-semibold tracking-wider">PRIMARY</span>

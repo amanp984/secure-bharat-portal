@@ -14,13 +14,13 @@ export const Route = createFileRoute("/cards")({
   component: CardsPage,
   head: () => ({
     meta: [
-      { title: "Debit Cards — Bharat Bank" },
-      { name: "description", content: "Manage your Bharat Bank debit card limits, controls, PIN and freeze settings." },
-      { property: "og:title", content: "Debit Cards — Bharat Bank" },
-      { property: "og:description", content: "Manage your Bharat Bank debit card limits, controls, PIN and freeze settings." },
-      { property: "og:url", content: "https://indbanksample.lovable.app/cards" },
+      { title: "Debit Cards — Indian Bank One" },
+      { name: "description", content: "Manage your Indian Bank One debit card limits, controls, PIN and freeze settings." },
+      { property: "og:title", content: "Debit Cards — Indian Bank One" },
+      { property: "og:description", content: "Manage your Indian Bank One debit card limits, controls, PIN and freeze settings." },
+      { property: "og:url", content: "https://www.indianbankone.in/cards" },
     ],
-    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/cards" }],
+    links: [{ rel: "canonical", href: "https://www.indianbankone.in/cards" }],
   }),
 });
 
@@ -64,7 +64,7 @@ function CardsPage() {
           <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
           <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent)] opacity-50" />
           <div className="flex justify-between">
-            <div className="text-xs uppercase tracking-widest opacity-70">Bharat Bank · RuPay Platinum Debit</div>
+            <div className="text-xs uppercase tracking-widest opacity-70">Indian Bank One · RuPay Platinum Debit</div>
             <Wifi className="w-5 h-5 rotate-90 opacity-80" />
           </div>
           <div className="mt-7 w-10 h-8 rounded-md bg-gradient-to-br from-amber-200 via-amber-500 to-yellow-700 shadow-inner border border-amber-200/50" />

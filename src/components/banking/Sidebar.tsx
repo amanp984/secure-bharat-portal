@@ -75,7 +75,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
 
   const handleAction = (item: Item) => {
     if (item.action === "logout") {
-      localStorage.removeItem("bharat_bank_demo_auth");
+      localStorage.removeItem("indian_bank_one_demo_auth");
       toast.success("Logging out securely…");
       setTimeout(() => { navigate({ to: "/" }); window.location.reload(); }, 500);
     } else if (item.action) {
@@ -108,7 +108,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
                   <Landmark className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="font-bold text-lg">Bharat Bank</div>
+                  <div className="font-bold text-lg">Indian Bank One</div>
                   <div className="text-[11px] text-white/80">Welcome, Arjun R.</div>
                 </div>
               </div>

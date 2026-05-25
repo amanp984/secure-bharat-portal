@@ -15,8 +15,8 @@ export const Route = createFileRoute("/fund-transfer/otp")({
   component: OTPPage,
   validateSearch: search,
   head: () => {
-    const url = "https://indbanksample.lovable.app/fund-transfer/otp";
-    const title = "OTP Verification — Bharat Bank";
+    const url = "https://www.indianbankone.in/fund-transfer/otp";
+    const title = "OTP Verification — Indian Bank One";
     const desc = "Verify your fund transfer with a one-time password to complete the transaction securely.";
     return {
       meta: [
@@ -72,7 +72,7 @@ function OTPPage() {
               className="absolute inset-0 rounded-3xl border-2 border-primary"
             />
           </motion.div>
-          <div className="text-[10px] uppercase tracking-widest text-primary font-bold mb-1">Bharat Bank SecurePay</div>
+          <div className="text-[10px] uppercase tracking-widest text-primary font-bold mb-1">Indian Bank One SecurePay</div>
           <h1 className="text-xl font-bold">Secure Transaction OTP</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Enter the 6-digit code sent to your registered mobile<br />

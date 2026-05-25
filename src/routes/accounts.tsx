@@ -12,13 +12,13 @@ export const Route = createFileRoute("/accounts")({
   component: AccountsPage,
   head: () => ({
     meta: [
-      { title: "All Accounts — Bharat Bank" },
-      { name: "description", content: "View and manage all your linked Bharat Bank current, savings and salary accounts at one place." },
-      { property: "og:title", content: "All Accounts — Bharat Bank" },
-      { property: "og:description", content: "View and manage all your linked Bharat Bank current, savings and salary accounts at one place." },
-      { property: "og:url", content: "https://indbanksample.lovable.app/accounts" },
+      { title: "All Accounts — Indian Bank One" },
+      { name: "description", content: "View and manage all your linked Indian Bank One current, savings and salary accounts at one place." },
+      { property: "og:title", content: "All Accounts — Indian Bank One" },
+      { property: "og:description", content: "View and manage all your linked Indian Bank One current, savings and salary accounts at one place." },
+      { property: "og:url", content: "https://www.indianbankone.in/accounts" },
     ],
-    links: [{ rel: "canonical", href: "https://indbanksample.lovable.app/accounts" }],
+    links: [{ rel: "canonical", href: "https://www.indianbankone.in/accounts" }],
   }),
 });
 
@@ -46,7 +46,7 @@ function EmptyAccountCard({
               <Icon className="w-4 h-4 text-white" />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Bharat Bank</div>
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Indian Bank One</div>
               <div className="text-sm font-bold text-foreground">{type}</div>
             </div>
           </div>
@@ -58,7 +58,7 @@ function EmptyAccountCard({
           </div>
           <div className="text-sm font-semibold text-foreground">{message}</div>
           <div className="text-[11px] text-muted-foreground mt-1 max-w-xs">
-            You can open a new {type.toLowerCase()} instantly through Bharat Bank Net Banking.
+            You can open a new {type.toLowerCase()} instantly through Indian Bank One Net Banking.
           </div>
         </div>
         <Button
@@ -78,7 +78,7 @@ function AccountsPage() {
   const [branchModal, setBranchModal] = useState<string | null>(null);
   return (
     <AppLayout>
-      <PageHeader title="All Accounts" subtitle="Manage all your linked Bharat Bank accounts in one place" />
+      <PageHeader title="All Accounts" subtitle="Manage all your linked Indian Bank One accounts in one place" />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {/* Active Current Account */}
@@ -88,7 +88,7 @@ function AccountsPage() {
               <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
               <div className="relative flex items-start justify-between mb-3">
                 <div>
-                  <div className="text-[9px] uppercase tracking-widest text-white/60">Bharat Bank</div>
+                  <div className="text-[9px] uppercase tracking-widest text-white/60">Indian Bank One</div>
                   <div className="text-sm font-bold flex items-center gap-1.5">
                     {a.type}
                     <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 font-semibold tracking-wider">PRIMARY</span>
@@ -164,13 +164,13 @@ function AccountsPage() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setBranchModal(null)}>
             <motion.div initial={{ scale: 0.9, y: 18, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.92, opacity: 0 }} transition={{ type: "spring", damping: 22 }} onClick={(e) => e.stopPropagation()} className="bg-card rounded-2xl border shadow-elegant max-w-md w-full overflow-hidden">
               <div className="bg-gradient-primary text-primary-foreground p-4 flex items-center justify-between">
-                <div className="flex items-center gap-2 font-bold"><Building2 className="w-5 h-5" /> Bharat Bank Branch Support</div>
+                <div className="flex items-center gap-2 font-bold"><Building2 className="w-5 h-5" /> Indian Bank One Branch Support</div>
                 <button onClick={() => setBranchModal(null)} className="p-1 rounded-md hover:bg-white/10" aria-label="Close"><X className="w-4 h-4" /></button>
               </div>
               <div className="p-6 text-center">
                 <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4"><Building2 className="w-8 h-8" /></div>
                 <h3 className="text-lg font-bold mb-2">Open {branchModal}</h3>
-                <p className="text-sm text-muted-foreground">Please visit your nearest Bharat Bank branch for more details.</p>
+                <p className="text-sm text-muted-foreground">Please visit your nearest Indian Bank One branch for more details.</p>
                 <div className="flex gap-2 mt-6">
                   <Button variant="outline" className="flex-1" onClick={() => setBranchModal(null)}>Close</Button>
                   <Button className="flex-1 bg-gradient-primary text-primary-foreground" onClick={() => setBranchModal(null)}>Branch Support</Button>
