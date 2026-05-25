@@ -15,8 +15,8 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
+import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { accounts, profile, transactions } from "@/lib/banking-data";
-import { downloadStatementPDF } from "@/lib/pdf-statement";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -95,10 +95,6 @@ function TransactionsPage() {
     toast.success("Transaction history downloaded");
   };
 
-  const downloadPDF = () => {
-    downloadStatementPDF(filtered);
-  };
-
   return (
     <AppLayout>
       <PageHeader
@@ -106,9 +102,7 @@ function TransactionsPage() {
         subtitle={`${acc.type} · A/c ${acc.masked} · ${filtered.length} matching records`}
         action={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={downloadPDF}>
-              <FileText className="w-4 h-4 mr-1.5" />Download PDF Statement
-            </Button>
+            <StatementDownloadButton variant="outline" idleIcon={FileText} idleLabel="Download PDF Statement" loadingLabel="Generating Statement..." txns={filtered} />
             <Button onClick={downloadCSV} className="bg-gradient-to-r from-primary to-primary-glow text-primary-foreground hover:opacity-95">
               <Download className="w-4 h-4 mr-1.5" />Download CSV Statement
             </Button>
