@@ -3,16 +3,17 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
-  Receipt, CreditCard, PiggyBank, HandCoins, Phone,
+  Receipt, PiggyBank, HandCoins, Phone,
   MessageSquare, FileText, Wallet,
-  Zap, Droplet, Flame, Wifi, Smartphone, Car, ShieldCheck, MapPin,
-  Copy, Building2,
+  Zap, Droplet, Flame, Wifi, Smartphone, Car, CreditCard, ShieldCheck, MapPin,
+  Copy, Building2, Download,
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { accounts, transactions } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useProfilePanel } from "@/components/banking/ProfileContext";
+import { downloadStatementPDF } from "@/lib/pdf-statement";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
