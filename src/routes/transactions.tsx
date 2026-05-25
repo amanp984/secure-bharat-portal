@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { accounts, profile, transactions } from "@/lib/banking-data";
+import { downloadStatementPDF } from "@/lib/pdf-statement";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
