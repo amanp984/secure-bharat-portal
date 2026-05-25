@@ -3,16 +3,18 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   ChevronRight, TrendingUp, ArrowUpRight, ArrowDownLeft,
-  Receipt, CreditCard, PiggyBank, HandCoins, Phone,
+  Receipt, PiggyBank, HandCoins, Phone,
   MessageSquare, FileText, Wallet,
-  Zap, Droplet, Flame, Wifi, Smartphone, Car, ShieldCheck, MapPin,
-  Copy, Building2,
+  Zap, Droplet, Flame, Wifi, Smartphone, Car, CreditCard, ShieldCheck, MapPin,
+  Copy, Building2, Download,
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { accounts, transactions } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { useProfilePanel } from "@/components/banking/ProfileContext";
+
+
+import { downloadStatementPDF } from "@/lib/pdf-statement";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -36,9 +38,9 @@ export const Route = createFileRoute("/")({
 const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
 
-const quickActions = [
+const quickActions: { label: string; icon: any; to?: string; action?: () => void; color: string }[] = [
   { label: "Bill Payment", icon: Receipt, to: "/bills", color: "from-amber-500 to-orange-600" },
-  { label: "Debit Card", icon: CreditCard, to: "/cards", color: "from-blue-600 to-indigo-700" },
+  { label: "Download Statement", icon: Download, action: () => downloadStatementPDF(), color: "from-blue-600 to-indigo-700" },
   { label: "Open FD", icon: PiggyBank, to: "/deposits", color: "from-emerald-600 to-teal-700" },
   { label: "Contact Us", icon: Phone, to: "/support", color: "from-purple-600 to-pink-600" },
   { label: "Loan Apply", icon: HandCoins, to: "/loans", color: "from-rose-600 to-red-700" },
@@ -54,7 +56,7 @@ const bills = [
 
 function Dashboard() {
   const acc = accounts[0];
-  const profilePanel = useProfilePanel();
+  
   const navigate = useNavigate();
 
   return (
@@ -171,18 +173,25 @@ function Dashboard() {
             </h2>
           </div>
           <div className="grid grid-cols-3 gap-2.5">
-            {quickActions.map((q, i) => (
-              <motion.div key={q.label} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04 }}>
-                <Link to={q.to} className="block group">
-                  <div className="border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20 flex flex-col items-center text-center gap-1.5">
-                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${q.color} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
-                      <q.icon className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="text-[10.5px] font-semibold text-foreground leading-tight">{q.label}</div>
+            {quickActions.map((q, i) => {
+              const inner = (
+                <div className="border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20 flex flex-col items-center text-center gap-1.5">
+                  <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${q.color} flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow`}>
+                    <q.icon className="w-4 h-4 text-white" />
                   </div>
-                </Link>
-              </motion.div>
-            ))}
+                  <div className="text-[10.5px] font-semibold text-foreground leading-tight">{q.label}</div>
+                </div>
+              );
+              return (
+                <motion.div key={q.label} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.04 }}>
+                  {q.to ? (
+                    <Link to={q.to} className="block group">{inner}</Link>
+                  ) : (
+                    <button onClick={q.action} className="block w-full text-left group">{inner}</button>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </Card>
       </div>
