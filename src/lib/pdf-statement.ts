@@ -118,7 +118,8 @@ export function downloadStatementPDF(txns: Txn[] = transactions) {
     });
 
     const now = new Date();
-    const filename = `BharatBank_Statement_${MONTHS[now.getMonth()]}${now.getFullYear()}.pdf`;
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const filename = `BharatBank_Statement_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}.pdf`;
     doc.save(filename);
 
     toast.dismiss(loadingId);
