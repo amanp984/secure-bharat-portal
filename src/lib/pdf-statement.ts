@@ -6,7 +6,7 @@ import { accounts, profile, transactions } from "./banking-data";
 const fmtINR = (n: number) =>
   new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 
 type Txn = (typeof transactions)[number];
 
