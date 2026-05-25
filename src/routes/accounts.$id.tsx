@@ -5,7 +5,7 @@ import { accounts, transactions, profile } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Download, Printer, Share2, FileText, Send, Copy, ShieldCheck,
+  Download, Share2, FileText, Send, Copy, ShieldCheck,
   BadgeCheck, Building2, User, Wallet, Clock,
 } from "lucide-react";
 import { toast } from "sonner";
