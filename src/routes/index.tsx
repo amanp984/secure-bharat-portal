@@ -55,6 +55,7 @@ const bills = [
 function Dashboard() {
   const acc = accounts[0];
   const profilePanel = useProfilePanel();
+  const navigate = useNavigate();
 
   return (
     <AppLayout>
