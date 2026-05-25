@@ -9,13 +9,12 @@ import {
   Copy, Building2, Download,
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
+import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { accounts, transactions } from "@/lib/banking-data";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useState } from "react";
 import { AccountDetailsDialog } from "@/components/banking/AccountDetailsDialog";
-
-import { downloadStatementPDF } from "@/lib/pdf-statement";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -41,7 +40,6 @@ const fmt = (n: number) =>
 
 const quickActions: { label: string; icon: any; to?: string; action?: () => void; color: string }[] = [
   { label: "Bill Payment", icon: Receipt, to: "/bills", color: "from-amber-500 to-orange-600" },
-  { label: "Download Statement", icon: Download, action: () => downloadStatementPDF(), color: "from-blue-600 to-indigo-700" },
   { label: "Open FD", icon: PiggyBank, to: "/deposits", color: "from-emerald-600 to-teal-700" },
   { label: "Contact Us", icon: Phone, to: "/support", color: "from-purple-600 to-pink-600" },
   { label: "Loan Apply", icon: HandCoins, to: "/loans", color: "from-rose-600 to-red-700" },
@@ -182,6 +180,11 @@ function Dashboard() {
             </h2>
           </div>
           <div className="grid grid-cols-3 gap-2.5">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.04 }}>
+              <StatementDownloadButton idleIcon={Download} idleLabel="Download Statement" loadingLabel="Generating..." variant="outline" className="h-full w-full border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all bg-gradient-to-br from-card to-secondary/20 flex-col text-center gap-1.5 shadow-none">
+                <span className="sr-only">Download Statement</span>
+              </StatementDownloadButton>
+            </motion.div>
             {quickActions.map((q, i) => {
               const inner = (
                 <div className="border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all cursor-pointer h-full bg-gradient-to-br from-card to-secondary/20 flex flex-col items-center text-center gap-1.5">
