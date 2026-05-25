@@ -89,10 +89,9 @@ function Dashboard() {
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           className="lg:col-span-2"
         >
-          <Link
-            to="/accounts/$id"
-            params={{ id: acc.id }}
-            className={`relative block rounded-xl p-4 text-white shadow-md bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group`}
+          <div
+            onClick={() => navigate({ to: "/accounts/$id", params: { id: acc.id } })}
+            className={`relative rounded-xl p-4 text-white shadow-md bg-gradient-to-br ${acc.color} overflow-hidden cursor-pointer hover:shadow-lg transition-shadow group`}
           >
             <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
             <div className="relative flex items-start justify-between mb-3">
