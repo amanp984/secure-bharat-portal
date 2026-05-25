@@ -153,21 +153,12 @@ function Dashboard() {
               { label: "Account Details", to: "/accounts/cur", icon: Wallet },
               { label: "Statement", to: "/transactions", icon: FileText },
             ].map((o) => (
-              "to" in o ? (
-                <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
-                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <o.icon className="w-3.5 h-3.5" />
-                  </div>
-                  <span>{o.label}</span>
-                </Link>
-              ) : (
-                <button key={o.label} onClick={o.action} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group text-left">
-                  <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <o.icon className="w-3.5 h-3.5" />
-                  </div>
-                  <span>{o.label}</span>
-                </button>
-              )
+              <Link key={o.label} to={o.to} className="bg-card border rounded-lg p-2 flex items-center gap-2 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold group">
+                <div className="w-7 h-7 rounded-md bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <o.icon className="w-3.5 h-3.5" />
+                </div>
+                <span>{o.label}</span>
+              </Link>
             ))}
           </div>
         </motion.div>
