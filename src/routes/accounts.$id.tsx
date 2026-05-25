@@ -65,14 +65,11 @@ function AccountDetails() {
         subtitle={`${acc.type} · ${acc.masked}`}
         action={
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm" onClick={() => window.print()}>
-              <Printer className="w-3.5 h-3.5 mr-1" />Print
-            </Button>
             <Button variant="outline" size="sm" onClick={() => { navigator.clipboard?.writeText(window.location.href); toast.success("Link copied"); }}>
               <Share2 className="w-3.5 h-3.5 mr-1" />Share
             </Button>
-            <Button size="sm" className="bg-gradient-primary text-primary-foreground" onClick={downloadStatementPDF}>
-              <Download className="w-3.5 h-3.5 mr-1" />Download Profile
+            <Button size="sm" className="bg-gradient-primary text-primary-foreground" onClick={() => downloadStatementPDF()}>
+              <Download className="w-3.5 h-3.5 mr-1" />Download Statement
             </Button>
           </div>
         }
