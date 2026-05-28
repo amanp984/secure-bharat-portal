@@ -4,13 +4,9 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 
-import appCss from "../styles.css?url";
 import { DemoAuthGate } from "@/components/DemoAuthGate";
-import { brand, brandMeta } from "@/lib/brand";
 
 function NotFoundComponent() {
   return (
@@ -69,69 +65,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: brandMeta.title },
-      { name: "description", content: brandMeta.description },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: brandMeta.title },
-      { property: "og:description", content: brandMeta.description },
-      { property: "og:url", content: brand.website },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: brandMeta.title },
-      { name: "twitter:description", content: brandMeta.description },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5d6381ee-e063-4f0e-b2ef-207898fb2fa4" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5d6381ee-e063-4f0e-b2ef-207898fb2fa4" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      {
-        rel: "canonical",
-        href: brand.website,
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BankOrCreditUnion",
-          name: brand.name,
-          url: brand.website,
-          description: brandMeta.description,
-          email: brand.supportEmail,
-          telephone: brand.customerCare,
-        }),
-      },
-    ],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
-});
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -146,3 +79,8 @@ function RootComponent() {
   );
 }
 
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent,
+});

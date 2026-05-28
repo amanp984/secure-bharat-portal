@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TransactionsRouteImport } from './routes/transactions'
 import { Route as SupportRouteImport } from './routes/support'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
@@ -35,11 +34,6 @@ const TransactionsRoute = TransactionsRouteImport.update({
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -124,7 +118,6 @@ export interface FileRoutesByFullPath {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/settings': typeof SettingsRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/transactions': typeof TransactionsRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
@@ -143,7 +136,6 @@ export interface FileRoutesByTo {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/settings': typeof SettingsRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/transactions': typeof TransactionsRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
@@ -163,7 +155,6 @@ export interface FileRoutesById {
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
   '/settings': typeof SettingsRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/transactions': typeof TransactionsRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
@@ -184,7 +175,6 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/settings'
-    | '/sitemap.xml'
     | '/support'
     | '/transactions'
     | '/accounts/$id'
@@ -203,7 +193,6 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/settings'
-    | '/sitemap.xml'
     | '/support'
     | '/transactions'
     | '/accounts/$id'
@@ -222,7 +211,6 @@ export interface FileRouteTypes {
     | '/investments'
     | '/loans'
     | '/settings'
-    | '/sitemap.xml'
     | '/support'
     | '/transactions'
     | '/accounts/$id'
@@ -242,7 +230,6 @@ export interface RootRouteChildren {
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
   SettingsRoute: typeof SettingsRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SupportRoute: typeof SupportRoute
   TransactionsRoute: typeof TransactionsRoute
 }
@@ -261,13 +248,6 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof SupportRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -420,7 +400,6 @@ const rootRouteChildren: RootRouteChildren = {
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
   SettingsRoute: SettingsRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SupportRoute: SupportRoute,
   TransactionsRoute: TransactionsRoute,
 }
