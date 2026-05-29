@@ -30,8 +30,6 @@ export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; on
     { label: "Customer Category", value: profile.customerCategory },
     { label: "Account Status", value: acc.status },
     { label: "KYC Status", value: profile.kycStatus },
-    { label: "Nominee", value: profile.nominee },
-    { label: "Opened On", value: profile.openedOn },
   ];
 
   return (
@@ -75,7 +73,7 @@ export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; on
             <Link to="/transactions" onClick={() => onOpenChange(false)} className="border rounded-lg p-2.5 flex flex-col items-center gap-1 hover:border-primary/40 hover:shadow-sm transition-all text-[11px] font-semibold">
               <FileText className="w-4 h-4 text-primary" /> Statement
             </Link>
-            <StatementDownloadButton variant="outline" idleIcon={Download} idleLabel="Download PDF" loadingLabel="Generating..." className="h-auto min-h-[58px] flex-col gap-1 rounded-lg p-2.5 text-[11px] font-semibold shadow-none hover:border-primary/40 hover:shadow-sm" />
+            <StatementDownloadButton variant="outline" idleIcon={Download} idleLabel="Download PDF" loadingLabel="Generating..." txns={transactions} className="h-auto min-h-[58px] flex-col gap-1 rounded-lg p-2.5 text-[11px] font-semibold shadow-none hover:border-primary/40 hover:shadow-sm" />
           </div>
 
           {/* Account info */}
