@@ -190,5 +190,15 @@ export function useTransactions() {
     };
   }, []);
 
-  return { transactions, loading };
+  const balance = useMemo(
+    () => computeCurrentBalance(transactions, OPENING_BALANCE),
+    [transactions],
+  );
+
+  return { transactions, loading, balance };
+}
+
+/** Convenience hook for components that only need the live balance. */
+export function useCurrentBalance(): number {
+  return useTransactions().balance;
 }
