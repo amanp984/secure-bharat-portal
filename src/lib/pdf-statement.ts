@@ -350,15 +350,26 @@ function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
     const fy = pageH - 30;
     doc.setDrawColor(15, 31, 78);
     doc.setLineWidth(0.8);
-    doc.line(margin, fy - 10, pageW - margin, fy - 10);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7.5);
-    doc.setTextColor(100, 116, 139);
-    doc.text(`${brand.name} • Net Banking Statement • Customer Care ${brand.customerCare}`, margin, fy);
-    doc.text(`Generated ${generatedAt}`, margin, fy + 11);
+    doc.line(margin, fy - 14, pageW - margin, fy - 14);
+
+    // Powered by Indian Bank One + logo
+    if (logoImg) {
+      try { doc.addImage(logoImg, "PNG", margin, fy - 8, 14, 14); } catch { /* ignore */ }
+    }
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
     doc.setTextColor(15, 31, 78);
-    doc.text(`Page ${p} of ${totalPages}`, pageW - margin, fy + 5, { align: "right" });
+    doc.text(`Powered by ${brand.name}`, margin + 18, fy);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(100, 116, 139);
+    doc.text(`Customer Care ${brand.customerCare}  •  Generated ${generatedAt}`, margin + 18, fy + 9);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(15, 31, 78);
+    doc.text(`Page ${p} of ${totalPages}`, pageW - margin, fy + 4, { align: "right" });
   }
 
   // ---- Save ----
@@ -377,10 +388,6 @@ function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
 }
 
 // ------- Helpers -------
-function cardHeight(rows: number) {
-  return 26 + rows * 14 + 8;
-}
-
 function drawInfoCard(
   doc: jsPDF,
   x: number,
@@ -388,31 +395,49 @@ function drawInfoCard(
   w: number,
   title: string,
   rows: [string, string][],
-) {
-  const h = cardHeight(rows.length);
+): number {
+  // Compute per-row heights so wrapped values (e.g. address) never overlap.
+  const labelW = 78;
+  const valueX = x + 10 + labelW;
+  const valueMaxW = w - 10 - labelW - 10;
+  const lineHeight = 11;
+  const rowPad = 5;
+
+  doc.setFontSize(8.5);
+  const rowHeights = rows.map(([, v]) => {
+    const lines = doc.splitTextToSize(String(v ?? "—"), valueMaxW) as string[];
+    return Math.max(lineHeight, lines.length * lineHeight) + rowPad;
+  });
+  const titleH = 22;
+  const totalH = titleH + 8 + rowHeights.reduce((s, h) => s + h, 0) + 6;
+
+  // Card background
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(226, 232, 240);
-  doc.roundedRect(x, y, w, h, 4, 4, "FD");
+  doc.roundedRect(x, y, w, totalH, 4, 4, "FD");
 
-  // title bar
+  // Title bar
   doc.setFillColor(241, 245, 249);
-  doc.roundedRect(x, y, w, 22, 4, 4, "F");
-  // mask the bottom rounded corners
-  doc.rect(x, y + 14, w, 8, "F");
+  doc.roundedRect(x, y, w, titleH, 4, 4, "F");
+  doc.rect(x, y + 14, w, 8, "F"); // mask bottom corners
   doc.setTextColor(15, 31, 78);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.text(title.toUpperCase(), x + 10, y + 14);
 
-  // rows
+  // Rows
   doc.setFontSize(8.5);
+  let cursor = y + titleH + 10;
   rows.forEach((r, i) => {
-    const ry = y + 30 + i * 14;
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 116, 139);
-    doc.text(r[0], x + 10, ry);
+    doc.text(r[0], x + 10, cursor);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(15, 23, 42);
-    doc.text(String(r[1] ?? "—"), x + 88, ry, { maxWidth: w - 96 });
+    const lines = doc.splitTextToSize(String(r[1] ?? "—"), valueMaxW) as string[];
+    lines.forEach((ln, j) => doc.text(ln, valueX, cursor + j * lineHeight));
+    cursor += rowHeights[i];
   });
+
+  return totalH;
 }
