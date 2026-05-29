@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts, transactions, profile } from "@/lib/banking-data";
+import { accounts, profile } from "@/lib/banking-data";
+import { useTransactions } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
