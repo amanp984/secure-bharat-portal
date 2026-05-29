@@ -16,7 +16,8 @@ import { toast } from "sonner";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts, profile, transactions } from "@/lib/banking-data";
+import { accounts, profile } from "@/lib/banking-data";
+import { useTransactions } from "@/hooks/useTransactions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -46,6 +47,7 @@ const fmt = (n: number) =>
 
 function TransactionsPage() {
   const acc = accounts[0];
+  const { transactions } = useTransactions();
   const [query, setQuery] = useState("");
   const [type, setType] = useState<"All" | "Credit" | "Debit">("All");
   const [from, setFrom] = useState("");

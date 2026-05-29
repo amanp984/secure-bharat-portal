@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
-import { transactions } from "@/lib/banking-data";
+import { useTransactions } from "@/hooks/useTransactions";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/accounts/$id/passbook")({
 const fmt = (n: number) => "₹" + new Intl.NumberFormat("en-IN").format(Math.round(n));
 
 function Passbook() {
+  const { transactions } = useTransactions();
   return (
     <AppLayout>
       <PageHeader title="M-Passbook" subtitle="Real-time digital passbook" />
