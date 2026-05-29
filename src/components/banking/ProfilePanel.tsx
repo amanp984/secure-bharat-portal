@@ -4,6 +4,7 @@ import {
   Building2, Phone, Mail, Hash, FileText, MapPin, Calendar, Clock,
 } from "lucide-react";
 import { accounts, profile } from "@/lib/banking-data";
+import { useCurrentBalance } from "@/hooks/useTransactions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -31,6 +32,7 @@ function Row({ icon: Icon, label, value, copy }: { icon: any; label: string; val
 
 export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const acc = accounts[0];
+  const balance = useCurrentBalance();
   return (
     <AnimatePresence>
       {open && (
@@ -50,7 +52,7 @@ export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => 
               <div className="relative flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-xl font-bold ring-2 ring-white/20">
-                    AR
+                    DS
                   </div>
                   <div>
                     <div className="text-[11px] uppercase tracking-wider text-white/70">Account Holder</div>
