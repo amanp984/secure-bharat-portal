@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useState } from "react";
 import { AccountDetailsDialog } from "@/components/banking/AccountDetailsDialog";
+import { getLastLogin } from "@/lib/session";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -57,6 +58,7 @@ const bills = [
 function Dashboard() {
   const acc = accounts[0];
   const { transactions } = useTransactions();
+  const lastLogin = getLastLogin();
   
   
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -77,7 +79,7 @@ function Dashboard() {
             <div className="leading-tight">
               <div className="text-[12px] font-semibold">Welcome, Arjun Ramesh</div>
               <div className="text-[10px] text-white/70 flex items-center gap-2">
-                <span>Last login: 21 May 2026, 09:42 AM</span>
+                <span>Last login: {lastLogin}</span>
                 <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Chennai</span>
               </div>
             </div>
