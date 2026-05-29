@@ -47,6 +47,7 @@ const fmt = (n: number) =>
 
 function TransactionsPage() {
   const acc = accounts[0];
+  const { transactions } = useTransactions();
   const [query, setQuery] = useState("");
   const [type, setType] = useState<"All" | "Credit" | "Debit">("All");
   const [from, setFrom] = useState("");
