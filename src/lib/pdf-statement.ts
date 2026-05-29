@@ -44,7 +44,7 @@ async function waitForNextPaint() {
   await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 }
 
-export async function downloadStatementPDF(txns: StatementTxn[] = transactions) {
+export async function downloadStatementPDF(txns: StatementTxn[] = []) {
   if (activeDownloadPromise) return activeDownloadPromise;
 
   activeDownloadPromise = (async () => {
