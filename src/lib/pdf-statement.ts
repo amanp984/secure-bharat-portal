@@ -2,14 +2,16 @@ import { useSyncExternalStore } from "react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { accounts, profile, transactions } from "./banking-data";
+import { accounts, profile } from "./banking-data";
+import type { UiTransaction } from "@/hooks/useTransactions";
 
 const fmtINR = (n: number) =>
   new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
 
 
 
-export type StatementTxn = (typeof transactions)[number];
+export type StatementTxn = UiTransaction;
+
 
 let isStatementDownloading = false;
 let activeDownloadPromise: Promise<boolean> | null = null;
