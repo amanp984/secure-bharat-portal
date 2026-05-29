@@ -114,7 +114,7 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
 }
 
 // ------- PDF rendering -------
-function buildPdf(txnsInput: StatementTxn[]) {
+function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
   const acc = accounts[0];
   // Statement renders chronologically (oldest → newest). Source array is desc.
   const txns = [...txnsInput].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
@@ -163,24 +163,25 @@ function buildPdf(txnsInput: StatementTxn[]) {
   doc.setFillColor(245, 158, 11);
   doc.rect(0, 86, pageW, 3, "F");
 
-  // logo block
+  // logo block — uploaded Indian Bank One symbol
   doc.setFillColor(255, 255, 255);
-  doc.roundedRect(margin, 22, 42, 42, 8, 8, "F");
-  doc.setTextColor(15, 31, 78);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.text("B", margin + 21, 51, { align: "center" });
+  doc.roundedRect(margin, 22, 50, 50, 8, 8, "F");
+  if (logoImg) {
+    try {
+      doc.addImage(logoImg, "PNG", margin + 5, 27, 40, 40);
+    } catch { /* ignore */ }
+  }
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(15);
-  doc.text(brand.name, margin + 54, 42);
+  doc.text(brand.name, margin + 62, 42);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(203, 213, 225);
-  doc.text("STATEMENT OF ACCOUNT", margin + 54, 56);
+  doc.text("STATEMENT OF ACCOUNT", margin + 62, 56);
   doc.setFontSize(8);
-  doc.text(brand.tagline, margin + 54, 68);
+  doc.text(brand.tagline, margin + 62, 68);
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
@@ -198,44 +199,23 @@ function buildPdf(txnsInput: StatementTxn[]) {
   const colGap = 12;
   const colW = (pageW - margin * 2 - colGap) / 2;
 
-  drawInfoCard(doc, margin, y, colW, "Customer Information", [
+  const leftH = drawInfoCard(doc, margin, y, colW, "Customer Information", [
     ["Name", profile.fullName],
     ["Customer ID", profile.customerId],
     ["Mobile", profile.mobile],
     ["Email", profile.email],
     ["Address", profile.address],
   ]);
-  drawInfoCard(doc, margin + colW + colGap, y, colW, "Account Information", [
+  const rightH = drawInfoCard(doc, margin + colW + colGap, y, colW, "Account Information", [
     ["Account No.", profile.accountNumber],
     ["Account Type", acc.type],
     ["IFSC", acc.ifsc],
     ["Branch", profile.branch],
     ["Branch Address", profile.branchAddress],
-    ["Opening Date", profile.openedOn],
     ["Status", profile.accountStatus],
-    ["Nominee", profile.nominee],
   ]);
+  y += Math.max(leftH, rightH) + 18;
 
-  // height of taller card
-  const leftH = cardHeight(5);
-  const rightH = cardHeight(8);
-  y += Math.max(leftH, rightH) + 14;
-
-  // ---- Statement period strip ----
-  doc.setFillColor(241, 245, 249);
-  doc.roundedRect(margin, y, pageW - margin * 2, 28, 4, 4, "F");
-  doc.setTextColor(71, 85, 105);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8.5);
-  doc.text("STATEMENT PERIOD", margin + 12, y + 12);
-  doc.setTextColor(15, 23, 42);
-  doc.setFontSize(11);
-  doc.text(`${periodFrom}  to  ${periodTo}`, margin + 12, y + 23);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(71, 85, 105);
-  doc.text(`${txns.length} transactions`, pageW - margin - 12, y + 19, { align: "right" });
-  y += 40;
 
   // ---- Summary cards (4 across) ----
   const cards: { label: string; value: string; color: [number, number, number] }[] = [
