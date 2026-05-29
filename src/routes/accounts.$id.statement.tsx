@@ -45,6 +45,7 @@ function downloadBlob(content: string, mime: string, filename: string) {
 
 function StatementPage() {
   const acc = accounts[0];
+  const { transactions } = useTransactions();
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [from, setFrom] = useState("");
