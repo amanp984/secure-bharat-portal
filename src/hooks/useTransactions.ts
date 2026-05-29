@@ -115,18 +115,28 @@ export function useTransactions() {
 
       const load = async () => {
         try {
-          const { data, error } = await supabase
-            .from("transactions")
-            .select("*")
-            .order("transaction_date", { ascending: false })
-            .limit(500);
-          if (!active) return;
-          if (error) {
-            console.warn("[useTransactions] load error", error.message ?? error);
-            setTransactions([]);
-          } else {
-            setTransactions(mapRows((data || []) as DbRow[]));
+          // Page through all rows (Supabase caps single requests at 1000).
+          const PAGE = 1000;
+          let from = 0;
+          const all: DbRow[] = [];
+          // Hard upper bound to prevent runaway loops.
+          for (let i = 0; i < 50; i++) {
+            const { data, error } = await supabase
+              .from("transactions")
+              .select("*")
+              .order("transaction_date", { ascending: false })
+              .range(from, from + PAGE - 1);
+            if (error) {
+              console.warn("[useTransactions] load error", error.message ?? error);
+              break;
+            }
+            const rows = (data || []) as DbRow[];
+            all.push(...rows);
+            if (rows.length < PAGE) break;
+            from += PAGE;
           }
+          if (!active) return;
+          setTransactions(mapRows(all));
         } catch (err) {
           console.warn("[useTransactions] load threw", err);
           if (active) setTransactions([]);
