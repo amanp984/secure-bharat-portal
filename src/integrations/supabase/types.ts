@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      transactions: {
+        Row: {
+          account_number_last4: string | null
+          amount: number
+          bank_name: string | null
+          created_at: string
+          id: string
+          message: string | null
+          raw_sms: string | null
+          sender_name: string | null
+          sms_sender: string | null
+          transaction_date: string
+          transaction_reference: string | null
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at: string
+        }
+        Insert: {
+          account_number_last4?: string | null
+          amount?: number
+          bank_name?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          raw_sms?: string | null
+          sender_name?: string | null
+          sms_sender?: string | null
+          transaction_date?: string
+          transaction_reference?: string | null
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Update: {
+          account_number_last4?: string | null
+          amount?: number
+          bank_name?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          raw_sms?: string | null
+          sender_name?: string | null
+          sms_sender?: string | null
+          transaction_date?: string
+          transaction_reference?: string | null
+          transaction_type?: Database["public"]["Enums"]["transaction_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +70,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      transaction_type: "credit" | "debit"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +197,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      transaction_type: ["credit", "debit"],
+    },
   },
 } as const
