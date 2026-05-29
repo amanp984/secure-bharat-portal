@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { Copy, Download, ShieldCheck, ArrowUpRight, ArrowDownLeft, Building2, User, Wallet, FileText } from "lucide-react";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { toast } from "sonner";
-import { accounts, transactions, profile } from "@/lib/banking-data";
+import { accounts, profile } from "@/lib/banking-data";
+import { useTransactions } from "@/hooks/useTransactions";
 import { motion } from "framer-motion";
 
 const fmt = (n: number) =>
