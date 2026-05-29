@@ -12,7 +12,7 @@ const fmt = (n: number) =>
 
 export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
   const acc = accounts[0];
-  const { transactions } = useTransactions();
+  const { transactions, balance } = useTransactions();
   const copy = (val: string, label: string) => {
     navigator.clipboard?.writeText(val);
     toast.success(`${label} copied`);
@@ -60,7 +60,7 @@ export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; on
           </div>
           <div className="relative">
             <div className="text-[10px] uppercase tracking-widest text-white/60">Available Balance</div>
-            <div className="text-3xl font-bold tracking-tight">{fmt(acc.balance)}</div>
+            <div className="text-3xl font-bold tracking-tight">{fmt(balance)}</div>
           </div>
         </motion.div>
 

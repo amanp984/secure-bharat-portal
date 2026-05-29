@@ -57,7 +57,7 @@ const bills = [
 
 function Dashboard() {
   const acc = accounts[0];
-  const { transactions } = useTransactions();
+  const { transactions, balance } = useTransactions();
   const lastLogin = getLastLogin();
   
   
@@ -74,13 +74,13 @@ function Dashboard() {
         <div className="relative flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold ring-1 ring-white/30">
-              AR
+              DS
             </div>
             <div className="leading-tight">
-              <div className="text-[12px] font-semibold">Welcome, Arjun Ramesh</div>
+              <div className="text-[12px] font-semibold">Welcome, Dharmendra Soni</div>
               <div className="text-[10px] text-white/70 flex items-center gap-2">
                 <span>Last login: {lastLogin}</span>
-                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Chennai</span>
+                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Nagpur</span>
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@ function Dashboard() {
             <div className="relative">
               <div className="font-mono text-[11px] tracking-[0.25em] text-white/85">{acc.masked}</div>
               <div className="text-[9px] uppercase tracking-widest text-white/55 mt-2">Available Balance</div>
-              <div className="text-2xl font-bold tracking-tight mb-3">{fmt(acc.balance)}</div>
+              <div className="text-2xl font-bold tracking-tight mb-3">{fmt(balance)}</div>
             </div>
 
             <div className="relative grid grid-cols-3 gap-1.5 text-[10px] border-t border-white/15 pt-2">

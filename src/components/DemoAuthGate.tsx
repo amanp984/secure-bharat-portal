@@ -12,8 +12,8 @@ import { recordLogin } from "@/lib/session";
 import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_bank_one_demo_auth";
-const DEMO_USER = "Anni7021";
-const DEMO_PASS = "Anni@2026";
+const DEMO_USER = "2864286728";
+const DEMO_PASS = "Krishna@1995";
 
 function genCaptcha() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -196,12 +196,6 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                   </button>
                 </div>
 
-                <div className="rounded-md bg-amber-50 border border-amber-200 p-2.5 text-[11px] text-amber-900">
-                  <div className="font-semibold flex items-center gap-1 mb-0.5">
-                    <ShieldCheck className="w-3 h-3" /> Demo Credentials
-                  </div>
-                  User ID: <code className="font-mono font-bold">Anni7021</code> · Password: <code className="font-mono font-bold">Anni@2026</code>
-                </div>
               </form>
             </div>
 

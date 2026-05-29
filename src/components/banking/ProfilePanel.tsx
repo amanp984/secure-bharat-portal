@@ -4,6 +4,7 @@ import {
   Building2, Phone, Mail, Hash, FileText, MapPin, Calendar, Clock,
 } from "lucide-react";
 import { accounts, profile } from "@/lib/banking-data";
+import { useCurrentBalance } from "@/hooks/useTransactions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -31,6 +32,7 @@ function Row({ icon: Icon, label, value, copy }: { icon: any; label: string; val
 
 export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const acc = accounts[0];
+  const balance = useCurrentBalance();
   return (
     <AnimatePresence>
       {open && (
@@ -50,7 +52,7 @@ export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => 
               <div className="relative flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-xl font-bold ring-2 ring-white/20">
-                    AR
+                    DS
                   </div>
                   <div>
                     <div className="text-[11px] uppercase tracking-wider text-white/70">Account Holder</div>
@@ -80,7 +82,7 @@ export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => 
                   <Row icon={Building2} label="Branch" value={profile.branch} />
                   <Row icon={User} label="Account Type" value={profile.accountType} />
                   <Row icon={Calendar} label="Account Opened" value={profile.openedOn} />
-                  <Row icon={CreditCard} label="Available Balance" value={new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(acc.balance)} />
+                  <Row icon={CreditCard} label="Available Balance" value={new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(balance)} />
                   <Row icon={ShieldCheck} label="KYC Status" value={profile.kycStatus} />
                   <Row icon={BadgeCheck} label="Account Status" value={profile.accountStatus} />
                   <Row icon={User} label="Nominee" value={profile.nominee} />
