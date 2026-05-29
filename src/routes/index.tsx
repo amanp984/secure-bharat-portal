@@ -56,6 +56,8 @@ const bills = [
 
 function Dashboard() {
   const acc = accounts[0];
+  const { transactions } = useTransactions();
+  
   
   const [detailsOpen, setDetailsOpen] = useState(false);
 
