@@ -47,7 +47,7 @@ const fmt = (n: number) =>
 
 function TransactionsPage() {
   const acc = accounts[0];
-  const { transactions } = useTransactions();
+  const { transactions, balance } = useTransactions();
   const [query, setQuery] = useState("");
   const [type, setType] = useState<"All" | "Credit" | "Debit">("All");
   const [from, setFrom] = useState("");
@@ -115,7 +115,7 @@ function TransactionsPage() {
       <div className="grid gap-3 sm:grid-cols-3 mb-3">
         <Card className="p-3 border-l-4 border-l-primary shadow-card-soft">
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Available Balance</p>
-          <p className="text-lg font-bold mt-1">{fmt(acc.balance)}</p>
+          <p className="text-lg font-bold mt-1">{fmt(balance)}</p>
         </Card>
         <Card className="p-3 border-l-4 border-l-success shadow-card-soft">
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Credits in View</p>

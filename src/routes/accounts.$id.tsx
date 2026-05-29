@@ -58,7 +58,7 @@ function Row({ label, value, copyable }: { label: string; value: string; copyabl
 function AccountDetails() {
   const { id } = Route.useParams();
   const acc = accounts.find((a) => a.id === id) ?? accounts[0];
-  const { transactions } = useTransactions();
+  const { transactions, balance } = useTransactions();
 
   return (
     <AppLayout>
@@ -103,7 +103,7 @@ function AccountDetails() {
 
             <div className="font-mono text-sm tracking-[0.3em] text-white/85 mb-3">{acc.masked}</div>
             <div className="text-[10px] uppercase tracking-widest text-white/55">Available Balance</div>
-            <div className="text-3xl font-bold tracking-tight mb-4">{fmt(acc.balance)}</div>
+            <div className="text-3xl font-bold tracking-tight mb-4">{fmt(balance)}</div>
 
             <div className="grid grid-cols-3 gap-3 text-[11px] border-t border-white/15 pt-3 mb-4">
               <div>

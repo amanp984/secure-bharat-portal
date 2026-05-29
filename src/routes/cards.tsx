@@ -71,7 +71,7 @@ function CardsPage() {
           <div className="font-mono text-2xl mt-5 tracking-widest">5432 88•• •••• 4521</div>
           <div className="flex justify-between items-end mt-6 text-xs">
             <div><div className="opacity-70">Valid Thru</div><div className="font-semibold text-base">11 / 29</div></div>
-            <div><div className="opacity-70">Holder</div><div className="font-semibold">ARJUN R IYER</div></div>
+            <div><div className="opacity-70">Holder</div><div className="font-semibold">DHARMENDRA SONI</div></div>
             <div className="text-xl font-extrabold tracking-tight"><span className="text-amber-300">Ru</span><span className="text-emerald-300">Pay</span></div>
           </div>
         </Card>

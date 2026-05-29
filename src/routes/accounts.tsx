@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { accounts } from "@/lib/banking-data";
+import { useCurrentBalance } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ArrowRightLeft, FileText, Info, PiggyBank, Wallet, Plus, ShieldCheck, Building2, X } from "lucide-react";
@@ -76,6 +77,7 @@ function EmptyAccountCard({
 
 function AccountsPage() {
   const [branchModal, setBranchModal] = useState<string | null>(null);
+  const balance = useCurrentBalance();
   return (
     <AppLayout>
       <PageHeader title="All Accounts" subtitle="Manage all your linked Indian Bank One accounts in one place" />
@@ -101,7 +103,7 @@ function AccountsPage() {
               <div className="relative">
                 <div className="font-mono text-[11px] tracking-[0.25em] text-white/85">{a.masked}</div>
                 <div className="text-[9px] uppercase tracking-widest text-white/55 mt-2">Available Balance</div>
-                <div className="text-2xl font-bold tracking-tight">{fmt(a.balance)}</div>
+                <div className="text-2xl font-bold tracking-tight">{fmt(balance)}</div>
               </div>
               <div className="relative grid grid-cols-2 gap-1.5 text-[10px] border-t border-white/15 pt-2 mt-3">
                 <div>
