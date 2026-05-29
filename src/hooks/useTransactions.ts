@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { accounts } from "@/lib/banking-data";
 
 // UI transaction shape — matches what the dashboard already expects.
@@ -13,7 +12,6 @@ export interface UiTransaction {
   debit: number;
   credit: number;
   balance: number;
-  // raw fields, if a consumer wants them
   reference: string | null;
   bank: string | null;
   accountLast4: string | null;
@@ -39,13 +37,13 @@ const STARTING_BALANCE = accounts[0]?.balance ?? 0;
 
 function formatDate(iso: string): { isoDate: string; date: string } {
   const d = new Date(iso);
-  const isoDate = isNaN(d.getTime())
-    ? iso.slice(0, 10)
-    : d.toISOString().slice(0, 10);
-  const date = isNaN(d.getTime())
-    ? iso
-    : d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
-  return { isoDate, date };
+  const valid = !isNaN(d.getTime());
+  return {
+    isoDate: valid ? d.toISOString().slice(0, 10) : String(iso).slice(0, 10),
+    date: valid
+      ? d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+      : String(iso),
+  };
 }
 
 function buildNarration(row: DbRow): string {
@@ -58,7 +56,6 @@ function buildNarration(row: DbRow): string {
 }
 
 function mapRows(rows: DbRow[]): UiTransaction[] {
-  // rows are sorted newest first by caller; compute running balance from newest = STARTING_BALANCE downward.
   let running = STARTING_BALANCE;
   return rows.map((r) => {
     const amount = Number(r.amount) || 0;
@@ -82,49 +79,88 @@ function mapRows(rows: DbRow[]): UiTransaction[] {
       rawSms: r.raw_sms,
       smsSender: r.sms_sender,
     };
-    // step running balance backwards for the next (older) txn
     running = running - credit + debit;
     return txn;
   });
 }
 
+/**
+ * Fault-tolerant transactions hook.
+ *
+ * - Never throws: any Supabase / network / config error is swallowed and the
+ *   UI sees an empty list. The dashboard, transactions, statement and passbook
+ *   pages all render normally even when the backend is unavailable.
+ * - Lazy-imports the Supabase client so a missing env var at module load
+ *   cannot crash the React tree.
+ * - Realtime is best-effort — websocket failures are ignored.
+ */
 export function useTransactions() {
   const [transactions, setTransactions] = useState<UiTransaction[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
+    let cleanup: (() => void) | undefined;
 
-    const load = async () => {
-      const { data, error } = await supabase
-        .from("transactions")
-        .select("*")
-        .order("transaction_date", { ascending: false })
-        .limit(500);
-      if (!active) return;
-      if (error) {
-        console.error("[useTransactions] load error", error);
-        setLoading(false);
+    (async () => {
+      let supabase: any;
+      try {
+        const mod = await import("@/integrations/supabase/client");
+        supabase = mod.supabase;
+      } catch (err) {
+        console.warn("[useTransactions] Supabase client unavailable", err);
+        if (active) setLoading(false);
         return;
       }
-      setTransactions(mapRows((data || []) as DbRow[]));
-      setLoading(false);
-    };
 
-    load();
+      const load = async () => {
+        try {
+          const { data, error } = await supabase
+            .from("transactions")
+            .select("*")
+            .order("transaction_date", { ascending: false })
+            .limit(500);
+          if (!active) return;
+          if (error) {
+            console.warn("[useTransactions] load error", error.message ?? error);
+            setTransactions([]);
+          } else {
+            setTransactions(mapRows((data || []) as DbRow[]));
+          }
+        } catch (err) {
+          console.warn("[useTransactions] load threw", err);
+          if (active) setTransactions([]);
+        } finally {
+          if (active) setLoading(false);
+        }
+      };
 
-    const channel = supabase
-      .channel("transactions-realtime")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "transactions" },
-        () => load(),
-      )
-      .subscribe();
+      await load();
+
+      try {
+        const channel = supabase
+          .channel("transactions-realtime")
+          .on(
+            "postgres_changes",
+            { event: "*", schema: "public", table: "transactions" },
+            () => { load().catch(() => {}); },
+          )
+          .subscribe((status: string) => {
+            if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+              console.warn("[useTransactions] realtime status", status);
+            }
+          });
+        cleanup = () => {
+          try { supabase.removeChannel(channel); } catch { /* ignore */ }
+        };
+      } catch (err) {
+        console.warn("[useTransactions] realtime subscribe failed", err);
+      }
+    })();
 
     return () => {
       active = false;
-      supabase.removeChannel(channel);
+      try { cleanup?.(); } catch { /* ignore */ }
     };
   }, []);
 
