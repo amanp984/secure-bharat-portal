@@ -12,6 +12,7 @@ const fmt = (n: number) =>
 
 export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
   const acc = accounts[0];
+  const { transactions } = useTransactions();
   const copy = (val: string, label: string) => {
     navigator.clipboard?.writeText(val);
     toast.success(`${label} copied`);
