@@ -84,14 +84,13 @@ function mapRows(rows: DbRow[]): UiTransaction[] {
       type,
       debit,
       credit,
-      balance: running,
+      balance: balanceAfter,
       reference: r.transaction_reference,
       bank: r.bank_name,
       accountLast4: r.account_number_last4,
       rawSms: r.raw_sms,
       smsSender: r.sms_sender,
     };
-    running = running - credit + debit;
     return txn;
   });
 }
