@@ -27,6 +27,7 @@ export const Route = createFileRoute("/accounts/$id/passbook")({
 const fmt = (n: number) => "₹" + new Intl.NumberFormat("en-IN").format(Math.round(n));
 
 function Passbook() {
+  const { transactions } = useTransactions();
   return (
     <AppLayout>
       <PageHeader title="M-Passbook" subtitle="Real-time digital passbook" />
