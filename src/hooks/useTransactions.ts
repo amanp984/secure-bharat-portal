@@ -138,18 +138,23 @@ export function useTransactions() {
       await load();
 
       try {
-        const channel = supabase
-          .channel("transactions-realtime")
-          .on(
-            "postgres_changes",
-            { event: "*", schema: "public", table: "transactions" },
-            () => { load().catch(() => {}); },
-          )
-          .subscribe((status: string) => {
-            if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
-              console.warn("[useTransactions] realtime status", status);
-            }
-          });
+        // Unique channel name per mount avoids "cannot add postgres_changes
+        // callbacks after subscribe()" when React StrictMode (or HMR) re-runs
+        // the effect and Supabase returns the already-subscribed channel.
+        const channelName = `transactions-realtime-${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}`;
+        const channel = supabase.channel(channelName);
+        channel.on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "transactions" },
+          () => { load().catch(() => {}); },
+        );
+        channel.subscribe((status: string) => {
+          if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+            console.warn("[useTransactions] realtime status", status);
+          }
+        });
         cleanup = () => {
           try { supabase.removeChannel(channel); } catch { /* ignore */ }
         };
