@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { accounts } from "@/lib/banking-data";
+import { useMemo } from "react";
+import { accounts, computeCurrentBalance } from "@/lib/banking-data";
 
 // UI transaction shape — matches what the dashboard already expects.
 export interface UiTransaction {
@@ -33,7 +34,7 @@ interface DbRow {
   transaction_date: string;
 }
 
-const STARTING_BALANCE = accounts[0]?.balance ?? 0;
+const OPENING_BALANCE = accounts[0]?.balance ?? 0;
 
 function formatDate(iso: string): { isoDate: string; date: string } {
   const d = new Date(iso);
@@ -55,14 +56,25 @@ function buildNarration(row: DbRow): string {
   return `${prefix}${action}${who}${ref}`.trim();
 }
 
+/**
+ * Map DB rows (returned newest-first) into UI rows with a correct running
+ * balance per row. We compute the closing balance from opening + credits −
+ * debits, then walk the desc-ordered list assigning each row its
+ * balance-after-this-txn and stripping the txn for the next (older) row.
+ */
 function mapRows(rows: DbRow[]): UiTransaction[] {
-  let running = STARTING_BALANCE;
+  const totalCredit = rows.reduce((s, r) => s + (r.transaction_type === "credit" ? Number(r.amount) || 0 : 0), 0);
+  const totalDebit = rows.reduce((s, r) => s + (r.transaction_type === "debit" ? Number(r.amount) || 0 : 0), 0);
+  let running = OPENING_BALANCE + totalCredit - totalDebit; // closing balance
   return rows.map((r) => {
     const amount = Number(r.amount) || 0;
     const type: "Credit" | "Debit" = r.transaction_type === "credit" ? "Credit" : "Debit";
     const credit = type === "Credit" ? amount : 0;
     const debit = type === "Debit" ? amount : 0;
     const { isoDate, date } = formatDate(r.transaction_date);
+    const balanceAfter = running;
+    // Strip this txn so the next (older) row shows the balance BEFORE it.
+    running = running - credit + debit;
     const txn: UiTransaction = {
       id: r.id,
       isoDate,

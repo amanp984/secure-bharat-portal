@@ -1,22 +1,33 @@
+// Centralized customer & account data. Live balances are computed from the
+// transaction ledger in `useTransactions` — see `computeCurrentBalance` below.
+// `accounts[].balance` is the OPENING balance only. Never read it as the
+// current/available balance.
+
 export const accounts = [
   {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 0001",
-    accountNumber: "XXXXXXXX0001",
-    ifsc: "DEMO0000001",
-    branch: "Demo Main Branch",
-    customerId: "DEMO0001",
+    masked: "XXXX XXXX 6784",
+    accountNumber: "652897626784",
+    ifsc: "IDIB000N007",
+    branch: "Nagpur",
+    customerId: "2864286728",
     status: "Active",
+    /** Opening balance only — current balance = opening + Σcredits − Σdebits */
     balance: 0,
     primary: true,
     color: "from-blue-700 via-indigo-700 to-slate-900",
   },
 ];
 
-// Transactions are now live from Supabase — see `src/hooks/useTransactions.ts`.
-// All static/demo transaction seeds have been removed.
-
+export function computeCurrentBalance(
+  txns: ReadonlyArray<{ credit?: number; debit?: number }>,
+  opening: number = accounts[0]?.balance ?? 0,
+): number {
+  let bal = opening;
+  for (const t of txns) bal += (t.credit || 0) - (t.debit || 0);
+  return bal;
+}
 
 export const beneficiaries = [
   { id: "b1", name: "Demo Payee One", bank: "Demo Bank A", acc: "XXXX 0001", last: "18 May 2026" },
@@ -25,24 +36,24 @@ export const beneficiaries = [
 ];
 
 export const profile = {
-  fullName: "John Q. Demo",
-  customerId: "DEMO0001",
-  accountNumber: "XXXXXXXX0001",
-  ifsc: "DEMO0000001",
-  micr: "000000000",
-  mobile: "+91 90000 00000",
-  email: "demo.user@example.com",
-  address: "123 Demo Street, Sample Locality, Example City – 000000",
-  aadhaar: "XXXX XXXX 0000",
+  fullName: "Dharmendra Soni",
+  customerId: "2864286728",
+  accountNumber: "652897626784",
+  ifsc: "IDIB000N007",
+  micr: "45895398320",
+  mobile: "+91 XXXXX96361",
+  email: "Dharm17998rakesh@gmail.com",
+  address: "11 Club 7, Ajanta Market, Santosh Bhavan, Nagpur – 440012",
+  aadhaar: "XXXX XXXX 3671",
   pan: "AXXXX0000X",
-  branch: "Demo Main Branch",
-  branchAddress: "1, Demo Avenue, Sample Locality, Example City – 000000",
+  branch: "Nagpur",
+  branchAddress: "11 Club 7, Ajanta Market, Santosh Bhavan, Nagpur – 440012",
   accountType: "Current Account",
   kycStatus: "Verified",
   accountStatus: "Active",
-  nominee: "Jane Demo (Spouse)",
+  nominee: "Sachin (Spouse)",
   openedOn: "14 March 2018",
-  lastLogin: "21 May 2026, 09:42 AM · Example City",
+  lastLogin: "Just now · Nagpur",
   occupation: "Business Owner",
   customerCategory: "Priority Banking",
 };
