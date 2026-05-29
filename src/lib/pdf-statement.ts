@@ -91,7 +91,8 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
     await nextPaint();
 
     try {
-      buildPdf(txns);
+      const logo = await loadLogoDataUrl();
+      buildPdf(txns, logo);
       toast.dismiss(STATEMENT_LOADING_TOAST_ID);
       setDownloading(false);
       toast.success("Statement downloaded successfully", { id: STATEMENT_SUCCESS_TOAST_ID, duration: 1200 });
