@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts, transactions } from "@/lib/banking-data";
+import { accounts } from "@/lib/banking-data";
+import { useTransactions } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useState } from "react";
