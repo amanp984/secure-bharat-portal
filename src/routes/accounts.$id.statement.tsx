@@ -61,7 +61,7 @@ function StatementPage() {
         const matchesTo = !to || t.isoDate <= to;
         return matchesQ && matchesType && matchesFrom && matchesTo;
       }),
-    [q, from, to, typeFilter],
+    [transactions, q, from, to, typeFilter],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE));

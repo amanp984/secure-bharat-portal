@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { recordLogin } from "@/lib/session";
+import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_bank_one_demo_auth";
 const DEMO_USER = "Anni7021";
@@ -74,6 +76,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
     setTimeout(() => {
       if (uid === DEMO_USER && pass === DEMO_PASS) {
         try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
+        recordLogin();
         toast.success("Login successful. Welcome to Indian Bank One.");
         setLoading(false);
         onSuccess();
@@ -93,8 +96,8 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
       <div className="bg-gradient-to-r from-blue-800 via-indigo-800 to-blue-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-lg bg-white/15 backdrop-blur flex items-center justify-center ring-1 ring-white/20">
-              <Building2 className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1">
+              <IndianBankOneLogo className="w-full h-full" />
             </div>
             <div className="leading-tight">
               <div className="font-bold text-base tracking-tight">Indian Bank One</div>

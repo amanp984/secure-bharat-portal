@@ -8,7 +8,7 @@ export const accounts = [
     branch: "Demo Main Branch",
     customerId: "DEMO0001",
     status: "Active",
-    balance: 1248903.1,
+    balance: 0,
     primary: true,
     color: "from-blue-700 via-indigo-700 to-slate-900",
   },

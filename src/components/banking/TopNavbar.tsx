@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Bell, LogOut, Search, Menu, Landmark, ChevronDown, ShieldCheck } from "lucide-react";
+import { Bell, LogOut, Search, Menu, ChevronDown, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useProfilePanel } from "./ProfileContext";
 import { profile } from "@/lib/banking-data";
 import { brand } from "@/lib/brand";
+import { IndianBankOneLogo } from "./IndianBankOneLogo";
+import { getLastLogin, recordLogout } from "@/lib/session";
 
 const navItems = [
   { label: "Dashboard", to: "/" },
@@ -24,11 +26,14 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
   const navigate = useNavigate();
 
   const logout = () => {
+    recordLogout();
     localStorage.removeItem("indian_bank_one_demo_auth");
     toast.success("Logged out securely");
     setTimeout(() => navigate({ to: "/" }), 400);
     setTimeout(() => window.location.reload(), 600);
   };
+
+  const lastLogin = getLastLogin();
 
   return (
     <header className="sticky top-0 z-40 bg-card/95 backdrop-blur border-b shadow-sm">
@@ -40,8 +45,8 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
         </button>
 
         <Link to="/" className="flex items-center gap-2 mr-2">
-          <div className="w-9 h-9 rounded-md bg-gradient-primary flex items-center justify-center shadow-sm">
-            <Landmark className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 rounded-md bg-white border flex items-center justify-center shadow-sm p-1">
+            <IndianBankOneLogo className="w-full h-full" />
           </div>
           <div className="hidden sm:block leading-tight">
             <div className="font-bold text-foreground tracking-tight text-sm">{brand.name}</div>
@@ -66,7 +71,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           <span className="flex items-center justify-end gap-1 text-success font-medium">
             <ShieldCheck className="w-3 h-3" /> Secure Session
           </span>
-          <span>Last login: {profile.lastLogin.split(" · ")[0]}</span>
+          <span>Last login: {lastLogin}</span>
         </div>
 
         <button onClick={() => toast("No new notifications")} aria-label="Notifications" className="relative p-2 rounded-lg hover:bg-primary/10">

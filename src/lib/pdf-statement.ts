@@ -4,9 +4,30 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { accounts, profile } from "./banking-data";
 import { brand } from "./brand";
+import logoUrl from "@/assets/indian-bank-one-logo.png";
 import type { UiTransaction } from "@/hooks/useTransactions";
 
 export type StatementTxn = UiTransaction;
+
+// Cache the logo as a base64 PNG data URL after first load so subsequent
+// PDF generations are instant.
+let logoDataUrl: string | null = null;
+async function loadLogoDataUrl(): Promise<string | null> {
+  if (logoDataUrl) return logoDataUrl;
+  try {
+    const res = await fetch(logoUrl);
+    const blob = await res.blob();
+    logoDataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(blob);
+    });
+    return logoDataUrl;
+  } catch {
+    return null;
+  }
+}
 
 const fmtINR = (n: number) =>
   new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
@@ -70,7 +91,8 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
     await nextPaint();
 
     try {
-      buildPdf(txns);
+      const logo = await loadLogoDataUrl();
+      buildPdf(txns, logo);
       toast.dismiss(STATEMENT_LOADING_TOAST_ID);
       setDownloading(false);
       toast.success("Statement downloaded successfully", { id: STATEMENT_SUCCESS_TOAST_ID, duration: 1200 });
@@ -92,7 +114,7 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
 }
 
 // ------- PDF rendering -------
-function buildPdf(txnsInput: StatementTxn[]) {
+function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
   const acc = accounts[0];
   // Statement renders chronologically (oldest → newest). Source array is desc.
   const txns = [...txnsInput].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
@@ -141,24 +163,25 @@ function buildPdf(txnsInput: StatementTxn[]) {
   doc.setFillColor(245, 158, 11);
   doc.rect(0, 86, pageW, 3, "F");
 
-  // logo block
+  // logo block — uploaded Indian Bank One symbol
   doc.setFillColor(255, 255, 255);
-  doc.roundedRect(margin, 22, 42, 42, 8, 8, "F");
-  doc.setTextColor(15, 31, 78);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.text("B", margin + 21, 51, { align: "center" });
+  doc.roundedRect(margin, 22, 50, 50, 8, 8, "F");
+  if (logoImg) {
+    try {
+      doc.addImage(logoImg, "PNG", margin + 5, 27, 40, 40);
+    } catch { /* ignore */ }
+  }
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(15);
-  doc.text(brand.name, margin + 54, 42);
+  doc.text(brand.name, margin + 62, 42);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(203, 213, 225);
-  doc.text("STATEMENT OF ACCOUNT", margin + 54, 56);
+  doc.text("STATEMENT OF ACCOUNT", margin + 62, 56);
   doc.setFontSize(8);
-  doc.text(brand.tagline, margin + 54, 68);
+  doc.text(brand.tagline, margin + 62, 68);
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
@@ -176,44 +199,23 @@ function buildPdf(txnsInput: StatementTxn[]) {
   const colGap = 12;
   const colW = (pageW - margin * 2 - colGap) / 2;
 
-  drawInfoCard(doc, margin, y, colW, "Customer Information", [
+  const leftH = drawInfoCard(doc, margin, y, colW, "Customer Information", [
     ["Name", profile.fullName],
     ["Customer ID", profile.customerId],
     ["Mobile", profile.mobile],
     ["Email", profile.email],
     ["Address", profile.address],
   ]);
-  drawInfoCard(doc, margin + colW + colGap, y, colW, "Account Information", [
+  const rightH = drawInfoCard(doc, margin + colW + colGap, y, colW, "Account Information", [
     ["Account No.", profile.accountNumber],
     ["Account Type", acc.type],
     ["IFSC", acc.ifsc],
     ["Branch", profile.branch],
     ["Branch Address", profile.branchAddress],
-    ["Opening Date", profile.openedOn],
     ["Status", profile.accountStatus],
-    ["Nominee", profile.nominee],
   ]);
+  y += Math.max(leftH, rightH) + 18;
 
-  // height of taller card
-  const leftH = cardHeight(5);
-  const rightH = cardHeight(8);
-  y += Math.max(leftH, rightH) + 14;
-
-  // ---- Statement period strip ----
-  doc.setFillColor(241, 245, 249);
-  doc.roundedRect(margin, y, pageW - margin * 2, 28, 4, 4, "F");
-  doc.setTextColor(71, 85, 105);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8.5);
-  doc.text("STATEMENT PERIOD", margin + 12, y + 12);
-  doc.setTextColor(15, 23, 42);
-  doc.setFontSize(11);
-  doc.text(`${periodFrom}  to  ${periodTo}`, margin + 12, y + 23);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(71, 85, 105);
-  doc.text(`${txns.length} transactions`, pageW - margin - 12, y + 19, { align: "right" });
-  y += 40;
 
   // ---- Summary cards (4 across) ----
   const cards: { label: string; value: string; color: [number, number, number] }[] = [
@@ -348,15 +350,26 @@ function buildPdf(txnsInput: StatementTxn[]) {
     const fy = pageH - 30;
     doc.setDrawColor(15, 31, 78);
     doc.setLineWidth(0.8);
-    doc.line(margin, fy - 10, pageW - margin, fy - 10);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7.5);
-    doc.setTextColor(100, 116, 139);
-    doc.text(`${brand.name} • Net Banking Statement • Customer Care ${brand.customerCare}`, margin, fy);
-    doc.text(`Generated ${generatedAt}`, margin, fy + 11);
+    doc.line(margin, fy - 14, pageW - margin, fy - 14);
+
+    // Powered by Indian Bank One + logo
+    if (logoImg) {
+      try { doc.addImage(logoImg, "PNG", margin, fy - 8, 14, 14); } catch { /* ignore */ }
+    }
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
     doc.setTextColor(15, 31, 78);
-    doc.text(`Page ${p} of ${totalPages}`, pageW - margin, fy + 5, { align: "right" });
+    doc.text(`Powered by ${brand.name}`, margin + 18, fy);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(100, 116, 139);
+    doc.text(`Customer Care ${brand.customerCare}  •  Generated ${generatedAt}`, margin + 18, fy + 9);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(15, 31, 78);
+    doc.text(`Page ${p} of ${totalPages}`, pageW - margin, fy + 4, { align: "right" });
   }
 
   // ---- Save ----
@@ -375,10 +388,6 @@ function buildPdf(txnsInput: StatementTxn[]) {
 }
 
 // ------- Helpers -------
-function cardHeight(rows: number) {
-  return 26 + rows * 14 + 8;
-}
-
 function drawInfoCard(
   doc: jsPDF,
   x: number,
@@ -386,31 +395,49 @@ function drawInfoCard(
   w: number,
   title: string,
   rows: [string, string][],
-) {
-  const h = cardHeight(rows.length);
+): number {
+  // Compute per-row heights so wrapped values (e.g. address) never overlap.
+  const labelW = 78;
+  const valueX = x + 10 + labelW;
+  const valueMaxW = w - 10 - labelW - 10;
+  const lineHeight = 11;
+  const rowPad = 5;
+
+  doc.setFontSize(8.5);
+  const rowHeights = rows.map(([, v]) => {
+    const lines = doc.splitTextToSize(String(v ?? "—"), valueMaxW) as string[];
+    return Math.max(lineHeight, lines.length * lineHeight) + rowPad;
+  });
+  const titleH = 22;
+  const totalH = titleH + 8 + rowHeights.reduce((s, h) => s + h, 0) + 6;
+
+  // Card background
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(226, 232, 240);
-  doc.roundedRect(x, y, w, h, 4, 4, "FD");
+  doc.roundedRect(x, y, w, totalH, 4, 4, "FD");
 
-  // title bar
+  // Title bar
   doc.setFillColor(241, 245, 249);
-  doc.roundedRect(x, y, w, 22, 4, 4, "F");
-  // mask the bottom rounded corners
-  doc.rect(x, y + 14, w, 8, "F");
+  doc.roundedRect(x, y, w, titleH, 4, 4, "F");
+  doc.rect(x, y + 14, w, 8, "F"); // mask bottom corners
   doc.setTextColor(15, 31, 78);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.text(title.toUpperCase(), x + 10, y + 14);
 
-  // rows
+  // Rows
   doc.setFontSize(8.5);
+  let cursor = y + titleH + 10;
   rows.forEach((r, i) => {
-    const ry = y + 30 + i * 14;
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100, 116, 139);
-    doc.text(r[0], x + 10, ry);
+    doc.text(r[0], x + 10, cursor);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(15, 23, 42);
-    doc.text(String(r[1] ?? "—"), x + 88, ry, { maxWidth: w - 96 });
+    const lines = doc.splitTextToSize(String(r[1] ?? "—"), valueMaxW) as string[];
+    lines.forEach((ln, j) => doc.text(ln, valueX, cursor + j * lineHeight));
+    cursor += rowHeights[i];
   });
+
+  return totalH;
 }

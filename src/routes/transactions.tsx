@@ -65,7 +65,7 @@ function TransactionsPage() {
       const matchesTo = !to || txn.isoDate <= to;
       return matchesQuery && matchesType && matchesFrom && matchesTo;
     });
-  }, [from, query, to, type]);
+  }, [transactions, from, query, to, type]);
 
   const totals = useMemo(
     () => ({
