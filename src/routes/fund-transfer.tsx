@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { accounts, beneficiaries } from "@/lib/banking-data";
+import { useCurrentBalance } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,6 +51,7 @@ function FundTransfer() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const acc = accounts[0];
+  const balance = useCurrentBalance();
 
   const ben = beneficiaries.find((b) => b.id === selected);
   const modeInfo = modes.find((m) => m.id === mode)!;
@@ -166,7 +168,7 @@ function FundTransfer() {
           <div className="rounded-lg bg-gradient-to-br from-blue-700 to-indigo-900 text-white p-3 mb-3">
             <div className="text-[10px] uppercase tracking-widest opacity-70 flex items-center gap-1"><Wallet className="w-3 h-3" /> Debit Account</div>
             <div className="text-[11px] font-mono mt-0.5">{acc.masked}</div>
-            <div className="text-[10px] opacity-70 mt-1">Available: <b>{fmt(acc.balance)}</b></div>
+            <div className="text-[10px] opacity-70 mt-1">Available: <b>{fmt(balance)}</b></div>
           </div>
 
           <div className="space-y-2 text-[12px] mb-3">

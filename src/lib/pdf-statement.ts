@@ -124,8 +124,9 @@ function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
   const creditCount = txns.filter((t) => t.type === "Credit").length;
   const debitCount = txns.filter((t) => t.type === "Debit").length;
 
-  const closingBalance = acc.balance;
-  const openingBalance = closingBalance - totalCredit + totalDebit;
+  // Opening balance = account opening (0); closing = opening + credits − debits
+  const openingBalance = acc.balance;
+  const closingBalance = openingBalance + totalCredit - totalDebit;
   // Running balance forward from opening
   let running = openingBalance;
   const rows = txns.map((t) => {

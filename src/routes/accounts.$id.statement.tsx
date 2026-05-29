@@ -70,15 +70,16 @@ function StatementPage() {
   const summary = useMemo(() => {
     const totalCredit = transactions.reduce((s, t) => s + (t.credit || 0), 0);
     const totalDebit = transactions.reduce((s, t) => s + (t.debit || 0), 0);
-    const opening = acc.balance - totalCredit + totalDebit;
+    const opening = acc.balance; // opening balance from account
+    const closing = opening + totalCredit - totalDebit;
     return {
-      available: acc.balance,
+      available: closing,
       opening,
-      closing: acc.balance,
+      closing,
       totalCredit,
       totalDebit,
     };
-  }, [acc.balance]);
+  }, [transactions, acc.balance]);
 
   const exportCSV = () => {
     const headers = ["Date", "Narration", "Reference", "Type", "Debit", "Credit", "Balance"];
