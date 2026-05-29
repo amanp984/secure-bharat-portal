@@ -82,7 +82,7 @@ export function ProfilePanel({ open, onClose }: { open: boolean; onClose: () => 
                   <Row icon={Building2} label="Branch" value={profile.branch} />
                   <Row icon={User} label="Account Type" value={profile.accountType} />
                   <Row icon={Calendar} label="Account Opened" value={profile.openedOn} />
-                  <Row icon={CreditCard} label="Available Balance" value={new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(acc.balance)} />
+                  <Row icon={CreditCard} label="Available Balance" value={new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(balance)} />
                   <Row icon={ShieldCheck} label="KYC Status" value={profile.kycStatus} />
                   <Row icon={BadgeCheck} label="Account Status" value={profile.accountStatus} />
                   <Row icon={User} label="Nominee" value={profile.nominee} />
