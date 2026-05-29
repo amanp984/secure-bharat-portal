@@ -58,6 +58,7 @@ function Row({ label, value, copyable }: { label: string; value: string; copyabl
 function AccountDetails() {
   const { id } = Route.useParams();
   const acc = accounts.find((a) => a.id === id) ?? accounts[0];
+  const { transactions } = useTransactions();
 
   return (
     <AppLayout>
