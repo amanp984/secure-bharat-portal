@@ -4,9 +4,30 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { accounts, profile } from "./banking-data";
 import { brand } from "./brand";
+import logoUrl from "@/assets/indian-bank-one-logo.png";
 import type { UiTransaction } from "@/hooks/useTransactions";
 
 export type StatementTxn = UiTransaction;
+
+// Cache the logo as a base64 PNG data URL after first load so subsequent
+// PDF generations are instant.
+let logoDataUrl: string | null = null;
+async function loadLogoDataUrl(): Promise<string | null> {
+  if (logoDataUrl) return logoDataUrl;
+  try {
+    const res = await fetch(logoUrl);
+    const blob = await res.blob();
+    logoDataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(blob);
+    });
+    return logoDataUrl;
+  } catch {
+    return null;
+  }
+}
 
 const fmtINR = (n: number) =>
   new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(n);
