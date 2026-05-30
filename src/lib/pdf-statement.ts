@@ -4,6 +4,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { accounts, profile } from "./banking-data";
 import { brand } from "./brand";
+import { getCanonicalTxns } from "./canonical-txns";
 import logoUrl from "@/assets/indian-bank-one-logo.png";
 import type { UiTransaction } from "@/hooks/useTransactions";
 
@@ -114,10 +115,12 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
 }
 
 // ------- PDF rendering -------
-function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
+function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   const acc = accounts[0];
-  // Preserve EXACT order of the website ledger — do not sort, reorder or regroup.
-  const txns = txnsInput;
+  // ALWAYS use the canonical full ledger snapshot — identical PDF on every
+  // device and from every download button. Ignore any filtered/partial list
+  // passed by individual call sites.
+  const txns = getCanonicalTxns();
 
   const totalCredit = txns.reduce((s, t) => s + (t.credit || 0), 0);
   const totalDebit = txns.reduce((s, t) => s + (t.debit || 0), 0);
