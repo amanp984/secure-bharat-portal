@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 
 import { DemoAuthGate } from "@/components/DemoAuthGate";
+import { LoadingOverlay } from "@/components/LoadingOverlay";
 
 function NotFoundComponent() {
   return (
