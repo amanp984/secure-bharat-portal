@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { recordLogin } from "@/lib/session";
+import { showLoading } from "@/lib/loading";
 import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_bank_one_demo_auth";
@@ -106,7 +107,10 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
         recordLogin();
         toast.success("Login successful. Welcome to Indian Bank One.");
         setLoading(false);
+        // Show premium loading overlay while the dashboard mounts.
+        const release = showLoading("Securing your session");
         onSuccess();
+        setTimeout(release, 1800);
       } else {
         setLoading(false);
         toast.error("Invalid User ID or Password");
@@ -296,26 +300,43 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
               </div>
               <div className="flex gap-2">
                 <button
+                  aria-label="Download on the App Store"
                   onClick={() =>
                     window.open(
                       "https://play.google.com/store/apps/details?id=com.iexceed.ib.digitalbankingprod&hl=en_IN",
                       "_blank"
                     )
                   }
-                  className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90"
+                  className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 hover:opacity-90 transition-opacity"
                 >
-                  <span className="text-base">🍎</span> App Store
+                  <svg viewBox="0 0 384 512" className="w-5 h-5 fill-current shrink-0" aria-hidden="true">
+                    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM256.4 84.5c30.1-35.7 27.4-68.2 26.5-79.9-26.6 1.5-57.4 18.1-74.9 38.5-19.3 21.9-30.6 49-28.2 78.7 28.8 2.2 55.1-12.6 76.6-37.3z"/>
+                  </svg>
+                  <span className="flex flex-col items-start leading-tight">
+                    <span className="text-[8px] uppercase opacity-80">Download on the</span>
+                    <span className="text-[12px] font-semibold -mt-0.5">App Store</span>
+                  </span>
                 </button>
                 <button
+                  aria-label="Get it on Google Play"
                   onClick={() =>
                     window.open(
                       "https://play.google.com/store/apps/details?id=com.iexceed.ib.digitalbankingprod&hl=en_IN",
                       "_blank"
                     )
                   }
-                  className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90"
+                  className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 hover:opacity-90 transition-opacity"
                 >
-                  <span className="text-base">▶</span> Google Play
+                  <svg viewBox="0 0 512 512" className="w-5 h-5 shrink-0" aria-hidden="true">
+                    <path fill="#00C3FF" d="M48 16.5C39.1 21.7 33.6 31.1 33.6 43.2v425.5c0 12.1 5.5 21.5 14.4 26.7l239.5-239.7L48 16.5z"/>
+                    <path fill="#FFCE00" d="M376.6 174.8 287.5 255.7l89.1 90.9 81.6-45.6c22.7-12.7 22.7-45.5 0-58.2l-81.6-67.9z"/>
+                    <path fill="#FF3B30" d="M48 16.5 287.5 255.7l89.1-80.9L66.1 6.5c-6.5-3.6-13-3.6-18.1 10z"/>
+                    <path fill="#00E676" d="M48 495.1c5.1 13.6 11.6 13.6 18.1 10l310.5-168.5-89.1-80.9L48 495.1z"/>
+                  </svg>
+                  <span className="flex flex-col items-start leading-tight">
+                    <span className="text-[8px] uppercase opacity-80">Get it on</span>
+                    <span className="text-[12px] font-semibold -mt-0.5">Google Play</span>
+                  </span>
                 </button>
               </div>
               <p className="text-[10px] text-muted-foreground mt-2">Scan the QR on indianbankone.in/app to install instantly.</p>
