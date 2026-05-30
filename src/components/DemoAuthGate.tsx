@@ -268,10 +268,26 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 <h4 className="font-bold text-sm">Download Indian Bank One App</h4>
               </div>
               <div className="flex gap-2">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90">
+                <button
+                  onClick={() =>
+                    window.open(
+                      "https://play.google.com/store/apps/details?id=com.iexceed.ib.digitalbankingprod&hl=en_IN",
+                      "_blank"
+                    )
+                  }
+                  className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90"
+                >
                   <span className="text-base">🍎</span> App Store
                 </button>
-                <button className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90">
+                <button
+                  onClick={() =>
+                    window.open(
+                      "https://play.google.com/store/apps/details?id=com.iexceed.ib.digitalbankingprod&hl=en_IN",
+                      "_blank"
+                    )
+                  }
+                  className="flex-1 flex items-center justify-center gap-2 bg-black text-white rounded-lg px-3 py-2 text-[11px] font-semibold hover:opacity-90"
+                >
                   <span className="text-base">▶</span> Google Play
                 </button>
               </div>
