@@ -116,33 +116,30 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
 // ------- PDF rendering -------
 function buildPdf(txnsInput: StatementTxn[], logoImg: string | null) {
   const acc = accounts[0];
-  // Statement renders chronologically (oldest → newest). Source array is desc.
-  const txns = [...txnsInput].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+  // Preserve EXACT order of the website ledger — do not sort, reorder or regroup.
+  const txns = txnsInput;
 
   const totalCredit = txns.reduce((s, t) => s + (t.credit || 0), 0);
   const totalDebit = txns.reduce((s, t) => s + (t.debit || 0), 0);
   const creditCount = txns.filter((t) => t.type === "Credit").length;
   const debitCount = txns.filter((t) => t.type === "Debit").length;
 
-  // Opening balance = account opening (0); closing = opening + credits − debits
+  // Use the ledger's own balance values — do not recompute.
   const openingBalance = acc.balance;
   const closingBalance = openingBalance + totalCredit - totalDebit;
-  // Running balance forward from opening
-  let running = openingBalance;
-  const rows = txns.map((t) => {
-    running = running + (t.credit || 0) - (t.debit || 0);
-    return {
-      date: ddmmyyyy(t.isoDate),
-      narration: t.narration,
-      ref: t.reference || t.id.slice(0, 12),
-      debit: t.debit ? fmtINR(t.debit) : "—",
-      credit: t.credit ? fmtINR(t.credit) : "—",
-      balance: fmtINR(running),
-    };
-  });
+  const rows = txns.map((t) => ({
+    date: ddmmyyyy(t.isoDate),
+    narration: t.narration,
+    ref: t.reference || t.id.slice(0, 12),
+    debit: t.debit ? fmtINR(t.debit) : "—",
+    credit: t.credit ? fmtINR(t.credit) : "—",
+    balance: fmtINR(t.balance),
+  }));
 
-  const periodFrom = txns.length ? ddmmyyyy(txns[0].isoDate) : "—";
-  const periodTo = txns.length ? ddmmyyyy(txns[txns.length - 1].isoDate) : "—";
+  // Period spans the ledger's date range regardless of row order.
+  const isoDates = txns.map((t) => t.isoDate).sort();
+  const periodFrom = isoDates.length ? ddmmyyyy(isoDates[0]) : "—";
+  const periodTo = isoDates.length ? ddmmyyyy(isoDates[isoDates.length - 1]) : "—";
   const generatedAt = formatGenStamp(new Date());
 
   const doc = new jsPDF({ unit: "pt", format: "a4" });
