@@ -14,6 +14,7 @@ import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
 const AUTH_KEY = "indian_bank_one_demo_auth";
 const DEMO_USER = "2864286728";
 const DEMO_PASS = "Krishna@1995";
+const IDLE_MS = 3 * 60 * 1000; // 3 minutes
 
 function genCaptcha() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -33,10 +34,36 @@ export function DemoAuthGate({ children }: { children: React.ReactNode }) {
   const [authed, setAuthed] = useState(false);
   const [ready, setReady] = useState(false);
 
+  // Force logout on every page (re)load: clear any previously persisted auth.
   useEffect(() => {
-    setAuthed(typeof window !== "undefined" && localStorage.getItem(AUTH_KEY) === "1");
+    try { localStorage.removeItem(AUTH_KEY); } catch {}
+    setAuthed(false);
     setReady(true);
   }, []);
+
+  // Auto-logout after IDLE_MS of inactivity.
+  useEffect(() => {
+    if (!authed) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const logout = () => {
+      try { localStorage.removeItem(AUTH_KEY); } catch {}
+      setAuthed(false);
+      toast.error("Session expired due to inactivity. Please login again.");
+    };
+    const reset = () => {
+      clearTimeout(timer);
+      timer = setTimeout(logout, IDLE_MS);
+    };
+    const events: (keyof WindowEventMap)[] = [
+      "mousemove", "mousedown", "click", "keydown", "scroll", "touchstart", "touchmove",
+    ];
+    events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
+    reset();
+    return () => {
+      clearTimeout(timer);
+      events.forEach((e) => window.removeEventListener(e, reset));
+    };
+  }, [authed]);
 
   if (!ready) return null;
   if (authed) return <>{children}</>;

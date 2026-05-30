@@ -30,13 +30,13 @@ export function computeCurrentBalance(
 }
 
 export const beneficiaries = [
-  { id: "b1", name: "Demo Payee One", bank: "Demo Bank A", acc: "XXXX 0001", last: "18 May 2026" },
-  { id: "b2", name: "Sample Enterprises", bank: "Demo Bank B", acc: "XXXX 0002", last: "12 May 2026" },
-  { id: "b3", name: "Example Vendor", bank: "Demo Bank C", acc: "XXXX 0003", last: "06 May 2026" },
+  { id: "b1", name: "Rajesh Sawant", bank: "Indian Bank", acc: "XXXXXXXX6292", last: "18 May 2026" },
+  { id: "b2", name: "JK Telecom", bank: "Bank of Baroda", acc: "XXXXXXXX8162", last: "12 May 2026" },
+  { id: "b3", name: "Pawan Kumar", bank: "HDFC Bank", acc: "XXXXXXXX7202", last: "06 May 2026" },
 ];
 
 export const profile = {
-  fullName: "Dharmendra Soni",
+  fullName: "Mr Hariram Choudhary",
   customerId: "2864286728",
   accountNumber: "652897626784",
   ifsc: "IDIB000N007",
