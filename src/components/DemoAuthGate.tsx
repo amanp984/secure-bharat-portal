@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { recordLogin } from "@/lib/session";
+import { showLoading } from "@/lib/loading";
 import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_bank_one_demo_auth";
