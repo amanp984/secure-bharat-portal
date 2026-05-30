@@ -87,7 +87,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
             DS
           </div>
           <div className="hidden md:block leading-tight text-left">
-            <div className="text-xs font-semibold">Dharmendra S.</div>
+            <div className="text-xs font-semibold">Hariram C.</div>
             <div className="text-[9px] text-muted-foreground">CIF: {profile.customerId}</div>
           </div>
           <ChevronDown className="hidden md:block w-3.5 h-3.5 text-muted-foreground" />
