@@ -148,7 +148,9 @@ export function useTransactions() {
             from += PAGE;
           }
           if (!active) return;
-          setTransactions(mapRows(all));
+          const mapped = mapRows(all);
+          setCanonicalTxns(mapped);
+          setTransactions(mapped);
         } catch (err) {
           console.warn("[useTransactions] load threw", err);
           if (active) setTransactions([]);
