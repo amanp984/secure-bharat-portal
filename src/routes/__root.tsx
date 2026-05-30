@@ -76,6 +76,7 @@ function RootComponent() {
           <Outlet />
         </main>
       </DemoAuthGate>
+      <LoadingOverlay />
     </QueryClientProvider>
   );
 }
