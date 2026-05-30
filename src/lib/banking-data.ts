@@ -36,7 +36,7 @@ export const beneficiaries = [
 ];
 
 export const profile = {
-  fullName: "Dharmendra Soni",
+  fullName: "Mr Hariram Choudhary",
   customerId: "2864286728",
   accountNumber: "652897626784",
   ifsc: "IDIB000N007",
