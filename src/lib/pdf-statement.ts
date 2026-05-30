@@ -4,6 +4,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { accounts, profile } from "./banking-data";
 import { brand } from "./brand";
+import { getCanonicalTxns } from "./canonical-txns";
 import logoUrl from "@/assets/indian-bank-one-logo.png";
 import type { UiTransaction } from "@/hooks/useTransactions";
 
