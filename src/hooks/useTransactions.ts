@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import { accounts, computeCurrentBalance } from "@/lib/banking-data";
+import { setCanonicalTxns } from "@/lib/canonical-txns";
 
 // UI transaction shape — matches what the dashboard already expects.
 export interface UiTransaction {
