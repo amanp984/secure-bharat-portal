@@ -19,27 +19,21 @@ export function LoadingOverlay() {
 
   // Bridge: show overlay during route navigations.
   useEffect(() => {
-    const releases = new Map<string, () => void>();
+    const releases: Array<() => void> = [];
     const unsubBefore = router.subscribe("onBeforeLoad", (e: any) => {
-      // ignore initial / same-route
       if (e?.pathChanged === false) return;
-      const key = String(e?.toLocation?.href ?? Math.random());
-      releases.set(key, showLoading("Loading"));
+      releases.push(showLoading("Loading"));
     });
-    const finish = (e: any) => {
-      const key = String(e?.toLocation?.href ?? "");
-      // Release matching, or release oldest if no match
-      const fn = releases.get(key);
-      if (fn) { fn(); releases.delete(key); }
-      else if (releases.size) {
-        const first = releases.keys().next().value as string;
-        releases.get(first)?.();
-        releases.delete(first);
-      }
+    const finish = () => {
+      const fn = releases.shift();
+      if (fn) fn();
     };
     const unsubResolved = router.subscribe("onResolved", finish);
-    const unsubError = router.subscribe("onBeforeNavigate" as any, () => {});
-    return () => { unsubBefore(); unsubResolved(); unsubError(); releases.forEach((r) => r()); };
+    return () => {
+      unsubBefore();
+      unsubResolved();
+      releases.forEach((r) => r());
+    };
   }, [router]);
 
   return (
