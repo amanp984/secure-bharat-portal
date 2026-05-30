@@ -84,7 +84,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 ml-1 border rounded-full hover:bg-primary/5 transition-colors"
         >
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shadow-sm">
-            DS
+            HC
           </div>
           <div className="hidden md:block leading-tight text-left">
             <div className="text-xs font-semibold">Hariram C.</div>
