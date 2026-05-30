@@ -107,7 +107,10 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
         recordLogin();
         toast.success("Login successful. Welcome to Indian Bank One.");
         setLoading(false);
+        // Show premium loading overlay while the dashboard mounts.
+        const release = showLoading("Securing your session");
         onSuccess();
+        setTimeout(release, 1800);
       } else {
         setLoading(false);
         toast.error("Invalid User ID or Password");
