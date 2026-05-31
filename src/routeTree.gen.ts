@@ -10,12 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TransactionsRouteImport } from './routes/transactions'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as FundTransferRouteImport } from './routes/fund-transfer'
 import { Route as DepositsRouteImport } from './routes/deposits'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CardsRouteImport } from './routes/cards'
 import { Route as BillsRouteImport } from './routes/bills'
 import { Route as AccountsRouteImport } from './routes/accounts'
@@ -29,6 +32,11 @@ const TransactionsRoute = TransactionsRouteImport.update({
   path: '/transactions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -37,6 +45,11 @@ const SupportRoute = SupportRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoansRoute = LoansRouteImport.update({
@@ -57,6 +70,11 @@ const FundTransferRoute = FundTransferRouteImport.update({
 const DepositsRoute = DepositsRouteImport.update({
   id: '/deposits',
   path: '/deposits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CardsRoute = CardsRouteImport.update({
@@ -100,12 +118,15 @@ export interface FileRoutesByFullPath {
   '/accounts': typeof AccountsRouteWithChildren
   '/bills': typeof BillsRoute
   '/cards': typeof CardsRoute
+  '/contact': typeof ContactRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/transactions': typeof TransactionsRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
@@ -116,12 +137,15 @@ export interface FileRoutesByTo {
   '/accounts': typeof AccountsRouteWithChildren
   '/bills': typeof BillsRoute
   '/cards': typeof CardsRoute
+  '/contact': typeof ContactRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/transactions': typeof TransactionsRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
@@ -133,12 +157,15 @@ export interface FileRoutesById {
   '/accounts': typeof AccountsRouteWithChildren
   '/bills': typeof BillsRoute
   '/cards': typeof CardsRoute
+  '/contact': typeof ContactRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRoute
   '/investments': typeof InvestmentsRoute
   '/loans': typeof LoansRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/transactions': typeof TransactionsRoute
   '/accounts/$id': typeof AccountsIdRouteWithChildren
   '/accounts/$id/passbook': typeof AccountsIdPassbookRoute
@@ -151,12 +178,15 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/bills'
     | '/cards'
+    | '/contact'
     | '/deposits'
     | '/fund-transfer'
     | '/investments'
     | '/loans'
+    | '/privacy'
     | '/settings'
     | '/support'
+    | '/terms'
     | '/transactions'
     | '/accounts/$id'
     | '/accounts/$id/passbook'
@@ -167,12 +197,15 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/bills'
     | '/cards'
+    | '/contact'
     | '/deposits'
     | '/fund-transfer'
     | '/investments'
     | '/loans'
+    | '/privacy'
     | '/settings'
     | '/support'
+    | '/terms'
     | '/transactions'
     | '/accounts/$id'
     | '/accounts/$id/passbook'
@@ -183,12 +216,15 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/bills'
     | '/cards'
+    | '/contact'
     | '/deposits'
     | '/fund-transfer'
     | '/investments'
     | '/loans'
+    | '/privacy'
     | '/settings'
     | '/support'
+    | '/terms'
     | '/transactions'
     | '/accounts/$id'
     | '/accounts/$id/passbook'
@@ -200,12 +236,15 @@ export interface RootRouteChildren {
   AccountsRoute: typeof AccountsRouteWithChildren
   BillsRoute: typeof BillsRoute
   CardsRoute: typeof CardsRoute
+  ContactRoute: typeof ContactRoute
   DepositsRoute: typeof DepositsRoute
   FundTransferRoute: typeof FundTransferRoute
   InvestmentsRoute: typeof InvestmentsRoute
   LoansRoute: typeof LoansRoute
+  PrivacyRoute: typeof PrivacyRoute
   SettingsRoute: typeof SettingsRoute
   SupportRoute: typeof SupportRoute
+  TermsRoute: typeof TermsRoute
   TransactionsRoute: typeof TransactionsRoute
 }
 
@@ -216,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/transactions'
       fullPath: '/transactions'
       preLoaderRoute: typeof TransactionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/support': {
@@ -230,6 +276,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/loans': {
@@ -258,6 +311,13 @@ declare module '@tanstack/react-router' {
       path: '/deposits'
       fullPath: '/deposits'
       preLoaderRoute: typeof DepositsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cards': {
@@ -343,12 +403,15 @@ const rootRouteChildren: RootRouteChildren = {
   AccountsRoute: AccountsRouteWithChildren,
   BillsRoute: BillsRoute,
   CardsRoute: CardsRoute,
+  ContactRoute: ContactRoute,
   DepositsRoute: DepositsRoute,
   FundTransferRoute: FundTransferRoute,
   InvestmentsRoute: InvestmentsRoute,
   LoansRoute: LoansRoute,
+  PrivacyRoute: PrivacyRoute,
   SettingsRoute: SettingsRoute,
   SupportRoute: SupportRoute,
+  TermsRoute: TermsRoute,
   TransactionsRoute: TransactionsRoute,
 }
 export const routeTree = rootRouteImport
