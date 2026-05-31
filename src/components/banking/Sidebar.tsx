@@ -10,7 +10,7 @@ import {
 import { useBankingModal } from "./ModalContext";
 import { toast } from "sonner";
 import { brand } from "@/lib/brand";
-import { IndianOneLogo } from "./IndianOneLogo";
+import { IndianOneLogo } from "./IndianBankOneLogo";
 import { recordLogout } from "@/lib/session";
 
 type Item = { label: string; icon: any; to?: string; action?: "mobile-only" | "logout" };
