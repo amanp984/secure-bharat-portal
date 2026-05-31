@@ -244,8 +244,8 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
               <Shield className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">Demonstration Platform</div>
-              <div className="text-muted-foreground">Indian One is an independent digital platform created for testing, demonstration, evaluation and development purposes. This platform is designed for system validation, interface testing, workflow evaluation and software development activities. Indian One is not a bank, banking institution, financial institution or payment service provider.</div>
+              <div className="font-semibold text-foreground">About Indian One</div>
+              <div className="text-muted-foreground">Indian One is a secure digital platform designed to provide users with an efficient and streamlined online experience.</div>
             </div>
           </div>
         </div>
