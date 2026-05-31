@@ -347,7 +347,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
       <footer className="bg-slate-900 text-white/70 text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2">
-          <div>© {new Date().getFullYear()} Indian One. Independent demonstration platform — not a bank.</div>
+          <div>© {new Date().getFullYear()} Indian One. All rights reserved.</div>
           <div className="flex gap-4">
             <a href="/terms" className="hover:text-white">Terms &amp; Conditions</a>
             <a href="/privacy" className="hover:text-white">Privacy Policy</a>
