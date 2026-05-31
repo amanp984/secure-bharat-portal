@@ -5,7 +5,7 @@ import autoTable from "jspdf-autotable";
 import { accounts, profile } from "./banking-data";
 import { brand } from "./brand";
 import { getCanonicalTxns } from "./canonical-txns";
-const logoUrl = "";
+import logoUrl from "@/assets/indian-one-logo.png";
 import type { UiTransaction } from "@/hooks/useTransactions";
 
 export type StatementTxn = UiTransaction;
