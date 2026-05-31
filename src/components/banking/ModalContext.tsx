@@ -6,7 +6,6 @@ import { useNavigate } from "@tanstack/react-router";
 
 type ModalKind =
   | "mobile-only"
-  | "beneficiary-restricted"
   | "register-failed"
   | "card-action-success"
   | null;
@@ -32,14 +31,6 @@ export function BankingModalProvider({ children }: { children: ReactNode }) {
         "Unable to process this transaction through Net Banking. Please use Mobile Banking to continue.",
       color: "text-destructive",
       bg: "bg-destructive/10",
-    },
-    "beneficiary-restricted": {
-      icon: Shield,
-      title: "Mobile Banking Required",
-      message:
-        "For security reasons, beneficiary management is currently available only on Mobile Banking. Please use Mobile Banking to continue.",
-      color: "text-primary",
-      bg: "bg-primary/10",
     },
     "register-failed": {
       icon: AlertTriangle,
@@ -124,3 +115,5 @@ export function BankingModalProvider({ children }: { children: ReactNode }) {
     </Ctx.Provider>
   );
 }
+{/* note: Shield import retained for compatibility */}
+export const _ShieldRef = Shield;
