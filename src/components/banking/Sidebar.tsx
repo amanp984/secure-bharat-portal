@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  LayoutDashboard, Wallet, FileText, ScrollText, Send, Zap,
-  Building2, Banknote, UserPlus, Users, CreditCard, ShieldCheck,
+  LayoutDashboard, Wallet, ScrollText, Send, Zap,
+  Building2, Banknote, CreditCard, ShieldCheck,
   HandCoins, PiggyBank, Receipt, MessageSquare,
   AlertCircle, Headphones, MapPin, Settings,
   LogOut, X,
@@ -13,11 +13,11 @@ import { brand } from "@/lib/brand";
 import { IndianBankOneLogo } from "./IndianBankOneLogo";
 import { recordLogout } from "@/lib/session";
 
-type Item = { label: string; icon: any; to?: string; action?: "mobile-only" | "beneficiary-restricted" | "logout" };
+type Item = { label: string; icon: any; to?: string; action?: "mobile-only" | "logout" };
 
 const sections: { title: string; items: Item[] }[] = [
   {
-    title: "Banking",
+    title: "Account",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, to: "/" },
       { label: "Account Summary", icon: Wallet, to: "/accounts" },
@@ -31,8 +31,6 @@ const sections: { title: string; items: Item[] }[] = [
       { label: "IMPS", icon: Zap, to: "/fund-transfer" },
       { label: "NEFT", icon: Building2, to: "/fund-transfer" },
       { label: "RTGS", icon: Banknote, to: "/fund-transfer" },
-      { label: "Add Beneficiary", icon: UserPlus, action: "beneficiary-restricted" },
-      { label: "Manage Beneficiary", icon: Users, action: "beneficiary-restricted" },
     ],
   },
   {
@@ -79,7 +77,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
   const handleAction = (item: Item) => {
     if (item.action === "logout") {
       recordLogout();
-      localStorage.removeItem("indian_bank_one_demo_auth");
+      localStorage.removeItem("indian_one_demo_auth");
       toast.success("Logging out securely…");
       setTimeout(() => { navigate({ to: "/" }); window.location.reload(); }, 500);
     } else if (item.action) {

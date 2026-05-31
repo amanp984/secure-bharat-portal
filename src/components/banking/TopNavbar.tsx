@@ -12,7 +12,6 @@ const navItems = [
   { label: "Dashboard", to: "/" },
   { label: "All Accounts", to: "/accounts" },
   { label: "Fund Transfers", to: "/fund-transfer" },
-  { label: "Manage Beneficiary", to: "/beneficiary" },
   { label: "Deposits", to: "/deposits" },
   { label: "Loans", to: "/loans" },
   { label: "Cards", to: "/cards" },
@@ -27,7 +26,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
 
   const logout = () => {
     recordLogout();
-    localStorage.removeItem("indian_bank_one_demo_auth");
+    localStorage.removeItem("indian_one_demo_auth");
     toast.success("Logged out securely");
     setTimeout(() => navigate({ to: "/" }), 400);
     setTimeout(() => window.location.reload(), 600);
@@ -59,8 +58,8 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           <span className="sr-only">Search</span>
           <input
             id="global-search"
-            aria-label="Search transactions, payees and services"
-            placeholder="Search transactions, payees, services…"
+            aria-label="Search transactions and services"
+            placeholder="Search transactions, services…"
             className="bg-transparent text-sm outline-none flex-1 placeholder:text-muted-foreground"
           />
         </label>
