@@ -8,9 +8,9 @@ import { motion } from "framer-motion";
 export const Route = createFileRoute("/accounts/$id/passbook")({
   component: Passbook,
   head: ({ params }) => {
-    const url = `https://www.indianbankone.in/accounts/${params.id}/passbook`;
-    const title = `M-Passbook — Indian Bank One`;
-    const desc = `Real-time digital passbook with credits, debits and running balance for your Indian Bank One account.`;
+    const url = `https://www.indianone.in/accounts/${params.id}/passbook`;
+    const title = `M-Passbook — Indian One`;
+    const desc = `Real-time digital passbook with credits, debits and running balance for your Indian One account.`;
     return {
       meta: [
         { title },

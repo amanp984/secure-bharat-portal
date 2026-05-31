@@ -22,13 +22,13 @@ export const Route = createFileRoute("/support")({
   component: Support,
   head: () => ({
     meta: [
-      { title: "Service Requests & Support — Indian Bank One" },
-      { name: "description", content: "Raise complaints, track service requests and get 24x7 support for Indian Bank One Net Banking." },
-      { property: "og:title", content: "Service Requests & Support — Indian Bank One" },
-      { property: "og:description", content: "Raise complaints, track service requests and get 24x7 support for Indian Bank One Net Banking." },
-      { property: "og:url", content: "https://www.indianbankone.in/support" },
+      { title: "Service Requests & Support — Indian One" },
+      { name: "description", content: "Raise complaints, track service requests and get 24x7 support for Indian One Net Banking." },
+      { property: "og:title", content: "Service Requests & Support — Indian One" },
+      { property: "og:description", content: "Raise complaints, track service requests and get 24x7 support for Indian One Net Banking." },
+      { property: "og:url", content: "https://www.indianone.in/support" },
     ],
-    links: [{ rel: "canonical", href: "https://www.indianbankone.in/support" }],
+    links: [{ rel: "canonical", href: "https://www.indianone.in/support" }],
   }),
 });
 
@@ -97,7 +97,7 @@ function Support() {
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x text-center">
             {[
               { i: Phone, l: "Toll Free", v: "1800-572-9900" },
-              { i: Mail, l: "Email", v: "support@indianbankone.in" },
+              { i: Mail, l: "Email", v: "support@indianone.in" },
               { i: MapPin, l: "Branches", v: "200+ locations" },
               { i: MessageSquare, l: "WhatsApp", v: "+91 70xxxxxx00" },
             ].map((x) => (

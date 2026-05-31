@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRouter } from "@tanstack/react-router";
-import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
+import { IndianOneLogo } from "@/components/banking/IndianOneLogo";
 import { useLoadingState, showLoading } from "@/lib/loading";
 import { useStatementDownloadState } from "@/lib/pdf-statement";
 
@@ -79,7 +79,7 @@ export function LoadingOverlay() {
               </svg>
               {/* Center logo */}
               <div className="relative w-[60px] h-[60px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg flex items-center justify-center p-2">
-                <IndianBankOneLogo className="w-full h-full" />
+                <IndianOneLogo className="w-full h-full" />
               </div>
             </div>
             <div className="mt-4 text-xs sm:text-sm font-semibold text-slate-700 tracking-wide">

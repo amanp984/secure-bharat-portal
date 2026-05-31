@@ -164,7 +164,7 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   doc.setFillColor(245, 158, 11);
   doc.rect(0, 86, pageW, 3, "F");
 
-  // logo block — uploaded Indian Bank One symbol
+  // logo block — uploaded Indian One symbol
   doc.setFillColor(255, 255, 255);
   doc.roundedRect(margin, 22, 50, 50, 8, 8, "F");
   if (logoImg) {
@@ -353,7 +353,7 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
     doc.setLineWidth(0.8);
     doc.line(margin, fy - 14, pageW - margin, fy - 14);
 
-    // Powered by Indian Bank One + logo
+    // Powered by Indian One + logo
     if (logoImg) {
       try { doc.addImage(logoImg, "PNG", margin, fy - 8, 14, 14); } catch { /* ignore */ }
     }

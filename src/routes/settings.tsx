@@ -9,13 +9,13 @@ export const Route = createFileRoute("/settings")({
   component: Settings,
   head: () => ({
     meta: [
-      { title: "Settings — Indian Bank One" },
-      { name: "description", content: "Update your Indian Bank One profile, security, notifications and net banking preferences." },
-      { property: "og:title", content: "Settings — Indian Bank One" },
-      { property: "og:description", content: "Update your Indian Bank One profile, security, notifications and net banking preferences." },
-      { property: "og:url", content: "https://www.indianbankone.in/settings" },
+      { title: "Settings — Indian One" },
+      { name: "description", content: "Update your Indian One profile, security, notifications and net banking preferences." },
+      { property: "og:title", content: "Settings — Indian One" },
+      { property: "og:description", content: "Update your Indian One profile, security, notifications and net banking preferences." },
+      { property: "og:url", content: "https://www.indianone.in/settings" },
     ],
-    links: [{ rel: "canonical", href: "https://www.indianbankone.in/settings" }],
+    links: [{ rel: "canonical", href: "https://www.indianone.in/settings" }],
   }),
 });
 

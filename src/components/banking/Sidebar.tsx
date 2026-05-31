@@ -10,7 +10,7 @@ import {
 import { useBankingModal } from "./ModalContext";
 import { toast } from "sonner";
 import { brand } from "@/lib/brand";
-import { IndianBankOneLogo } from "./IndianBankOneLogo";
+import { IndianOneLogo } from "./IndianOneLogo";
 import { recordLogout } from "@/lib/session";
 
 type Item = { label: string; icon: any; to?: string; action?: "mobile-only" | "logout" };
@@ -107,7 +107,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
             <div className="bg-primary text-primary-foreground p-5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center p-1.5">
-                  <IndianBankOneLogo className="w-full h-full" />
+                  <IndianOneLogo className="w-full h-full" />
                 </div>
                 <div>
                   <div className="font-bold text-lg">{brand.name}</div>

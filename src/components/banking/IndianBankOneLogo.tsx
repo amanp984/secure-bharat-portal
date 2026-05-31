@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 // Centralised wordmark for the Indian One platform. Renders as an inline SVG
 // so the same component slot can be replaced later with an uploaded asset
 // without changing layout or sizing anywhere it's used.
-export function IndianBankOneLogo({
+export function IndianOneLogo({
   className,
   alt = "Indian One",
 }: {

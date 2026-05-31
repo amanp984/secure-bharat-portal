@@ -10,13 +10,13 @@ export const Route = createFileRoute("/loans")({
   component: Loans,
   head: () => ({
     meta: [
-      { title: "Loans — Indian Bank One" },
-      { name: "description", content: "Apply for home, car, education, personal and pre-approved loans with Indian Bank One." },
-      { property: "og:title", content: "Loans — Indian Bank One" },
-      { property: "og:description", content: "Apply for home, car, education, personal and pre-approved loans with Indian Bank One." },
-      { property: "og:url", content: "https://www.indianbankone.in/loans" },
+      { title: "Loans — Indian One" },
+      { name: "description", content: "Apply for home, car, education, personal and pre-approved loans with Indian One." },
+      { property: "og:title", content: "Loans — Indian One" },
+      { property: "og:description", content: "Apply for home, car, education, personal and pre-approved loans with Indian One." },
+      { property: "og:url", content: "https://www.indianone.in/loans" },
     ],
-    links: [{ rel: "canonical", href: "https://www.indianbankone.in/loans" }],
+    links: [{ rel: "canonical", href: "https://www.indianone.in/loans" }],
   }),
 });
 

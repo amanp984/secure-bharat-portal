@@ -10,9 +10,9 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { recordLogin } from "@/lib/session";
 import { showLoading } from "@/lib/loading";
-import { IndianBankOneLogo } from "@/components/banking/IndianBankOneLogo";
+import { IndianOneLogo } from "@/components/banking/IndianOneLogo";
 
-const AUTH_KEY = "indian_bank_one_demo_auth";
+const AUTH_KEY = "indian_one_demo_auth";
 const DEMO_USER = "2864286728";
 const DEMO_PASS = "Krishna@1995";
 const IDLE_MS = 3 * 60 * 1000; // 3 minutes
@@ -26,7 +26,7 @@ function genCaptcha() {
 
 const slides = [
   { title: "Earn 7.25% p.a. on Fixed Deposits", sub: "Special rates for senior citizens · Insured up to ₹5 Lakh", grad: "from-blue-700 to-indigo-900" },
-  { title: "Indian Bank One Personal Loan", sub: "Quick disbursal · Attractive interest from 10.50% p.a.", grad: "from-indigo-700 to-purple-900" },
+  { title: "Indian One Personal Loan", sub: "Quick disbursal · Attractive interest from 10.50% p.a.", grad: "from-indigo-700 to-purple-900" },
   { title: "Digital RuPay Debit Card", sub: "Tap & Pay · Zero issuance fee · Worldwide acceptance", grad: "from-amber-600 to-orange-800" },
   { title: "Apply for Home Loan online", sub: "Loans up to ₹5 Cr · Tenure up to 30 years · Doorstep service", grad: "from-emerald-700 to-teal-900" },
 ];
@@ -105,7 +105,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
       if (uid === DEMO_USER && pass === DEMO_PASS) {
         try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
         recordLogin();
-        toast.success("Login successful. Welcome to Indian Bank One.");
+        toast.success("Login successful. Welcome to Indian One.");
         setLoading(false);
         // Show premium loading overlay while the dashboard mounts.
         const release = showLoading("Securing your session");
@@ -128,10 +128,10 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1">
-              <IndianBankOneLogo className="w-full h-full" />
+              <IndianOneLogo className="w-full h-full" />
             </div>
             <div className="leading-tight">
-              <div className="font-bold text-base tracking-tight">Indian Bank One</div>
+              <div className="font-bold text-base tracking-tight">Indian One</div>
               <div className="text-[10px] text-amber-300 tracking-widest font-semibold">YOUR OWN BANK · सत्यमेव जयते</div>
             </div>
           </div>
@@ -286,7 +286,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 <h4 className="font-bold text-sm">Security Tips</h4>
               </div>
               <ul className="text-[11px] text-muted-foreground space-y-1 list-disc list-inside">
-                <li>Indian Bank One will never ask for OTP, PIN or password.</li>
+                <li>Indian One will never ask for OTP, PIN or password.</li>
                 <li>Always check the URL begins with <span className="font-mono">https://</span>.</li>
                 <li>Avoid public Wi-Fi for Net Banking transactions.</li>
                 <li>Report suspicious calls to 1930 (Cyber Crime Helpline).</li>
@@ -296,7 +296,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             <div className="rounded-xl border bg-white p-4">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center"><Smartphone className="w-4 h-4" /></div>
-                <h4 className="font-bold text-sm">Download Indian Bank One App</h4>
+                <h4 className="font-bold text-sm">Download Indian One App</h4>
               </div>
               <div className="flex gap-2">
                 <button
@@ -339,7 +339,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                   </span>
                 </button>
               </div>
-              <p className="text-[10px] text-muted-foreground mt-2">Scan the QR on indianbankone.in/app to install instantly.</p>
+              <p className="text-[10px] text-muted-foreground mt-2">Scan the QR on indianone.in/app to install instantly.</p>
             </div>
           </div>
         </div>
@@ -347,7 +347,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
       <footer className="bg-slate-900 text-white/70 text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2">
-          <div>© 2026 Indian Bank One Ltd. All rights reserved. Regulated by Reserve Bank of India.</div>
+          <div>© 2026 Indian One Ltd. All rights reserved. Regulated by Reserve Bank of India.</div>
           <div className="flex gap-4"><span>Privacy</span><span>Terms</span><span>Disclaimer</span><span>Contact</span></div>
         </div>
       </footer>

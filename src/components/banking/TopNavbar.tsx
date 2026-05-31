@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useProfilePanel } from "./ProfileContext";
 import { profile } from "@/lib/banking-data";
 import { brand } from "@/lib/brand";
-import { IndianBankOneLogo } from "./IndianBankOneLogo";
+import { IndianOneLogo } from "./IndianOneLogo";
 import { getLastLogin, recordLogout } from "@/lib/session";
 
 const navItems = [
@@ -45,7 +45,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
 
         <Link to="/" className="flex items-center gap-2 mr-2">
           <div className="w-9 h-9 rounded-md bg-white border flex items-center justify-center shadow-sm p-1">
-            <IndianBankOneLogo className="w-full h-full" />
+            <IndianOneLogo className="w-full h-full" />
           </div>
           <div className="hidden sm:block leading-tight">
             <div className="font-bold text-foreground tracking-tight text-sm">{brand.name}</div>
