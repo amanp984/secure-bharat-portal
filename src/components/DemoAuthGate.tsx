@@ -234,7 +234,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             <div className="border-t bg-secondary/40 px-5 py-3 flex items-center justify-between text-[10px] text-muted-foreground">
               <div className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-success" /> 256-bit SSL</div>
               <div className="flex items-center gap-1.5"><Award className="w-3.5 h-3.5 text-blue-700" /> DigiCert Secured</div>
-              <div className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-amber-600" /> Independent Platform</div>
+              <div className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-amber-600" /> Secure Platform</div>
             </div>
           </div>
 
@@ -244,8 +244,8 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
               <Shield className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">Demonstration Platform</div>
-              <div className="text-muted-foreground">Indian One is an independent digital platform created for testing, demonstration, evaluation and development purposes. This platform is designed for system validation, interface testing, workflow evaluation and software development activities. Indian One is not a bank, banking institution, financial institution or payment service provider.</div>
+              <div className="font-semibold text-foreground">About Indian One</div>
+              <div className="text-muted-foreground">Indian One is a secure digital platform designed to provide users with an efficient and streamlined online experience.</div>
             </div>
           </div>
         </div>
@@ -347,7 +347,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
       <footer className="bg-slate-900 text-white/70 text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2">
-          <div>© {new Date().getFullYear()} Indian One. Independent demonstration platform — not a bank.</div>
+          <div>© {new Date().getFullYear()} Indian One. All rights reserved.</div>
           <div className="flex gap-4">
             <a href="/terms" className="hover:text-white">Terms &amp; Conditions</a>
             <a href="/privacy" className="hover:text-white">Privacy Policy</a>
