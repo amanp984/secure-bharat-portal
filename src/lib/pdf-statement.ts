@@ -5,7 +5,7 @@ import autoTable from "jspdf-autotable";
 import { accounts, profile } from "./banking-data";
 import { brand } from "./brand";
 import { getCanonicalTxns } from "./canonical-txns";
-import logoUrl from "@/assets/indian-bank-one-logo.png";
+const logoUrl = "";
 import type { UiTransaction } from "@/hooks/useTransactions";
 
 export type StatementTxn = UiTransaction;
@@ -339,7 +339,7 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   doc.setTextColor(71, 85, 105);
   const disclaimers = [
     "• This is a computer generated statement and does not require a signature.",
-    "• Do not share your OTP, ATM PIN, CVV, Card number, Username or Password with anyone.",
+    "• Do not share your ATM PIN, CVV, Card number, Username or Password with anyone.",
     `• For queries, contact ${brand.name} Customer Care at ${brand.customerCare} or write to ${brand.supportEmail}.`,
   ];
   disclaimers.forEach((line, i) => doc.text(line, margin + 12, discY + 32 + i * 12, { maxWidth: pageW - margin * 2 - 24 }));

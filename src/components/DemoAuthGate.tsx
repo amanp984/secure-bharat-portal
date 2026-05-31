@@ -234,18 +234,18 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             <div className="border-t bg-secondary/40 px-5 py-3 flex items-center justify-between text-[10px] text-muted-foreground">
               <div className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-success" /> 256-bit SSL</div>
               <div className="flex items-center gap-1.5"><Award className="w-3.5 h-3.5 text-blue-700" /> DigiCert Secured</div>
-              <div className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-amber-600" /> RBI Regulated</div>
+              <div className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-amber-600" /> Independent Platform</div>
             </div>
           </div>
 
-          {/* DICGC strip */}
+          {/* Demo notice strip */}
           <div className="mt-3 rounded-xl border bg-white p-3 flex items-center gap-3 text-xs">
             <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center shrink-0">
               <Shield className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-foreground">DICGC Insured</div>
-              <div className="text-muted-foreground">Deposits insured up to ₹5,00,000 by Deposit Insurance & Credit Guarantee Corporation, RBI.</div>
+              <div className="font-semibold text-foreground">Demonstration Platform</div>
+              <div className="text-muted-foreground">Indian One is an independent platform for demonstration, evaluation and development. It is not a banking institution.</div>
             </div>
           </div>
         </div>
@@ -286,7 +286,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 <h4 className="font-bold text-sm">Security Tips</h4>
               </div>
               <ul className="text-[11px] text-muted-foreground space-y-1 list-disc list-inside">
-                <li>Indian One will never ask for OTP, PIN or password.</li>
+                <li>Indian One will never ask for your PIN or password.</li>
                 <li>Always check the URL begins with <span className="font-mono">https://</span>.</li>
                 <li>Avoid public Wi-Fi for Net Banking transactions.</li>
                 <li>Report suspicious calls to 1930 (Cyber Crime Helpline).</li>
@@ -347,8 +347,12 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
       <footer className="bg-slate-900 text-white/70 text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2">
-          <div>© 2026 Indian One Ltd. All rights reserved. Regulated by Reserve Bank of India.</div>
-          <div className="flex gap-4"><span>Privacy</span><span>Terms</span><span>Disclaimer</span><span>Contact</span></div>
+          <div>© {new Date().getFullYear()} Indian One. Independent demonstration platform — not a bank.</div>
+          <div className="flex gap-4">
+            <a href="/privacy" className="hover:text-white">Privacy</a>
+            <a href="/terms" className="hover:text-white">Terms</a>
+            <a href="/contact" className="hover:text-white">Contact</a>
+          </div>
         </div>
       </footer>
 

@@ -159,7 +159,7 @@ function AccountsPage() {
 
       <Card className="mt-4 p-3 flex items-center gap-2 text-[11px] text-muted-foreground bg-secondary/30">
         <ShieldCheck className="w-4 h-4 text-success shrink-0" />
-        Your account balances are protected under DICGC up to ₹5,00,000. All transactions are monitored 24×7 for security.
+        All account activity is monitored 24×7 for security. Indian One is an independent demonstration platform.
       </Card>
       <AnimatePresence>
         {branchModal && (
