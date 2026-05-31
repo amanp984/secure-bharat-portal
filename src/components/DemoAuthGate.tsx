@@ -234,7 +234,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             <div className="border-t bg-secondary/40 px-5 py-3 flex items-center justify-between text-[10px] text-muted-foreground">
               <div className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-success" /> 256-bit SSL</div>
               <div className="flex items-center gap-1.5"><Award className="w-3.5 h-3.5 text-blue-700" /> DigiCert Secured</div>
-              <div className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-amber-600" /> Independent Platform</div>
+              <div className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-amber-600" /> Secure Platform</div>
             </div>
           </div>
 
