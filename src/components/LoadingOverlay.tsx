@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRouter } from "@tanstack/react-router";
-import { IndianOneLogo } from "@/components/banking/IndianOneLogo";
+import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 import { useLoadingState, showLoading } from "@/lib/loading";
 import { useStatementDownloadState } from "@/lib/pdf-statement";
 

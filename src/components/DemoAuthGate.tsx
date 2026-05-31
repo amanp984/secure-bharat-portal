@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { recordLogin } from "@/lib/session";
 import { showLoading } from "@/lib/loading";
-import { IndianOneLogo } from "@/components/banking/IndianOneLogo";
+import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_one_demo_auth";
 const DEMO_USER = "2864286728";

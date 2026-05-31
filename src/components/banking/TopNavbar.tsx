@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useProfilePanel } from "./ProfileContext";
 import { profile } from "@/lib/banking-data";
 import { brand } from "@/lib/brand";
-import { IndianOneLogo } from "./IndianOneLogo";
+import { IndianOneLogo } from "./IndianBankOneLogo";
 import { getLastLogin, recordLogout } from "@/lib/session";
 
 const navItems = [
