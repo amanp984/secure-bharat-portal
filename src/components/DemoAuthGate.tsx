@@ -167,7 +167,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                     tab === t ? "text-primary border-b-2 border-primary bg-blue-50/40" : "text-muted-foreground hover:bg-secondary/40"
                   }`}
                 >
-                  {t === "individual" ? "Individual / Retail" : "Corporate"}
+                  {t === "individual" ? "Individual / Retail" : "Company User"}
                 </button>
               ))}
             </div>
@@ -175,10 +175,10 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             <div className="p-6">
               <div className="flex items-center gap-2 mb-1">
                 <Lock className="w-4 h-4 text-primary" />
-                <h2 className="text-lg font-bold">Personal Net Banking Login</h2>
+                <h2 className="text-lg font-bold">Personal Online Dashboard</h2>
               </div>
               <p className="text-xs text-muted-foreground mb-5">
-                Sign in securely with your User ID and password.
+                Access your personal dashboard securely using your registered credentials.
               </p>
 
               <form onSubmit={handleLogin} className="space-y-3.5">
@@ -245,7 +245,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             </div>
             <div>
               <div className="font-semibold text-foreground">Demonstration Platform</div>
-              <div className="text-muted-foreground">Indian One is an independent platform for demonstration, evaluation and development. It is not a banking institution.</div>
+              <div className="text-muted-foreground">Indian One is an independent digital platform created for testing, demonstration, evaluation and development purposes. This platform is designed for system validation, interface testing, workflow evaluation and software development activities. Indian One is not a bank, banking institution, financial institution or payment service provider.</div>
             </div>
           </div>
         </div>
@@ -286,10 +286,10 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 <h4 className="font-bold text-sm">Security Tips</h4>
               </div>
               <ul className="text-[11px] text-muted-foreground space-y-1 list-disc list-inside">
-                <li>Indian One will never ask for your PIN or password.</li>
-                <li>Always check the URL begins with <span className="font-mono">https://</span>.</li>
-                <li>Avoid public Wi-Fi for Net Banking transactions.</li>
-                <li>Report suspicious calls to 1930 (Cyber Crime Helpline).</li>
+                <li>Protect your login credentials and do not share them with anyone.</li>
+                <li>Always verify the website address before signing in.</li>
+                <li>Avoid using public or unsecured networks when accessing your account.</li>
+                <li>Report suspicious activity through the official support channels.</li>
               </ul>
             </div>
 
@@ -349,9 +349,9 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2">
           <div>© {new Date().getFullYear()} Indian One. Independent demonstration platform — not a bank.</div>
           <div className="flex gap-4">
-            <a href="/privacy" className="hover:text-white">Privacy</a>
-            <a href="/terms" className="hover:text-white">Terms</a>
-            <a href="/contact" className="hover:text-white">Contact</a>
+            <a href="/terms" className="hover:text-white">Terms &amp; Conditions</a>
+            <a href="/privacy" className="hover:text-white">Privacy Policy</a>
+            <a href="/contact" className="hover:text-white">Contact Us</a>
           </div>
         </div>
       </footer>

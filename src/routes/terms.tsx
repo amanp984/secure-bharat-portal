@@ -24,46 +24,28 @@ function TermsPage() {
         <p className="text-sm text-muted-foreground mb-6">Last updated: {new Date().toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</p>
 
         <div className="space-y-5 text-sm leading-relaxed text-foreground">
-          <section className="rounded-lg border bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-900 p-4">
-            <h2 className="font-bold text-amber-900 dark:text-amber-200 mb-1">Important Notice</h2>
-            <p className="text-amber-900 dark:text-amber-200">
-              This platform is a testing environment intended for demonstration, evaluation and development purposes. It is not a banking institution and does not represent, operate or provide banking services.
-            </p>
+          <section>
+            <h2 className="font-bold text-lg mb-1">Welcome to Indian One.</h2>
+            <p>Indian One is an independent digital platform intended solely for software testing, interface evaluation, demonstration, training, development and system validation purposes.</p>
           </section>
 
           <section>
-            <h2 className="font-bold text-lg mb-1">1. Acceptance of Terms</h2>
-            <p>By accessing or using {brand.name}, you acknowledge that you have read, understood and agree to be bound by these Terms &amp; Conditions. If you do not agree, please discontinue use of the platform.</p>
-          </section>
-
-          <section>
-            <h2 className="font-bold text-lg mb-1">2. Nature of the Platform</h2>
-            <p>{brand.name} is an independent software platform created for demonstration and evaluation. It does not hold, transmit or process real funds. Any account numbers, balances, statements, transfers, cards or transactions visible on the platform are simulated for illustrative purposes only.</p>
-          </section>
-
-          <section>
-            <h2 className="font-bold text-lg mb-1">3. No Banking Services</h2>
-            <p>{brand.name} is not affiliated with any bank, financial institution, regulator or government body. No real money movement, deposit, lending or payment processing occurs through the platform.</p>
-          </section>
-
-          <section>
-            <h2 className="font-bold text-lg mb-1">4. User Conduct</h2>
-            <p>You agree not to use the platform for any unlawful purpose, to impersonate any real person or entity, or to attempt to interfere with the platform's normal operation.</p>
-          </section>
-
-          <section>
-            <h2 className="font-bold text-lg mb-1">5. Intellectual Property</h2>
-            <p>All design, code, content and branding presented on {brand.name} are the property of the platform's authors. No real-world trademarks are claimed.</p>
-          </section>
-
-          <section>
-            <h2 className="font-bold text-lg mb-1">6. Limitation of Liability</h2>
-            <p>The platform is provided “as is” without warranties of any kind. The authors are not liable for any decisions made on the basis of information or data shown on the platform.</p>
-          </section>
-
-          <section>
-            <h2 className="font-bold text-lg mb-1">7. Contact</h2>
-            <p>For questions regarding these terms, write to <a className="text-primary hover:underline" href={`mailto:${brand.supportEmail}`}>{brand.supportEmail}</a>.</p>
+            <h2 className="font-bold text-lg mb-1">Acknowledgement</h2>
+            <p>By using this platform, you acknowledge and agree that:</p>
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Indian One is not a bank.</li>
+              <li>Indian One is not a financial institution.</li>
+              <li>Indian One does not provide banking services.</li>
+              <li>Indian One does not provide payment services.</li>
+              <li>Indian One does not represent any government authority.</li>
+              <li>Indian One does not represent any existing banking organization.</li>
+              <li>The platform is provided for testing, development and demonstration purposes only.</li>
+              <li>Users are responsible for their own activities while using the platform.</li>
+              <li>The platform may be modified, updated, suspended or discontinued at any time without notice.</li>
+              <li>Users should not rely on the platform for financial, legal or commercial decisions.</li>
+              <li>All trademarks, logos and intellectual property remain the property of their respective owners.</li>
+              <li>Unauthorized misuse of the platform is prohibited.</li>
+            </ul>
           </section>
         </div>
       </div>
