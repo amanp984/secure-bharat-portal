@@ -132,7 +132,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
             </div>
             <div className="leading-tight">
               <div className="font-bold text-base tracking-tight">Indian One</div>
-              <div className="text-[10px] text-amber-300 tracking-widest font-semibold">YOUR OWN BANK · सत्यमेव जयते</div>
+              <div className="text-[10px] text-amber-300 tracking-widest font-semibold">YOUR DIGITAL PLATFORM · सत्यमेव जयते</div>
             </div>
           </div>
           <div className="flex items-center gap-3 text-xs">
