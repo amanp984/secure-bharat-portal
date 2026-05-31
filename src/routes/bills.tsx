@@ -14,13 +14,13 @@ export const Route = createFileRoute("/bills")({
   component: BillsPage,
   head: () => ({
     meta: [
-      { title: "Bill Payments & Recharge — Indian Bank One" },
+      { title: "Bill Payments & Recharge — Indian One" },
       { name: "description", content: "Pay electricity, water, gas, broadband, mobile, credit card and FASTag bills securely." },
-      { property: "og:title", content: "Bill Payments & Recharge — Indian Bank One" },
+      { property: "og:title", content: "Bill Payments & Recharge — Indian One" },
       { property: "og:description", content: "Pay electricity, water, gas, broadband, mobile, credit card and FASTag bills securely." },
-      { property: "og:url", content: "https://www.indianbankone.in/bills" },
+      { property: "og:url", content: "https://www.indianone.in/bills" },
     ],
-    links: [{ rel: "canonical", href: "https://www.indianbankone.in/bills" }],
+    links: [{ rel: "canonical", href: "https://www.indianone.in/bills" }],
   }),
 });
 
@@ -154,7 +154,7 @@ function BillsPage() {
                 ))}
               </div>
               <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-3">
-                <ShieldCheck className="w-3.5 h-3.5 text-success" /> Secured by Indian Bank One · 256-bit SSL
+                <ShieldCheck className="w-3.5 h-3.5 text-success" /> Secured by Indian One · 256-bit SSL
               </div>
               <div className="flex gap-2 mt-5">
                 <Button variant="outline" className="flex-1" onClick={() => setStep("form")}>Edit</Button>

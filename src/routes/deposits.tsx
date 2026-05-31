@@ -13,13 +13,13 @@ export const Route = createFileRoute("/deposits")({
   component: DepositsPage,
   head: () => ({
     meta: [
-      { title: "Fixed Deposits — Indian Bank One" },
-      { name: "description", content: "Open a fixed deposit, calculate maturity value and explore Indian Bank One FD interest rates." },
-      { property: "og:title", content: "Fixed Deposits — Indian Bank One" },
-      { property: "og:description", content: "Open a fixed deposit, calculate maturity value and explore Indian Bank One FD interest rates." },
-      { property: "og:url", content: "https://www.indianbankone.in/deposits" },
+      { title: "Fixed Deposits — Indian One" },
+      { name: "description", content: "Open a fixed deposit, calculate maturity value and explore Indian One FD interest rates." },
+      { property: "og:title", content: "Fixed Deposits — Indian One" },
+      { property: "og:description", content: "Open a fixed deposit, calculate maturity value and explore Indian One FD interest rates." },
+      { property: "og:url", content: "https://www.indianone.in/deposits" },
     ],
-    links: [{ rel: "canonical", href: "https://www.indianbankone.in/deposits" }],
+    links: [{ rel: "canonical", href: "https://www.indianone.in/deposits" }],
   }),
 });
 

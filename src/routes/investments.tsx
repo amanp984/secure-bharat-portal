@@ -8,13 +8,13 @@ export const Route = createFileRoute("/investments")({
   component: Investments,
   head: () => ({
     meta: [
-      { title: "Investments — Indian Bank One" },
+      { title: "Investments — Indian One" },
       { name: "description", content: "Track your mutual funds, stocks, gold bonds, PPF and NPS investments in one view." },
-      { property: "og:title", content: "Investments — Indian Bank One" },
+      { property: "og:title", content: "Investments — Indian One" },
       { property: "og:description", content: "Track your mutual funds, stocks, gold bonds, PPF and NPS investments in one view." },
-      { property: "og:url", content: "https://www.indianbankone.in/investments" },
+      { property: "og:url", content: "https://www.indianone.in/investments" },
     ],
-    links: [{ rel: "canonical", href: "https://www.indianbankone.in/investments" }],
+    links: [{ rel: "canonical", href: "https://www.indianone.in/investments" }],
   }),
 });
 

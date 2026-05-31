@@ -29,12 +29,6 @@ export function computeCurrentBalance(
   return bal;
 }
 
-export const beneficiaries = [
-  { id: "b1", name: "Rajesh Sawant", bank: "Indian Bank", acc: "XXXXXXXX6292", last: "18 May 2026" },
-  { id: "b2", name: "JK Telecom", bank: "Bank of Baroda", acc: "XXXXXXXX8162", last: "12 May 2026" },
-  { id: "b3", name: "Pawan Kumar", bank: "HDFC Bank", acc: "XXXXXXXX7202", last: "06 May 2026" },
-];
-
 export const profile = {
   fullName: "Mr Hariram Choudhary",
   customerId: "2864286728",
@@ -55,22 +49,22 @@ export const profile = {
   openedOn: "14 March 2018",
   lastLogin: "Just now · Nagpur",
   occupation: "Business Owner",
-  customerCategory: "Priority Banking",
+  customerCategory: "Priority Customer",
 };
 
 export const tickets = [
   { id: "SR248921", subject: "Debit card PIN reset", status: "Resolved", createdAt: "18 May 2026", resolution: "PIN reset successfully" },
-  { id: "SR248755", subject: "Failed UPI transaction refund", status: "In Progress", createdAt: "20 May 2026", resolution: "Awaiting bank reversal" },
+  { id: "SR248755", subject: "Failed UPI transaction refund", status: "In Progress", createdAt: "20 May 2026", resolution: "Awaiting reversal" },
   { id: "SR248610", subject: "Cheque book request", status: "Resolved", createdAt: "12 May 2026", resolution: "Dispatched via Speed Post" },
   { id: "SR248455", subject: "Net Banking login issue", status: "Resolved", createdAt: "08 May 2026", resolution: "Password regenerated" },
 ];
 
 export const faqs = [
-  { q: "How do I reset my Net Banking password?", a: "Visit the login page, click 'Forgot Password' and follow the OTP-based verification using your registered mobile and Debit Card." },
+  { q: "How do I reset my Net Banking password?", a: "Visit the login page, click 'Forgot Password' and follow the verification steps using your registered mobile and Debit Card." },
   { q: "What is the daily IMPS transfer limit?", a: "The default daily IMPS limit is ₹5,00,000 per day. You can request a higher limit via Mobile Banking." },
   { q: "How long does NEFT take?", a: "NEFT transactions are processed in half-hourly batches between 00:30 AM and 11:30 PM on all 365 days." },
   { q: "How do I block a lost Debit Card?", a: "Go to Debit Card → Block Card, or call our 24x7 toll-free 1800-572-9900 to block instantly." },
-  { q: "Is my money safe with Indian Bank One?", a: "All deposits are insured under DICGC up to ₹5,00,000 per depositor per bank." },
+  { q: "Is Indian One a real bank?", a: "No. Indian One is an independent demonstration and evaluation platform. It is not a banking institution and does not provide banking services." },
 ];
 
 export const billers = [

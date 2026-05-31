@@ -1,4 +1,4 @@
-# Indian Bank One — Net Banking
+# Indian One — Net Banking
 
 > Demo Indian net banking portal with realistic account, transfer, bills, cards, deposits, and loan workflows.
 

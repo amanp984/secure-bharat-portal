@@ -1,13 +1,13 @@
 export const brand = {
-  name: "Indian Bank One",
-  tagline: "Secure Digital Banking",
-  supportEmail: "support@indianbankone.in",
+  name: "Indian One",
+  tagline: "Secure Digital Platform",
+  supportEmail: "support@indianone.in",
   customerCare: "1800-572-9900",
-  branch: "Anna Nagar Main Branch",
-  website: "https://www.indianbankone.in",
-  appInstallPath: "https://www.indianbankone.in/app",
+  branch: "Nagpur",
+  website: "https://www.indianone.in",
+  appInstallPath: "https://www.indianone.in/app",
   description:
-    "Indian Bank One net banking portal for secure statements, transfers, cards, deposits, bill payments and service requests.",
+    "Indian One is an independent demonstration and evaluation platform for digital account workflows, transfers, statements and service requests.",
 } as const;
 
 export const brandMeta = {

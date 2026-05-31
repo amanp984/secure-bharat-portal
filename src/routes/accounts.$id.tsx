@@ -16,9 +16,9 @@ import { motion } from "framer-motion";
 export const Route = createFileRoute("/accounts/$id")({
   component: AccountDetails,
   head: ({ params }) => {
-    const url = `https://www.indianbankone.in/accounts/${params.id}`;
-    const title = `Account Details — Indian Bank One`;
-    const desc = `View Indian Bank One account ${params.id.toUpperCase()} — balance, IFSC, branch, KYC details and nominee information.`;
+    const url = `https://www.indianone.in/accounts/${params.id}`;
+    const title = `Account Details — Indian One`;
+    const desc = `View Indian One account ${params.id.toUpperCase()} — balance, IFSC, branch, KYC details and nominee information.`;
     return {
       meta: [
         { title },
@@ -86,7 +86,7 @@ function AccountDetails() {
             <div className="absolute -left-10 -bottom-16 w-44 h-44 rounded-full bg-amber-300/10 blur-2xl" />
             <div className="relative flex items-start justify-between mb-4">
               <div>
-                <div className="text-[9px] uppercase tracking-[0.25em] text-white/60">Indian Bank One</div>
+                <div className="text-[9px] uppercase tracking-[0.25em] text-white/60">Indian One</div>
                 <div className="text-lg font-bold flex items-center gap-2 mt-0.5">
                   {acc.type}
                   <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 font-bold tracking-wider">PRIMARY</span>

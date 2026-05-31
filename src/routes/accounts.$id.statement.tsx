@@ -15,9 +15,9 @@ import { AnimatePresence, motion } from "framer-motion";
 export const Route = createFileRoute("/accounts/$id/statement")({
   component: StatementPage,
   head: ({ params }) => {
-    const url = `https://www.indianbankone.in/accounts/${params.id}/statement`;
-    const title = `Account Statement — Indian Bank One`;
-    const desc = `Download and search your full Indian Bank One account statement with date filters, pagination and PDF export.`;
+    const url = `https://www.indianone.in/accounts/${params.id}/statement`;
+    const title = `Account Statement — Indian One`;
+    const desc = `Download and search your full Indian One account statement with date filters, pagination and PDF export.`;
     return {
       meta: [
         { title },
@@ -86,7 +86,7 @@ function StatementPage() {
     const rows = filtered.map((t) =>
       [t.date, `"${t.narration.replace(/"/g, '""')}"`, t.id, t.type, t.debit || 0, t.credit || 0, Math.round(t.balance)].join(","),
     );
-    downloadBlob([headers.join(","), ...rows].join("\n"), "text/csv;charset=utf-8", `IndianBankOne_Statement_${Date.now()}.csv`);
+    downloadBlob([headers.join(","), ...rows].join("\n"), "text/csv;charset=utf-8", `IndianOne_Statement_${Date.now()}.csv`);
     toast.success("CSV downloaded");
   };
 

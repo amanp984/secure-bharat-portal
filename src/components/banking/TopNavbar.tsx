@@ -5,14 +5,13 @@ import { toast } from "sonner";
 import { useProfilePanel } from "./ProfileContext";
 import { profile } from "@/lib/banking-data";
 import { brand } from "@/lib/brand";
-import { IndianBankOneLogo } from "./IndianBankOneLogo";
+import { IndianOneLogo } from "./IndianOneLogo";
 import { getLastLogin, recordLogout } from "@/lib/session";
 
 const navItems = [
   { label: "Dashboard", to: "/" },
   { label: "All Accounts", to: "/accounts" },
   { label: "Fund Transfers", to: "/fund-transfer" },
-  { label: "Manage Beneficiary", to: "/beneficiary" },
   { label: "Deposits", to: "/deposits" },
   { label: "Loans", to: "/loans" },
   { label: "Cards", to: "/cards" },
@@ -27,7 +26,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
 
   const logout = () => {
     recordLogout();
-    localStorage.removeItem("indian_bank_one_demo_auth");
+    localStorage.removeItem("indian_one_demo_auth");
     toast.success("Logged out securely");
     setTimeout(() => navigate({ to: "/" }), 400);
     setTimeout(() => window.location.reload(), 600);
@@ -46,7 +45,7 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
 
         <Link to="/" className="flex items-center gap-2 mr-2">
           <div className="w-9 h-9 rounded-md bg-white border flex items-center justify-center shadow-sm p-1">
-            <IndianBankOneLogo className="w-full h-full" />
+            <IndianOneLogo className="w-full h-full" />
           </div>
           <div className="hidden sm:block leading-tight">
             <div className="font-bold text-foreground tracking-tight text-sm">{brand.name}</div>
@@ -59,8 +58,8 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           <span className="sr-only">Search</span>
           <input
             id="global-search"
-            aria-label="Search transactions, payees and services"
-            placeholder="Search transactions, payees, services…"
+            aria-label="Search transactions and services"
+            placeholder="Search transactions, services…"
             className="bg-transparent text-sm outline-none flex-1 placeholder:text-muted-foreground"
           />
         </label>
