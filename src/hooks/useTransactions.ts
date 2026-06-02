@@ -112,84 +112,32 @@ export function useTransactions() {
 
   useEffect(() => {
     let active = true;
-    let cleanup: (() => void) | undefined;
+    let timer: ReturnType<typeof setInterval> | undefined;
 
-    (async () => {
-      let supabase: any;
+    const load = async () => {
       try {
-        const mod = await import("@/integrations/supabase/client");
-        supabase = mod.supabase;
+        const res = await fetch("/api/transactions", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const body = (await res.json()) as { transactions?: DbRow[] };
+        if (!active) return;
+        const mapped = mapRows(body.transactions || []);
+        setCanonicalTxns(mapped);
+        setTransactions(mapped);
       } catch (err) {
-        console.warn("[useTransactions] Supabase client unavailable", err);
+        console.warn("[useTransactions] load failed", err);
+        if (active) setTransactions((prev) => prev);
+      } finally {
         if (active) setLoading(false);
-        return;
       }
+    };
 
-      const load = async () => {
-        try {
-          // Page through all rows (Supabase caps single requests at 1000).
-          const PAGE = 1000;
-          let from = 0;
-          const all: DbRow[] = [];
-          // Hard upper bound to prevent runaway loops.
-          for (let i = 0; i < 50; i++) {
-            const { data, error } = await supabase
-              .from("transactions")
-              .select("*")
-              .order("transaction_date", { ascending: false })
-              .range(from, from + PAGE - 1);
-            if (error) {
-              console.warn("[useTransactions] load error", error.message ?? error);
-              break;
-            }
-            const rows = (data || []) as DbRow[];
-            all.push(...rows);
-            if (rows.length < PAGE) break;
-            from += PAGE;
-          }
-          if (!active) return;
-          const mapped = mapRows(all);
-          setCanonicalTxns(mapped);
-          setTransactions(mapped);
-        } catch (err) {
-          console.warn("[useTransactions] load threw", err);
-          if (active) setTransactions([]);
-        } finally {
-          if (active) setLoading(false);
-        }
-      };
-
-      await load();
-
-      try {
-        // Unique channel name per mount avoids "cannot add postgres_changes
-        // callbacks after subscribe()" when React StrictMode (or HMR) re-runs
-        // the effect and Supabase returns the already-subscribed channel.
-        const channelName = `transactions-realtime-${Date.now()}-${Math.random()
-          .toString(36)
-          .slice(2)}`;
-        const channel = supabase.channel(channelName);
-        channel.on(
-          "postgres_changes",
-          { event: "*", schema: "public", table: "transactions" },
-          () => { load().catch(() => {}); },
-        );
-        channel.subscribe((status: string) => {
-          if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
-            console.warn("[useTransactions] realtime status", status);
-          }
-        });
-        cleanup = () => {
-          try { supabase.removeChannel(channel); } catch { /* ignore */ }
-        };
-      } catch (err) {
-        console.warn("[useTransactions] realtime subscribe failed", err);
-      }
-    })();
+    load();
+    // Light polling in lieu of realtime (anon role no longer has table access).
+    timer = setInterval(() => { load().catch(() => {}); }, 30000);
 
     return () => {
       active = false;
-      try { cleanup?.(); } catch { /* ignore */ }
+      if (timer) clearInterval(timer);
     };
   }, []);
 
