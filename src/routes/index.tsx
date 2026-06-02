@@ -77,7 +77,7 @@ function Dashboard() {
               DS
             </div>
             <div className="leading-tight">
-              <div className="text-[12px] font-semibold">Welcome, Mr Hariram Choudhary</div>
+              <div className="text-[12px] font-semibold">Welcome, Aman Prajapati</div>
               <div className="text-[10px] text-white/70 flex items-center gap-2">
                 <span>Last login: {lastLogin}</span>
                 <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Nagpur</span>

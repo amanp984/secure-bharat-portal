@@ -7,11 +7,11 @@ export const accounts = [
   {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 6784",
-    accountNumber: "652897626784",
+    masked: "XXXX XXXX 2790",
+    accountNumber: "65296262790",
     ifsc: "IDIB000N007",
     branch: "Nagpur",
-    customerId: "2864286728",
+    customerId: "296277679",
     status: "Active",
     /** Opening balance only — current balance = opening + Σcredits − Σdebits */
     balance: 0,
@@ -30,9 +30,9 @@ export function computeCurrentBalance(
 }
 
 export const profile = {
-  fullName: "Mr Hariram Choudhary",
-  customerId: "2864286728",
-  accountNumber: "652897626784",
+  fullName: "Aman Prajapati",
+  customerId: "296277679",
+  accountNumber: "65296262790",
   ifsc: "IDIB000N007",
   micr: "45895398320",
   mobile: "+91 XXXXX96361",
