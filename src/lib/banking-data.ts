@@ -30,9 +30,9 @@ export function computeCurrentBalance(
 }
 
 export const profile = {
-  fullName: "Mr Hariram Choudhary",
-  customerId: "2864286728",
-  accountNumber: "652897626784",
+  fullName: "Aman Prajapati",
+  customerId: "296277679",
+  accountNumber: "65296262790",
   ifsc: "IDIB000N007",
   micr: "45895398320",
   mobile: "+91 XXXXX96361",
