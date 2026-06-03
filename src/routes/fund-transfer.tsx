@@ -143,7 +143,7 @@ function FundTransfer() {
             </div>
             <div>
               <label htmlFor="ft-ifsc" className="text-[11px] font-semibold text-muted-foreground">IFSC Code</label>
-              <Input id="ft-ifsc" placeholder="e.g. IDIB000N007" value={payeeIfsc} onChange={(e) => setPayeeIfsc(e.target.value.toUpperCase())} className="h-10 font-mono" />
+              <Input id="ft-ifsc" placeholder="e.g. IDIB0ASHOKV" value={payeeIfsc} onChange={(e) => setPayeeIfsc(e.target.value.toUpperCase())} className="h-10 font-mono" />
             </div>
           </div>
 
