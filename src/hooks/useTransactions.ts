@@ -48,13 +48,29 @@ function formatDate(iso: string): { isoDate: string; date: string } {
   };
 }
 
+function detectChannel(row: DbRow): "UPI" | "IMPS" | "NEFT" | "RTGS" {
+  const hay = `${row.bank_name || ""} ${row.message || ""} ${row.raw_sms || ""} ${row.transaction_reference || ""}`.toUpperCase();
+  if (/\bRTGS\b/.test(hay)) return "RTGS";
+  if (/\bNEFT\b/.test(hay)) return "NEFT";
+  if (/\bIMPS\b/.test(hay)) return "IMPS";
+  return "UPI";
+}
+
 function buildNarration(row: DbRow): string {
-  const channel = (row.bank_name || "").toUpperCase();
   const action = row.transaction_type === "credit" ? "CREDIT" : "DEBIT";
-  const who = row.sender_name ? `/${row.sender_name.toUpperCase()}` : "";
-  const ref = row.transaction_reference ? ` REF ${row.transaction_reference}` : "";
-  const prefix = channel ? `${channel}/` : "";
-  return `${prefix}${action}${who}${ref}`.trim();
+  const channel = detectChannel(row);
+  const name = (row.sender_name || "").trim();
+  const ref = (row.transaction_reference || "").trim();
+  const parts: string[] = [action, channel];
+  if (name) parts.push(name);
+  if (channel === "UPI") {
+    if (ref) parts.push(`Ref No ${ref}`);
+  } else {
+    if (ref) parts.push(`UTR ${ref}`);
+    const last4 = (row.account_number_last4 || "").trim();
+    if (last4) parts.push(`A/C XX${last4}`);
+  }
+  return parts.join(" / ");
 }
 
 /**
