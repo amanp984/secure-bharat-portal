@@ -14,7 +14,7 @@ export const accounts = [
     customerId: "697732568",
     status: "Active",
     /** Opening balance only — current balance = opening + Σcredits − Σdebits */
-    balance: 7927,
+    balance: 0,
     primary: true,
     color: "from-blue-700 via-indigo-700 to-slate-900",
   },
