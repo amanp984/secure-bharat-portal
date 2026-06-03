@@ -244,13 +244,13 @@ function Dashboard() {
           <p className="text-[10px] text-muted-foreground mb-3">Spending overview</p>
           <div className="bg-gradient-to-br from-blue-700 to-indigo-800 text-white rounded-xl p-3 mb-3">
             <div className="text-[10px] opacity-80">Total Spent</div>
-            <div className="text-xl font-bold">{fmt(48230)}</div>
+            <div className="text-xl font-bold">{fmt(18230)}</div>
             <div className="text-xs opacity-80 flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3" /> 12% vs last month
             </div>
           </div>
           {[
-            { label: "Food & Dining", pct: 78, amt: 18450 },
+            { label: "Food & Dining", pct: 78, amt: 10000 },
             { label: "Shopping", pct: 55, amt: 12300 },
             { label: "Bills & Utilities", pct: 42, amt: 9870 },
             { label: "Transport", pct: 28, amt: 4210 },
