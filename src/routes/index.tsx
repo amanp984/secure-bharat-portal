@@ -251,9 +251,9 @@ function Dashboard() {
           </div>
           {[
             { label: "Food & Dining", pct: 78, amt: 10000 },
-            { label: "Shopping", pct: 55, amt: 12300 },
-            { label: "Bills & Utilities", pct: 42, amt: 9870 },
-            { label: "Transport", pct: 28, amt: 4210 },
+            { label: "Shopping", pct: 55, amt: 6500 },
+            { label: "Bills & Utilities", pct: 42, amt: 1200 },
+            { label: "Transport", pct: 28, amt: 530 },
           ].map((c) => (
             <div key={c.label} className="mb-2">
               <div className="flex justify-between text-[11px] mb-0.5">
