@@ -13,8 +13,8 @@ import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_one_demo_auth";
-const DEMO_USER = "697732568";
-const DEMO_PASS = "Aayush1999";
+const DEMO_USER = "873342567";
+const DEMO_PASS = "Default1975";
 const IDLE_MS = 3 * 60 * 1000; // 3 minutes
 
 function genCaptcha() {
