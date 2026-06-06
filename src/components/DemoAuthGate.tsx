@@ -365,6 +365,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
       </footer>
 
       <RegisterModal open={showRegister} onClose={() => setShowRegister(false)} />
+      <ForgotPasswordModal open={showForgot} onClose={() => setShowForgot(false)} />
     </div>
   );
 }
