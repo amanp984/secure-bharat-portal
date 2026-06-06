@@ -227,7 +227,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
                 </Button>
 
                 <div className="flex items-center justify-between text-xs pt-1">
-                  <button type="button" onClick={() => toast("Please use Mobile Banking to reset password")} className="text-primary hover:underline font-medium">
+                  <button type="button" onClick={() => setShowForgot(true)} className="text-primary hover:underline font-medium">
                     Forgot Password?
                   </button>
                   <button type="button" onClick={() => setShowRegister(true)} className="text-primary hover:underline font-medium">
