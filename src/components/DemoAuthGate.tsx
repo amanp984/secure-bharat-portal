@@ -484,3 +484,148 @@ function RegisterModal({ open, onClose }: { open: boolean; onClose: () => void }
     </AnimatePresence>
   );
 }
+function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [step, setStep] = useState(1);
+  const [uid, setUid] = useState("");
+  const [last4, setLast4] = useState("");
+  const [pin, setPin] = useState("");
+  const [newPwd, setNewPwd] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setStep(1); setUid(""); setLast4(""); setPin("");
+      setNewPwd(""); setConfirmPwd(""); setProcessing(false); setDone(false);
+    }
+  }, [open]);
+
+  const proceed = () => {
+    if (step === 1) {
+      if (!uid.trim() || !last4.trim() || !pin.trim()) return toast.error("Please fill all fields");
+      if (last4.length !== 4 || pin.length !== 4) return toast.error("Card last 4 and PIN must be 4 digits");
+      setProcessing(true);
+      setTimeout(() => {
+        setProcessing(false);
+        if (uid.trim() !== DEMO_USER || last4 !== RESET_CARD_LAST4 || pin !== RESET_PIN) {
+          return toast.error("Verification failed. Please check your details.");
+        }
+        toast.success("Identity verified. Set a new password.");
+        setStep(2);
+      }, 1200);
+    } else {
+      if (newPwd.length < 8) return toast.error("Password must be at least 8 characters");
+      if (newPwd !== confirmPwd) return toast.error("Passwords do not match");
+      setProcessing(true);
+      setTimeout(() => {
+        try { localStorage.setItem(PWD_KEY, newPwd); } catch {}
+        setProcessing(false);
+        setDone(true);
+        toast.success("Password reset successfully");
+      }, 1000);
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.92, y: 16, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", damping: 22 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+          >
+            <div className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Lock className="w-5 h-5" />
+                <h3 className="font-bold">Reset Login Password</h3>
+              </div>
+              <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-md"><X className="w-4 h-4" /></button>
+            </div>
+
+            {done ? (
+              <div className="p-6 text-center">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }} className="w-16 h-16 mx-auto rounded-full bg-emerald-100 flex items-center justify-center mb-3">
+                  <ShieldCheck className="w-8 h-8 text-emerald-700" />
+                </motion.div>
+                <h4 className="text-lg font-bold mb-1">Password Reset Successful</h4>
+                <p className="text-sm text-muted-foreground mb-5">
+                  Your login password has been updated. Please use your new password to sign in.
+                </p>
+                <Button className="w-full bg-gradient-to-r from-blue-700 to-indigo-800 text-white" onClick={onClose}>
+                  Back to Login
+                </Button>
+              </div>
+            ) : (
+              <div className="p-6 space-y-4">
+                <div className="flex items-center gap-2 text-[11px] font-semibold text-muted-foreground mb-2">
+                  <span className={`px-2 py-0.5 rounded-full ${step >= 1 ? "bg-primary text-primary-foreground" : "bg-secondary"}`}>1 Verify</span>
+                  <span className="flex-1 h-px bg-border" />
+                  <span className={`px-2 py-0.5 rounded-full ${step >= 2 ? "bg-primary text-primary-foreground" : "bg-secondary"}`}>2 New Password</span>
+                </div>
+
+                {step === 1 ? (
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">User ID / CIF Number</Label>
+                      <div className="relative">
+                        <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Input value={uid} onChange={(e) => setUid(e.target.value)} placeholder="Enter your User ID" className="pl-9" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Debit Card (last 4 digits)</Label>
+                      <div className="relative">
+                        <CreditCard className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Input value={last4} onChange={(e) => setLast4(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="••••" className="pl-9 tracking-widest" maxLength={4} inputMode="numeric" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Debit Card PIN</Label>
+                      <div className="relative">
+                        <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Input type="password" value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="4-digit ATM PIN" className="pl-9 tracking-widest" maxLength={4} inputMode="numeric" />
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">For your security, these details are verified against our records and never stored.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">New Password</Label>
+                      <div className="relative">
+                        <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Input type="password" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} placeholder="Min 8 characters" className="pl-9" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs">Confirm New Password</Label>
+                      <div className="relative">
+                        <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <Input type="password" value={confirmPwd} onChange={(e) => setConfirmPwd(e.target.value)} placeholder="Re-enter new password" className="pl-9" />
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">Use a strong, unique password. Avoid names, dates, or common words.</p>
+                  </div>
+                )}
+
+                <div className="flex gap-2 pt-2">
+                  {step === 2 && <Button variant="outline" className="flex-1" onClick={() => setStep(1)} disabled={processing}>Back</Button>}
+                  <Button onClick={proceed} disabled={processing} className="flex-1 bg-gradient-to-r from-blue-700 to-indigo-800 text-white">
+                    {processing ? "Processing…" : step === 1 ? "Verify Identity" : "Reset Password"}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
