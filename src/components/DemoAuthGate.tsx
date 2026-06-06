@@ -89,6 +89,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
   const [language, setLanguage] = useState("English");
   const [slide, setSlide] = useState(0);
   const [showRegister, setShowRegister] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 4500);
