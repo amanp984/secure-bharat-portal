@@ -13,9 +13,16 @@ import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_one_demo_auth";
+const PWD_KEY = "indian_one_demo_pwd";
 const DEMO_USER = "6322458679";
-const DEMO_PASS = "Login1122";
+const DEFAULT_PASS = "Login1122";
+const RESET_CARD_LAST4 = "6507";
+const RESET_PIN = "1122";
+const getDemoPass = () => {
+  try { return localStorage.getItem(PWD_KEY) || DEFAULT_PASS; } catch { return DEFAULT_PASS; }
+};
 const IDLE_MS = 3 * 60 * 1000; // 3 minutes
+
 
 function genCaptcha() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
