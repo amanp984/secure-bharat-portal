@@ -7,8 +7,8 @@ export const accounts = [
   {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 3728",
-    accountNumber: "86442543728",
+    masked: "XXXX XXXX 6507",
+    accountNumber: "86447266507",
     ifsc: "IDIB00BHAVN",
     branch: "Varanasi",
     customerId: "68772534286",
@@ -32,7 +32,7 @@ export function computeCurrentBalance(
 export const profile = {
   fullName: "Aman Prajapati",
   customerId: "68772534286",
-  accountNumber: "86442543728",
+  accountNumber: "86447266507",
   ifsc: "IDIB00BHAVN",
   micr: "45895398320",
   mobile: "+91 XXXXX88738",
