@@ -32,7 +32,7 @@ export function computeCurrentBalance(
 export const profile = {
   fullName: "Aman Prajapati",
   customerId: "68772534286",
-  accountNumber: "86442543728",
+  accountNumber: "86447266507",
   ifsc: "IDIB00BHAVN",
   micr: "45895398320",
   mobile: "+91 XXXXX88738",
