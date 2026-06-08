@@ -34,7 +34,7 @@ export const profile = {
   customerId: "68772534286",
   accountNumber: "86447266507",
   ifsc: "IDIB00BHAVN",
-  micr: "45895398320",
+  micr: "46642783148",
   mobile: "+91 XXXXX88738",
   email: "Spshubhas8826@gmail.com",
   address: "Kashidham, Shivpur, Pin-221201, Varanasi",
