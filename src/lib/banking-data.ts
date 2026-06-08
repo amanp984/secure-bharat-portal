@@ -7,11 +7,11 @@ export const accounts = [
   {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 6507",
-    accountNumber: "66254426507",
-    ifsc: "IDIB0DAHISAR",
-    branch: "Mumbai",
-    customerId: "6322458679",
+    masked: "XXXX XXXX 3728",
+    accountNumber: "86442543728",
+    ifsc: "IDIB00BHAVN",
+    branch: "Varanasi",
+    customerId: "68772534286",
     status: "Active",
     /** Opening balance only — current balance = opening + Σcredits − Σdebits */
     balance: 0,
