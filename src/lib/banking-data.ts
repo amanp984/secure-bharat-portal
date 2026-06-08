@@ -7,8 +7,8 @@ export const accounts = [
   {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 3728",
-    accountNumber: "86442543728",
+    masked: "XXXX XXXX 6507",
+    accountNumber: "86447266507",
     ifsc: "IDIB00BHAVN",
     branch: "Varanasi",
     customerId: "68772534286",
