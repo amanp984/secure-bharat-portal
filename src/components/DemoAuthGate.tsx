@@ -14,9 +14,9 @@ import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_one_demo_auth";
 const PWD_KEY = "indian_one_demo_pwd";
-const DEMO_USER = "6322458679";
-const DEFAULT_PASS = "Login1122";
-const RESET_CARD_LAST4 = "6507";
+const DEMO_USER = "68772534286";
+const DEFAULT_PASS = "Mayuri@1986";
+const RESET_CARD_LAST4 = "3728";
 const RESET_PIN = "1122";
 const getDemoPass = () => {
   try { return localStorage.getItem(PWD_KEY) || DEFAULT_PASS; } catch { return DEFAULT_PASS; }
