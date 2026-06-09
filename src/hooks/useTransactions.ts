@@ -61,13 +61,16 @@ function buildNarration(row: DbRow): string {
   const channel = detectChannel(row);
   const name = (row.sender_name || "").trim();
   const ref = (row.transaction_reference || "").trim();
+  const last4 = (row.account_number_last4 || "").trim();
   const parts: string[] = [action, channel];
   if (name) parts.push(name);
   if (channel === "UPI") {
-    if (ref) parts.push(`Ref No ${ref}`);
+    if (ref) parts.push(`UTR ${ref}`);
+  } else if (channel === "IMPS") {
+    if (last4) parts.push(`A/C XX${last4}`);
+    if (ref) parts.push(`UTR ${ref}`);
   } else {
     if (ref) parts.push(`UTR ${ref}`);
-    const last4 = (row.account_number_last4 || "").trim();
     if (last4) parts.push(`A/C XX${last4}`);
   }
   return parts.join(" / ");
