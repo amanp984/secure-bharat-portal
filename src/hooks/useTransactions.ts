@@ -56,10 +56,18 @@ function detectChannel(row: DbRow): "UPI" | "IMPS" | "NEFT" | "RTGS" {
   return "UPI";
 }
 
+function cleanName(raw: string | null): string {
+  if (!raw) return "";
+  return raw
+    .replace(/\b(with|on|dated|ref(?:erence)?(?:\s*no\.?|#)?|via|upi|imps|neft|rtgs|a\/?c|account|utr|rrn|avl|bal)\b.*$/i, "")
+    .replace(/[\s.,;:/\-]+$/g, "")
+    .trim();
+}
+
 function buildNarration(row: DbRow): string {
   const action = row.transaction_type === "credit" ? "CREDIT" : "DEBIT";
   const channel = detectChannel(row);
-  const name = (row.sender_name || "").trim();
+  const name = cleanName(row.sender_name);
   const ref = (row.transaction_reference || "").trim();
   const last4 = (row.account_number_last4 || "").trim();
   const parts: string[] = [action, channel];

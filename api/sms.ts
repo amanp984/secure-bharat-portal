@@ -118,16 +118,20 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
   }
 
   // counterparty name — for debits look after "to", for credits after "from"/"by".
+  // Stop before account markers (a/c, account), UTR/Ref/RRN, channel words,
+  // dates, "avl", or end of sentence (".", ",", end-of-string).
   let sender_name: string | null = null;
+  const stop = /(?=[.,]|\s+(?:a\/?c|account|ac|on|dated|via|ref|utr|rrn|imps|neft|upi|rtgs|avl|bal)\b)/i;
   const nameMatch =
     (transaction_type === "debit"
-      ? t.match(/\bto\s+([A-Z][A-Za-z][A-Za-z .'&\-]{1,50}?)(?=\s+(?:a\/?c|account|ac|on|via|ref|utr|rrn|imps|neft|upi|\.|,|$))/)
-      : t.match(/\b(?:from|by)\s+([A-Z][A-Za-z][A-Za-z .'&\-]{1,50}?)(?=\s+(?:a\/?c|account|ac|on|via|ref|utr|rrn|imps|neft|upi|\.|,|$))/)) ||
+      ? t.match(new RegExp(`\\bto\\s+([A-Z][A-Za-z][A-Za-z .'&\\-]{1,50}?)${stop.source}`, "i"))
+      : t.match(new RegExp(`\\b(?:from|by)\\s+([A-Z][A-Za-z][A-Za-z .'&\\-]{1,50}?)${stop.source}`, "i"))) ||
     t.match(/\b(?:from|by|to)\s+([A-Z][A-Za-z][A-Za-z .'&\-]{1,50})/) ||
     t.match(/vpa\s+([a-z0-9._\-]+@[a-z]+)/i);
   if (nameMatch) {
     sender_name = nameMatch[1]
-      .replace(/\b(on|dated|ref|via|upi|imps|neft|rtgs|a\/?c|account)\b.*$/i, "")
+      .replace(/\b(on|dated|ref|via|upi|imps|neft|rtgs|a\/?c|account|utr|rrn|avl|bal|with)\b.*$/i, "")
+      .replace(/[\s.,;:/\-]+$/g, "")
       .trim();
     if (sender_name.length > 60) sender_name = sender_name.slice(0, 60);
     if (!sender_name) sender_name = null;
