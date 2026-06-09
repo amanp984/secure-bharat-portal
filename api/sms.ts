@@ -61,18 +61,25 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
     amount = parseFloat(amtMatch[1].replace(/,/g, "")) || 0;
   }
 
-  // a/c last 4
+  // a/c last 4 — prefer COUNTERPARTY account (after "to"/"from"), not user's own.
   let account_number_last4: string | null = null;
-  const acc =
-    t.match(/(?:a\/?c|account|ac)[^0-9xX*]{0,15}[xX*]+\s*(\d{4})/i) ||
-    t.match(/[xX*]{2,}\s*(\d{4})/);
-  if (acc) account_number_last4 = acc[1];
+  const cpAcc =
+    t.match(/(?:to|from)\s+[A-Za-z][A-Za-z0-9 &.'_\-]{1,60}?\s+(?:a\/?c|account|ac)[^0-9xX*]{0,8}[xX*]+\s*(\d{4})/i) ||
+    t.match(/(?:to|from)\s+(?:a\/?c|account|ac)[^0-9xX*]{0,8}[xX*]+\s*(\d{4})/i);
+  if (cpAcc) {
+    account_number_last4 = cpAcc[1];
+  } else {
+    const acc =
+      t.match(/(?:a\/?c|account|ac)[^0-9xX*]{0,15}[xX*]+\s*(\d{4})/i) ||
+      t.match(/[xX*]{2,}\s*(\d{4})/);
+    if (acc) account_number_last4 = acc[1];
+  }
 
   // reference / UTR
   let transaction_reference: string | null = null;
   const ref =
     t.match(
-      /\b(?:ref(?:erence)?(?:\s*no\.?|#)?|utr|rrn|txn(?:\s*id)?|imps|neft|rtgs|upi(?:\s*ref)?)\s*[:#]?\s*([A-Z0-9]{6,})/i,
+      /\b(?:utr|rrn|ref(?:erence)?(?:\s*no\.?|#)?|txn(?:\s*id)?|upi(?:\s*ref)?)\s*[:#]?\s*([A-Z0-9]{6,})/i,
     ) || t.match(/\b([0-9]{10,16})\b/);
   if (ref) transaction_reference = ref[1];
 
@@ -110,19 +117,20 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
     }
   }
 
-  // sender / payee name
+  // counterparty name — for debits look after "to", for credits after "from"/"by".
   let sender_name: string | null = null;
   const nameMatch =
-    t.match(/\b(?:from|by|to|at|via)\s+([A-Z][A-Za-z0-9 &._\-]{2,40})/) ||
+    (transaction_type === "debit"
+      ? t.match(/\bto\s+([A-Z][A-Za-z][A-Za-z .'&\-]{1,50}?)(?=\s+(?:a\/?c|account|ac|on|via|ref|utr|rrn|imps|neft|upi|\.|,|$))/)
+      : t.match(/\b(?:from|by)\s+([A-Z][A-Za-z][A-Za-z .'&\-]{1,50}?)(?=\s+(?:a\/?c|account|ac|on|via|ref|utr|rrn|imps|neft|upi|\.|,|$))/)) ||
+    t.match(/\b(?:from|by|to)\s+([A-Z][A-Za-z][A-Za-z .'&\-]{1,50})/) ||
     t.match(/vpa\s+([a-z0-9._\-]+@[a-z]+)/i);
   if (nameMatch) {
     sender_name = nameMatch[1]
-      .replace(/\b(on|dated|ref|via|upi|imps|neft)\b.*$/i, "")
+      .replace(/\b(on|dated|ref|via|upi|imps|neft|rtgs|a\/?c|account)\b.*$/i, "")
       .trim();
     if (sender_name.length > 60) sender_name = sender_name.slice(0, 60);
-  }
-  if (!sender_name && channelMatch) {
-    sender_name = channelMatch[1].toUpperCase();
+    if (!sender_name) sender_name = null;
   }
 
   return {
