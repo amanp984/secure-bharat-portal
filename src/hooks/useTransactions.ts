@@ -90,7 +90,22 @@ function buildNarration(row: DbRow): string {
  * debits, then walk the desc-ordered list assigning each row its
  * balance-after-this-txn and stripping the txn for the next (older) row.
  */
-function mapRows(rows: DbRow[]): UiTransaction[] {
+function dedupeByUtr(rows: DbRow[]): DbRow[] {
+  const seen = new Set<string>();
+  const out: DbRow[] = [];
+  for (const r of rows) {
+    const utr = (r.transaction_reference || "").trim();
+    if (utr) {
+      if (seen.has(utr)) continue;
+      seen.add(utr);
+    }
+    out.push(r);
+  }
+  return out;
+}
+
+function mapRows(input: DbRow[]): UiTransaction[] {
+  const rows = dedupeByUtr(input);
   const totalCredit = rows.reduce((s, r) => s + (r.transaction_type === "credit" ? Number(r.amount) || 0 : 0), 0);
   const totalDebit = rows.reduce((s, r) => s + (r.transaction_type === "debit" ? Number(r.amount) || 0 : 0), 0);
   let running = OPENING_BALANCE + totalCredit - totalDebit; // closing balance

@@ -218,6 +218,30 @@ export default async function handler(req: any, res: any) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
+  // Deduplicate by UTR/reference. If a transaction with the same UTR already
+  // exists, reject the entire incoming transaction — do not insert, do not
+  // update balances, do not surface anywhere in the UI.
+  if (parsed.transaction_reference) {
+    const { data: existing, error: dupErr } = await supabase
+      .from("transactions")
+      .select("id")
+      .eq("transaction_reference", parsed.transaction_reference)
+      .limit(1)
+      .maybeSingle();
+    if (dupErr) {
+      console.error("[/api/sms] dedup check error", dupErr);
+      return json(res, 500, { success: false, error: dupErr.message });
+    }
+    if (existing?.id) {
+      return json(res, 200, {
+        success: true,
+        duplicate: true,
+        id: existing.id,
+        parsed,
+      });
+    }
+  }
+
   const { data, error } = await supabase
     .from("transactions")
     .insert({
