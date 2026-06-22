@@ -80,7 +80,7 @@ function Dashboard() {
               <div className="text-[12px] font-semibold">Welcome, Aman Prajapati</div>
               <div className="text-[10px] text-white/70 flex items-center gap-2">
                 <span>Last login: {lastLogin}</span>
-                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Mumbai</span>
+                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Malad Church</span>
               </div>
             </div>
           </div>

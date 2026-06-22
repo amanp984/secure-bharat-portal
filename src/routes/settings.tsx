@@ -21,8 +21,8 @@ export const Route = createFileRoute("/settings")({
 
 function Settings() {
   const logins = [
-    { d: "21 May 2026 09:42", dev: "Chrome · Windows · Mumbai", ok: true },
-    { d: "20 May 2026 21:10", dev: "Mobile App · Android · Mumbai", ok: true },
+    { d: "21 May 2026 09:42", dev: "Chrome · Windows · Malad Church", ok: true },
+    { d: "20 May 2026 21:10", dev: "Mobile App · Android · Malad Church", ok: true },
     { d: "18 May 2026 14:33", dev: "Safari · iPhone · Bengaluru", ok: true },
     { d: "15 May 2026 02:11", dev: "Unknown · Delhi", ok: false },
   ];
