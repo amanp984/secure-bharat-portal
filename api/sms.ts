@@ -214,6 +214,27 @@ export default async function handler(req: any, res: any) {
 
   const parsed = parseSms(message, smsSender);
 
+  // Validate: must look like a real banking transaction SMS.
+  // Required: amount > 0, a transaction keyword, and a UTR/reference.
+  const txnKeyword =
+    /(received\s+via\s+upi|sent\s+via\s+upi|received\s+via\s+imps|sent\s+via\s+imps|\bcredited\b|\bdebited\b|\bupi\b|\bimps\b|\bneft\b|\brtgs\b)/i;
+  const hasAmount = parsed.amount > 0;
+  const hasKeyword = txnKeyword.test(message);
+  const hasReference = !!(parsed.transaction_reference && parsed.transaction_reference.length >= 6);
+
+  if (!hasAmount || !hasKeyword || !hasReference) {
+    return json(res, 200, {
+      success: true,
+      ignored: true,
+      reason: !hasAmount
+        ? "no_amount"
+        : !hasKeyword
+          ? "no_transaction_keyword"
+          : "no_utr_reference",
+      parsed,
+    });
+  }
+
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
