@@ -7,7 +7,7 @@ export const accounts = [
   {
     id: "cur",
     type: "Current Account",
-    masked: "XXXX XXXX 6507",
+    masked: `XXXX XXXX ${"6348943378".slice(-4)}`,
     accountNumber: "6348943378",
     ifsc: "IDIB000B199",
     branch: "Jaipur",
