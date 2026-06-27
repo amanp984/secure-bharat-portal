@@ -14,6 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          changed_at: string
+          field: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+        }
+        Insert: {
+          changed_at?: string
+          field: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Update: {
+          changed_at?: string
+          field?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Relationships: []
+      }
+      customer_profile: {
+        Row: {
+          account_number: string
+          address: string
+          branch_address: string
+          branch_name: string
+          created_at: string
+          customer_id: string
+          email: string
+          holder_name: string
+          id: string
+          ifsc: string
+          micr: string
+          mobile: string
+          opening_balance: number
+          password_hash: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          account_number: string
+          address: string
+          branch_address: string
+          branch_name: string
+          created_at?: string
+          customer_id: string
+          email: string
+          holder_name: string
+          id?: string
+          ifsc: string
+          micr: string
+          mobile: string
+          opening_balance?: number
+          password_hash: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          account_number?: string
+          address?: string
+          branch_address?: string
+          branch_name?: string
+          created_at?: string
+          customer_id?: string
+          email?: string
+          holder_name?: string
+          id?: string
+          ifsc?: string
+          micr?: string
+          mobile?: string
+          opening_balance?: number
+          password_hash?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           account_number_last4: string | null
