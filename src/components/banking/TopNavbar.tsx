@@ -24,9 +24,11 @@ const navItems = [
 export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
   const { open } = useProfilePanel();
   const navigate = useNavigate();
+  const profile = useProfile();
 
   const logout = () => {
     recordLogout();
+    clearAdminToken();
     localStorage.removeItem("indian_one_demo_auth");
     toast.success("Logged out securely");
     setTimeout(() => navigate({ to: "/" }), 400);
@@ -84,10 +86,10 @@ export function TopNavbar({ onMenuClick }: { onMenuClick: () => void }) {
           className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 ml-1 border rounded-full hover:bg-primary/5 transition-colors"
         >
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shadow-sm">
-            PA
+            {profile.initials}
           </div>
           <div className="hidden md:block leading-tight text-left">
-            <div className="text-xs font-semibold">Prajapati A J</div>
+            <div className="text-xs font-semibold truncate max-w-[140px]">{profile.fullName}</div>
             <div className="text-[9px] text-muted-foreground">CIF: {profile.customerId}</div>
           </div>
           <ChevronDown className="hidden md:block w-3.5 h-3.5 text-muted-foreground" />
