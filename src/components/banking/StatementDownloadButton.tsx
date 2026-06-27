@@ -4,7 +4,6 @@ import { LoaderCircle } from "lucide-react";
 import { type ButtonProps, Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { downloadStatementPDF, useStatementDownloadState, type StatementTxn } from "@/lib/pdf-statement";
-import { useProfile } from "@/hooks/useProfile";
 
 type StatementDownloadButtonProps = ButtonProps & {
   idleIcon: ComponentType<{ className?: string }>;
@@ -24,7 +23,6 @@ export function StatementDownloadButton({
   ...props
 }: StatementDownloadButtonProps) {
   const isDownloading = useStatementDownloadState();
-  const profile = useProfile();
 
   return (
     <Button
@@ -34,7 +32,7 @@ export function StatementDownloadButton({
       onClick={async (event) => {
         onClick?.(event);
         if (event.defaultPrevented || isDownloading) return;
-        await downloadStatementPDF(profile, txns);
+        await downloadStatementPDF(txns);
       }}
       className={cn("relative", isDownloading && "opacity-80", className)}
     >
@@ -47,7 +45,11 @@ export function StatementDownloadButton({
           transition={{ duration: 0.16, ease: "easeOut" }}
           className="inline-flex items-center gap-2"
         >
-          {isDownloading ? <LoaderCircle className="animate-spin" /> : <IdleIcon className="shrink-0" />}
+          {isDownloading ? (
+            <LoaderCircle className="animate-spin" />
+          ) : (
+            <IdleIcon className="shrink-0" />
+          )}
           <span>{isDownloading ? loadingLabel : idleLabel}</span>
         </motion.span>
       </AnimatePresence>

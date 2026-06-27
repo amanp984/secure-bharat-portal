@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
-import { useAccountList } from "@/hooks/useProfile";
+import { accounts } from "@/lib/banking-data";
 import { useCurrentBalance } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -78,7 +78,6 @@ function EmptyAccountCard({
 function AccountsPage() {
   const [branchModal, setBranchModal] = useState<string | null>(null);
   const balance = useCurrentBalance();
-  const accounts = useAccountList();
   return (
     <AppLayout>
       <PageHeader title="All Accounts" subtitle="Manage all your linked Indian One accounts in one place" />

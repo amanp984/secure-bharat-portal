@@ -13,6 +13,14 @@ import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 
 const AUTH_KEY = "indian_one_demo_auth";
+const PWD_KEY = "indian_one_demo_pwd";
+const DEMO_USER = "67324869786";
+const DEFAULT_PASS = "PRAJA@1999";
+const RESET_CARD_LAST4 = "3728";
+const RESET_PIN = "1122";
+const getDemoPass = () => {
+  try { return localStorage.getItem(PWD_KEY) || DEFAULT_PASS; } catch { return DEFAULT_PASS; }
+};
 const IDLE_MS = 3 * 60 * 1000; // 3 minutes
 
 
@@ -37,7 +45,6 @@ export function DemoAuthGate({ children }: { children: React.ReactNode }) {
   // Force logout on every page (re)load: clear any previously persisted auth.
   useEffect(() => {
     try { localStorage.removeItem(AUTH_KEY); } catch {}
-    try { sessionStorage.removeItem("indian_one_admin_token"); } catch {}
     setAuthed(false);
     setReady(true);
   }, []);
@@ -91,7 +98,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
   const refreshCaptcha = () => { setCaptchaCode(genCaptcha()); setCaptcha(""); };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const uid = userId.trim();
     const pass = pwd;
@@ -102,30 +109,22 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
       return;
     }
     setLoading(true);
-    try {
-      const r = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: uid, password: pass }),
-      });
-      if (!r.ok) {
+    setTimeout(() => {
+      if (uid === DEMO_USER && pass === getDemoPass()) {
+        try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
+        recordLogin();
+        toast.success("Login successful. Welcome to Indian One.");
+        setLoading(false);
+        // Show premium loading overlay while the dashboard mounts.
+        const release = showLoading("Securing your session");
+        onSuccess();
+        setTimeout(release, 1800);
+      } else {
         setLoading(false);
         toast.error("Invalid User ID or Password");
         refreshCaptcha();
-        return;
       }
-      try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
-      recordLogin();
-      toast.success("Login successful. Welcome to Indian One.");
-      setLoading(false);
-      const release = showLoading("Securing your session");
-      onSuccess();
-      setTimeout(release, 1800);
-    } catch {
-      setLoading(false);
-      toast.error("Network error. Please retry.");
-      refreshCaptcha();
-    }
+    }, 700);
   };
 
   const currentSlide = useMemo(() => slides[slide], [slide]);
@@ -509,12 +508,22 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       setProcessing(true);
       setTimeout(() => {
         setProcessing(false);
-        toast.error("Self-service password reset is currently unavailable. Please contact your branch administrator to reset your password.");
+        if (uid.trim() !== DEMO_USER || last4 !== RESET_CARD_LAST4 || pin !== RESET_PIN) {
+          return toast.error("Verification failed. Please check your details.");
+        }
+        toast.success("Identity verified. Set a new password.");
+        setStep(2);
       }, 1200);
     } else {
       if (newPwd.length < 8) return toast.error("Password must be at least 8 characters");
       if (newPwd !== confirmPwd) return toast.error("Passwords do not match");
-      toast.error("Please contact your branch administrator to set a new password.");
+      setProcessing(true);
+      setTimeout(() => {
+        try { localStorage.setItem(PWD_KEY, newPwd); } catch {}
+        setProcessing(false);
+        setDone(true);
+        toast.success("Password reset successfully");
+      }, 1000);
     }
   };
 

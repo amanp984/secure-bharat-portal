@@ -3,6 +3,7 @@ export const brand = {
   tagline: "Secure Digital Platform",
   supportEmail: "support@indianone.in",
   customerCare: "1800-572-9900",
+  branch: "Jaipur",
   website: "https://www.indianone.in",
   appInstallPath: "https://www.indianone.in/app",
   description:
