@@ -4,7 +4,7 @@ import {
   X, Copy, Download, ShieldCheck, BadgeCheck, User, CreditCard,
   Building2, Phone, Mail, Hash, FileText, MapPin, Calendar, Clock,
 } from "lucide-react";
-import { accounts, profile } from "@/lib/banking-data";
+import { useProfile } from "@/hooks/useProfile";
 import { useCurrentBalance } from "@/hooks/useTransactions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -72,6 +72,7 @@ function useIsDesktop() {
 
 function ProfileBody({ onClose }: { onClose: () => void }) {
   const balance = useCurrentBalance();
+  const profile = useProfile();
   return (
     <>
       {/* Header */}
