@@ -509,22 +509,12 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       setProcessing(true);
       setTimeout(() => {
         setProcessing(false);
-        if (uid.trim() !== DEMO_USER || last4 !== RESET_CARD_LAST4 || pin !== RESET_PIN) {
-          return toast.error("Verification failed. Please check your details.");
-        }
-        toast.success("Identity verified. Set a new password.");
-        setStep(2);
+        toast.error("Self-service password reset is currently unavailable. Please contact your branch administrator to reset your password.");
       }, 1200);
     } else {
       if (newPwd.length < 8) return toast.error("Password must be at least 8 characters");
       if (newPwd !== confirmPwd) return toast.error("Passwords do not match");
-      setProcessing(true);
-      setTimeout(() => {
-        try { localStorage.setItem(PWD_KEY, newPwd); } catch {}
-        setProcessing(false);
-        setDone(true);
-        toast.success("Password reset successfully");
-      }, 1000);
+      toast.error("Please contact your branch administrator to set a new password.");
     }
   };
 
