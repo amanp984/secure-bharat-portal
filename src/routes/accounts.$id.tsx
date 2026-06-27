@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts, profile } from "@/lib/banking-data";
+import { useProfile, useAccountList } from "@/hooks/useProfile";
 import { useTransactions } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,6 +57,8 @@ function Row({ label, value, copyable }: { label: string; value: string; copyabl
 
 function AccountDetails() {
   const { id } = Route.useParams();
+  const profile = useProfile();
+  const accounts = useAccountList();
   const acc = accounts.find((a) => a.id === id) ?? accounts[0];
   const { transactions, balance } = useTransactions();
 

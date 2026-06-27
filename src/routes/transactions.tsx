@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts, profile } from "@/lib/banking-data";
+import { useAccountView } from "@/hooks/useProfile";
 import { useTransactions } from "@/hooks/useTransactions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
 
 function TransactionsPage() {
-  const acc = accounts[0];
+  const acc = useAccountView();
   const { transactions, balance } = useTransactions();
   const [query, setQuery] = useState("");
   const [type, setType] = useState<"All" | "Credit" | "Debit">("All");

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts } from "@/lib/banking-data";
+import { useAccountView, useProfile } from "@/hooks/useProfile";
 import { useTransactions } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -56,7 +56,8 @@ const bills = [
 ];
 
 function Dashboard() {
-  const acc = accounts[0];
+  const acc = useAccountView();
+  const profile = useProfile();
   const { transactions, balance } = useTransactions();
   const lastLogin = getLastLogin();
   
@@ -74,13 +75,13 @@ function Dashboard() {
         <div className="relative flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold ring-1 ring-white/30">
-              DS
+              {profile.initials}
             </div>
             <div className="leading-tight">
-              <div className="text-[12px] font-semibold">Welcome, PRAJAPATI A J</div>
+              <div className="text-[12px] font-semibold">Welcome, {profile.fullName}</div>
               <div className="text-[10px] text-white/70 flex items-center gap-2">
                 <span>Last login: {lastLogin}</span>
-                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Jaipur</span>
+                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> {profile.branch}</span>
               </div>
             </div>
           </div>

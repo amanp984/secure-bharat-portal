@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts, profile } from "@/lib/banking-data";
+import { useProfile, useAccountView } from "@/hooks/useProfile";
 import { useTransactions } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,8 @@ function downloadBlob(content: string, mime: string, filename: string) {
 }
 
 function StatementPage() {
-  const acc = accounts[0];
+  const profile = useProfile();
+  const acc = useAccountView();
   const { transactions } = useTransactions();
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
@@ -70,7 +71,7 @@ function StatementPage() {
   const summary = useMemo(() => {
     const totalCredit = transactions.reduce((s, t) => s + (t.credit || 0), 0);
     const totalDebit = transactions.reduce((s, t) => s + (t.debit || 0), 0);
-    const opening = acc.balance; // opening balance from account
+    const opening = profile.openingBalance;
     const closing = opening + totalCredit - totalDebit;
     return {
       available: closing,
@@ -79,7 +80,7 @@ function StatementPage() {
       totalCredit,
       totalDebit,
     };
-  }, [transactions, acc.balance]);
+  }, [transactions, profile.openingBalance]);
 
   const exportCSV = () => {
     const headers = ["Date", "Narration", "Reference", "Type", "Debit", "Credit", "Balance"];

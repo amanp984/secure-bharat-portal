@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Copy, Download, ShieldCheck, ArrowUpRight, ArrowDownLeft, Building2, User, Wallet, FileText } from "lucide-react";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
 import { toast } from "sonner";
-import { accounts, profile } from "@/lib/banking-data";
+import { useProfile, useAccountView } from "@/hooks/useProfile";
 import { useTransactions } from "@/hooks/useTransactions";
 import { motion } from "framer-motion";
 
@@ -11,7 +11,8 @@ const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
 
 export function AccountDetailsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
-  const acc = accounts[0];
+  const acc = useAccountView();
+  const profile = useProfile();
   const { transactions, balance } = useTransactions();
   const copy = (val: string, label: string) => {
     navigator.clipboard?.writeText(val);

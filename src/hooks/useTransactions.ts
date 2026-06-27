@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useMemo } from "react";
-import { accounts, computeCurrentBalance } from "@/lib/banking-data";
+import { useEffect, useState, useMemo } from "react";
+import { computeCurrentBalance } from "@/lib/banking-data";
 import { setCanonicalTxns } from "@/lib/canonical-txns";
+import { useProfile } from "@/hooks/useProfile";
 
 // UI transaction shape — matches what the dashboard already expects.
 export interface UiTransaction {
@@ -34,8 +34,6 @@ interface DbRow {
   raw_sms: string | null;
   transaction_date: string;
 }
-
-const OPENING_BALANCE = accounts[0]?.balance ?? 0;
 
 function formatDate(iso: string): { isoDate: string; date: string } {
   const d = new Date(iso);
@@ -84,12 +82,6 @@ function buildNarration(row: DbRow): string {
   return parts.join(" / ");
 }
 
-/**
- * Map DB rows (returned newest-first) into UI rows with a correct running
- * balance per row. We compute the closing balance from opening + credits −
- * debits, then walk the desc-ordered list assigning each row its
- * balance-after-this-txn and stripping the txn for the next (older) row.
- */
 function dedupeByUtr(rows: DbRow[]): DbRow[] {
   const seen = new Set<string>();
   const out: DbRow[] = [];
@@ -104,11 +96,11 @@ function dedupeByUtr(rows: DbRow[]): DbRow[] {
   return out;
 }
 
-function mapRows(input: DbRow[]): UiTransaction[] {
+function mapRows(input: DbRow[], opening: number): UiTransaction[] {
   const rows = dedupeByUtr(input);
   const totalCredit = rows.reduce((s, r) => s + (r.transaction_type === "credit" ? Number(r.amount) || 0 : 0), 0);
   const totalDebit = rows.reduce((s, r) => s + (r.transaction_type === "debit" ? Number(r.amount) || 0 : 0), 0);
-  let running = OPENING_BALANCE + totalCredit - totalDebit; // closing balance
+  let running = opening + totalCredit - totalDebit; // closing balance
   return rows.map((r) => {
     const amount = Number(r.amount) || 0;
     const type: "Credit" | "Debit" = r.transaction_type === "credit" ? "Credit" : "Debit";
@@ -116,9 +108,8 @@ function mapRows(input: DbRow[]): UiTransaction[] {
     const debit = type === "Debit" ? amount : 0;
     const { isoDate, date } = formatDate(r.transaction_date);
     const balanceAfter = running;
-    // Strip this txn so the next (older) row shows the balance BEFORE it.
     running = running - credit + debit;
-    const txn: UiTransaction = {
+    return {
       id: r.id,
       isoDate,
       date,
@@ -134,64 +125,53 @@ function mapRows(input: DbRow[]): UiTransaction[] {
       rawSms: r.raw_sms,
       smsSender: r.sms_sender,
     };
-    return txn;
   });
 }
 
-/**
- * Fault-tolerant transactions hook.
- *
- * - Never throws: any Supabase / network / config error is swallowed and the
- *   UI sees an empty list. The dashboard, transactions, statement and passbook
- *   pages all render normally even when the backend is unavailable.
- * - Lazy-imports the Supabase client so a missing env var at module load
- *   cannot crash the React tree.
- * - Realtime is best-effort — websocket failures are ignored.
- */
 export function useTransactions() {
-  const [transactions, setTransactions] = useState<UiTransaction[]>([]);
+  const profile = useProfile();
+  const opening = profile.openingBalance || 0;
+  const [rawRows, setRawRows] = useState<DbRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     let timer: ReturnType<typeof setInterval> | undefined;
-
     const load = async () => {
       try {
         const res = await fetch("/api/transactions", { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const body = (await res.json()) as { transactions?: DbRow[] };
         if (!active) return;
-        const mapped = mapRows(body.transactions || []);
-        setCanonicalTxns(mapped);
-        setTransactions(mapped);
+        setRawRows(body.transactions || []);
       } catch (err) {
         console.warn("[useTransactions] load failed", err);
-        if (active) setTransactions((prev) => prev);
       } finally {
         if (active) setLoading(false);
       }
     };
-
     load();
-    // Light polling in lieu of realtime (anon role no longer has table access).
     timer = setInterval(() => { load().catch(() => {}); }, 30000);
-
     return () => {
       active = false;
       if (timer) clearInterval(timer);
     };
   }, []);
 
+  const transactions = useMemo(() => {
+    const mapped = mapRows(rawRows, opening);
+    setCanonicalTxns(mapped);
+    return mapped;
+  }, [rawRows, opening]);
+
   const balance = useMemo(
-    () => computeCurrentBalance(transactions, OPENING_BALANCE),
-    [transactions],
+    () => computeCurrentBalance(transactions, opening),
+    [transactions, opening],
   );
 
   return { transactions, loading, balance };
 }
 
-/** Convenience hook for components that only need the live balance. */
 export function useCurrentBalance(): number {
   return useTransactions().balance;
 }

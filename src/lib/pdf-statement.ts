@@ -2,16 +2,15 @@ import { useSyncExternalStore } from "react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { accounts, profile } from "./banking-data";
+import { PRIMARY_ACCOUNT_GRADIENT } from "./banking-data";
 import { brand } from "./brand";
 import { getCanonicalTxns } from "./canonical-txns";
 import logoUrl from "@/assets/indian-one-logo.png";
 import type { UiTransaction } from "@/hooks/useTransactions";
+import type { ProfileView } from "@/hooks/useProfile";
 
 export type StatementTxn = UiTransaction;
 
-// Cache the logo as a base64 PNG data URL after first load so subsequent
-// PDF generations are instant.
 let logoDataUrl: string | null = null;
 async function loadLogoDataUrl(): Promise<string | null> {
   if (logoDataUrl) return logoDataUrl;
@@ -36,7 +35,6 @@ const fmtINR = (n: number) =>
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
 function ddmmyyyy(iso: string): string {
-  // Accept "YYYY-MM-DD" or any Date-parseable string.
   if (/^\d{4}-\d{2}-\d{2}/.test(iso)) {
     const [y, m, d] = iso.slice(0, 10).split("-");
     return `${d}/${m}/${y}`;
@@ -55,7 +53,7 @@ function formatGenStamp(d: Date): string {
   return `${date} ${pad2(h)}:${m} ${ampm}`;
 }
 
-// ------- Download state singleton (unchanged public API) -------
+// ------- Download state singleton -------
 let isStatementDownloading = false;
 let activeDownloadPromise: Promise<boolean> | null = null;
 const statementDownloadListeners = new Set<() => void>();
@@ -68,7 +66,7 @@ function setDownloading(next: boolean) { isStatementDownloading = next; emit(); 
 
 export function useStatementDownloadState() {
   return useSyncExternalStore(
-    (listener) => { statementDownloadListeners.add(listener); return () => statementDownloadListeners.delete(listener); },
+    (l) => { statementDownloadListeners.add(l); return () => statementDownloadListeners.delete(l); },
     () => isStatementDownloading,
     () => false,
   );
@@ -78,8 +76,7 @@ async function nextPaint() {
   await new Promise<void>((r) => requestAnimationFrame(() => r()));
 }
 
-// ------- Public API -------
-export async function downloadStatementPDF(txns: StatementTxn[] = []) {
+export async function downloadStatementPDF(profile: ProfileView, txns: StatementTxn[] = []) {
   if (activeDownloadPromise) return activeDownloadPromise;
 
   activeDownloadPromise = (async () => {
@@ -93,7 +90,7 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
 
     try {
       const logo = await loadLogoDataUrl();
-      buildPdf(txns, logo);
+      buildPdf(profile, txns, logo);
       toast.dismiss(STATEMENT_LOADING_TOAST_ID);
       setDownloading(false);
       toast.success("Statement downloaded successfully", { id: STATEMENT_SUCCESS_TOAST_ID, duration: 1200 });
@@ -114,21 +111,14 @@ export async function downloadStatementPDF(txns: StatementTxn[] = []) {
   return activeDownloadPromise;
 }
 
-// ------- PDF rendering -------
-function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
-  const acc = accounts[0];
-  // ALWAYS use the canonical full ledger snapshot — identical PDF on every
-  // device and from every download button. Ignore any filtered/partial list
-  // passed by individual call sites.
+function buildPdf(profile: ProfileView, _txnsInput: StatementTxn[], logoImg: string | null) {
   const txns = getCanonicalTxns();
-
   const totalCredit = txns.reduce((s, t) => s + (t.credit || 0), 0);
   const totalDebit = txns.reduce((s, t) => s + (t.debit || 0), 0);
   const creditCount = txns.filter((t) => t.type === "Credit").length;
   const debitCount = txns.filter((t) => t.type === "Debit").length;
 
-  // Use the ledger's own balance values — do not recompute.
-  const openingBalance = acc.balance;
+  const openingBalance = profile.openingBalance;
   const closingBalance = openingBalance + totalCredit - totalDebit;
   const rows = txns.map((t) => ({
     date: ddmmyyyy(t.isoDate),
@@ -139,7 +129,6 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
     balance: fmtINR(t.balance),
   }));
 
-  // Period spans the ledger's date range regardless of row order.
   const isoDates = txns.map((t) => t.isoDate).sort();
   const periodFrom = isoDates.length ? ddmmyyyy(isoDates[0]) : "—";
   const periodTo = isoDates.length ? ddmmyyyy(isoDates[isoDates.length - 1]) : "—";
@@ -157,20 +146,15 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
     creator: `${brand.name} Net Banking`,
   });
 
-  // ---- HEADER (page 1) ----
-  doc.setFillColor(15, 31, 78); // deep navy
+  doc.setFillColor(15, 31, 78);
   doc.rect(0, 0, pageW, 86, "F");
-  // accent bar
   doc.setFillColor(245, 158, 11);
   doc.rect(0, 86, pageW, 3, "F");
 
-  // logo block — uploaded Indian One symbol
   doc.setFillColor(255, 255, 255);
   doc.roundedRect(margin, 22, 50, 50, 8, 8, "F");
   if (logoImg) {
-    try {
-      doc.addImage(logoImg, "PNG", margin + 5, 27, 40, 40);
-    } catch { /* ignore */ }
+    try { doc.addImage(logoImg, "PNG", margin + 5, 27, 40, 40); } catch { /* ignore */ }
   }
 
   doc.setTextColor(255, 255, 255);
@@ -195,7 +179,6 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   doc.setTextColor(203, 213, 225);
   doc.text(`Period: ${periodFrom} — ${periodTo}`, pageW - margin, 66, { align: "right" });
 
-  // ---- Customer + Account info (two columns) ----
   let y = 110;
   const colGap = 12;
   const colW = (pageW - margin * 2 - colGap) / 2;
@@ -209,16 +192,15 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   ]);
   const rightH = drawInfoCard(doc, margin + colW + colGap, y, colW, "Account Information", [
     ["Account No.", profile.accountNumber],
-    ["Account Type", acc.type],
-    ["IFSC", acc.ifsc],
+    ["Account Type", profile.accountType],
+    ["IFSC", profile.ifsc],
+    ["MICR", profile.micr],
     ["Branch", profile.branch],
     ["Branch Address", profile.branchAddress],
     ["Status", profile.accountStatus],
   ]);
   y += Math.max(leftH, rightH) + 18;
 
-
-  // ---- Summary cards (4 across) ----
   const cards: { label: string; value: string; color: [number, number, number] }[] = [
     { label: "Opening Balance", value: `INR ${fmtINR(openingBalance)}`, color: [59, 130, 246] },
     { label: "Total Credits", value: `INR ${fmtINR(totalCredit)}`, color: [22, 163, 74] },
@@ -244,7 +226,6 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   });
   y += 60;
 
-  // ---- Transactions table (auto-paginates across pages) ----
   autoTable(doc, {
     startY: y,
     head: [["Date", "Narration", "Reference", "Debit (INR)", "Credit (INR)", "Balance (INR)"]],
@@ -265,7 +246,6 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
     },
     margin: { left: margin, right: margin, top: 60, bottom: 60 },
     didDrawPage: () => {
-      // Continuation header on pages 2+
       const pn = doc.getCurrentPageInfo().pageNumber;
       if (pn > 1) {
         doc.setFillColor(15, 31, 78);
@@ -287,14 +267,8 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
     },
   });
 
-  // ---- Statement summary box (after table) ----
   let afterY = (doc as any).lastAutoTable?.finalY ?? y;
-  if (afterY + 130 > pageH - 60) {
-    doc.addPage();
-    afterY = 60;
-  } else {
-    afterY += 18;
-  }
+  if (afterY + 130 > pageH - 60) { doc.addPage(); afterY = 60; } else { afterY += 18; }
 
   doc.setFillColor(15, 31, 78);
   doc.roundedRect(margin, afterY, pageW - margin * 2, 22, 3, 3, "F");
@@ -322,10 +296,7 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
 
   const sumY = (doc as any).lastAutoTable?.finalY ?? afterY + 60;
   let discY = sumY + 16;
-  if (discY + 70 > pageH - 60) {
-    doc.addPage();
-    discY = 60;
-  }
+  if (discY + 70 > pageH - 60) { doc.addPage(); discY = 60; }
 
   doc.setDrawColor(226, 232, 240);
   doc.setFillColor(254, 252, 232);
@@ -344,7 +315,6 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   ];
   disclaimers.forEach((line, i) => doc.text(line, margin + 12, discY + 32 + i * 12, { maxWidth: pageW - margin * 2 - 24 }));
 
-  // ---- Footers (Page X of Y) drawn after total count is known ----
   const totalPages = doc.getNumberOfPages();
   for (let p = 1; p <= totalPages; p++) {
     doc.setPage(p);
@@ -352,28 +322,21 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
     doc.setDrawColor(15, 31, 78);
     doc.setLineWidth(0.8);
     doc.line(margin, fy - 14, pageW - margin, fy - 14);
-
-    // Powered by Indian One + logo
-    if (logoImg) {
-      try { doc.addImage(logoImg, "PNG", margin, fy - 8, 14, 14); } catch { /* ignore */ }
-    }
+    if (logoImg) { try { doc.addImage(logoImg, "PNG", margin, fy - 8, 14, 14); } catch { /* ignore */ } }
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
     doc.setTextColor(15, 31, 78);
     doc.text(`Powered by ${brand.name}`, margin + 18, fy);
-
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7);
     doc.setTextColor(100, 116, 139);
     doc.text(`Customer Care ${brand.customerCare}  •  Generated ${generatedAt}`, margin + 18, fy + 9);
-
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
     doc.setTextColor(15, 31, 78);
     doc.text(`Page ${p} of ${totalPages}`, pageW - margin, fy + 4, { align: "right" });
   }
 
-  // ---- Save ----
   const now = new Date();
   const filename = `${brand.name.replace(/\s+/g, "")}_Statement_${now.getFullYear()}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}.pdf`;
   const blob = doc.output("blob");
@@ -388,16 +351,9 @@ function buildPdf(_txnsInput: StatementTxn[], logoImg: string | null) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-// ------- Helpers -------
 function drawInfoCard(
-  doc: jsPDF,
-  x: number,
-  y: number,
-  w: number,
-  title: string,
-  rows: [string, string][],
+  doc: jsPDF, x: number, y: number, w: number, title: string, rows: [string, string][],
 ): number {
-  // Compute per-row heights so wrapped values (e.g. address) never overlap.
   const labelW = 78;
   const valueX = x + 10 + labelW;
   const valueMaxW = w - 10 - labelW - 10;
@@ -412,21 +368,18 @@ function drawInfoCard(
   const titleH = 22;
   const totalH = titleH + 8 + rowHeights.reduce((s, h) => s + h, 0) + 6;
 
-  // Card background
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(226, 232, 240);
   doc.roundedRect(x, y, w, totalH, 4, 4, "FD");
 
-  // Title bar
   doc.setFillColor(241, 245, 249);
   doc.roundedRect(x, y, w, titleH, 4, 4, "F");
-  doc.rect(x, y + 14, w, 8, "F"); // mask bottom corners
+  doc.rect(x, y + 14, w, 8, "F");
   doc.setTextColor(15, 31, 78);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.text(title.toUpperCase(), x + 10, y + 14);
 
-  // Rows
   doc.setFontSize(8.5);
   let cursor = y + titleH + 10;
   rows.forEach((r, i) => {
@@ -439,6 +392,9 @@ function drawInfoCard(
     lines.forEach((ln, j) => doc.text(ln, valueX, cursor + j * lineHeight));
     cursor += rowHeights[i];
   });
+
+  // Silence unused-var warning while keeping the gradient constant available.
+  void PRIMARY_ACCOUNT_GRADIENT;
 
   return totalH;
 }
