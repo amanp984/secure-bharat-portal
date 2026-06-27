@@ -122,3 +122,24 @@ export function useRefreshProfile() {
   const qc = useQueryClient();
   return () => qc.invalidateQueries({ queryKey: QK });
 }
+
+/** Legacy `accounts[0]`-shaped view for components that pre-date the unified profile. */
+export function useAccountView() {
+  const p = useProfile();
+  return {
+    id: "primary",
+    type: p.accountType,
+    accountNumber: p.accountNumber,
+    masked: p.masked,
+    ifsc: p.ifsc,
+    branch: p.branch,
+    customerId: p.customerId,
+    status: p.accountStatus,
+    color: p.cardGradient,
+    openingBalance: p.openingBalance,
+  };
+}
+
+export function useAccountList() {
+  return [useAccountView()];
+}

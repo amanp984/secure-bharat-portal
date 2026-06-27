@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { Bell, LogOut, Search, Menu, ChevronDown, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useProfilePanel } from "./ProfileContext";
-import { profile } from "@/lib/banking-data";
+import { useProfile } from "@/hooks/useProfile";
 import { brand } from "@/lib/brand";
 import { IndianOneLogo } from "./IndianBankOneLogo";
 import { getLastLogin, recordLogout } from "@/lib/session";
+import { clearAdminToken } from "@/lib/admin-session";
 
 const navItems = [
   { label: "Dashboard", to: "/" },
