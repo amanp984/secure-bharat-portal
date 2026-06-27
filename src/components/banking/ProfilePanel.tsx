@@ -81,7 +81,7 @@ function ProfileBody({ onClose }: { onClose: () => void }) {
         <div className="relative flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-xl font-bold ring-2 ring-white/20 shrink-0">
-              AP
+              {profile.initials}
             </div>
             <div className="min-w-0">
               <div className="text-[11px] uppercase tracking-wider text-white/70">

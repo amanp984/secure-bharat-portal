@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { StatementDownloadButton } from "@/components/banking/StatementDownloadButton";
-import { accounts } from "@/lib/banking-data";
+import { useAccountView, useProfile } from "@/hooks/useProfile";
 import { useTransactions } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -56,7 +56,8 @@ const bills = [
 ];
 
 function Dashboard() {
-  const acc = accounts[0];
+  const acc = useAccountView();
+  const profile = useProfile();
   const { transactions, balance } = useTransactions();
   const lastLogin = getLastLogin();
   

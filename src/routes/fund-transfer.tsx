@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
-import { accounts } from "@/lib/banking-data";
+import { useAccountView } from "@/hooks/useProfile";
 import { useCurrentBalance } from "@/hooks/useTransactions";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -48,7 +48,7 @@ function FundTransfer() {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const navigate = useNavigate();
-  const acc = accounts[0];
+  const acc = useAccountView();
   const balance = useCurrentBalance();
 
   const modeInfo = modes.find((m) => m.id === mode)!;
