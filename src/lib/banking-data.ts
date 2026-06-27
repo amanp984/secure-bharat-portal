@@ -1,56 +1,16 @@
-// Centralized customer & account data. Live balances are computed from the
-// transaction ledger in `useTransactions` — see `computeCurrentBalance` below.
-// `accounts[].balance` is the OPENING balance only. Never read it as the
-// current/available balance.
-
-export const accounts = [
-  {
-    id: "cur",
-    type: "Current Account",
-    masked: `XXXX XXXX ${"6348943378".slice(-4)}`,
-    accountNumber: "6348943378",
-    ifsc: "IDIB000B199",
-    branch: "Jaipur",
-    customerId: "67324869786",
-    status: "Active",
-    /** Opening balance only — current balance = opening + Σcredits − Σdebits */
-    balance: 0,
-    primary: true,
-    color: "from-blue-700 via-indigo-700 to-slate-900",
-  },
-];
+// Static UI data only. ALL customer-specific values (holder name, account
+// number, IFSC, MICR, address, branch, opening balance, login credentials)
+// live in the backend `customer_profile` table and are read via the
+// `useProfile()` hook. Do NOT add hardcoded customer values here again.
 
 export function computeCurrentBalance(
   txns: ReadonlyArray<{ credit?: number; debit?: number }>,
-  opening: number = accounts[0]?.balance ?? 0,
+  opening: number = 0,
 ): number {
   let bal = opening;
   for (const t of txns) bal += (t.credit || 0) - (t.debit || 0);
   return bal;
 }
-
-export const profile = {
-  fullName: "PRAJAPATI A J",
-  customerId: "67324869786",
-  accountNumber: "6348943378",
-  ifsc: "IDIB000B199",
-  micr: "03755786468",
-  mobile: "+91 XXXXX88202",
-  email: "prajap77653@gmail.com",
-  address: "Shop No. 12, Govardhan Colony, Near JK Petrol, Jaipur - 76",
-  aadhaar: "XXXX XXXX 3671",
-  pan: "AXXXX0000X",
-  branch: "Jaipur",
-  branchAddress: "Indian Bank A/12, Western Highway, Jaipur - 79",
-  accountType: "Current Account",
-  kycStatus: "Verified",
-  accountStatus: "Active",
-  nominee: "Sachin (Spouse)",
-  openedOn: "14 March 2018",
-  lastLogin: "Just now · Jaipur",
-  occupation: "Business Owner",
-  customerCategory: "Priority Customer",
-};
 
 export const tickets = [
   { id: "SR248921", subject: "Debit card PIN reset", status: "Resolved", createdAt: "18 May 2026", resolution: "PIN reset successfully" },
@@ -77,3 +37,6 @@ export const billers = [
   { name: "Credit Card", icon: "CreditCard" },
   { name: "FASTag", icon: "Car" },
 ];
+
+/** Visual gradient used by the primary account card across the app. */
+export const PRIMARY_ACCOUNT_GRADIENT = "from-blue-700 via-indigo-700 to-slate-900";
