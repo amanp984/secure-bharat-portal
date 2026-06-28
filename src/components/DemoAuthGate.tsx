@@ -77,6 +77,7 @@ export function DemoAuthGate({ children }: { children: React.ReactNode }) {
 }
 
 function LoginPage({ onSuccess }: { onSuccess: () => void }) {
+  useBankingStore();
   const [tab, setTab] = useState<"individual" | "corporate">("individual");
   const [userId, setUserId] = useState("");
   const [pwd, setPwd] = useState("");
