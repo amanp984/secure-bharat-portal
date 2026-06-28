@@ -6,8 +6,10 @@ import { BankingModalProvider } from "./ModalContext";
 import { ProfilePanelProvider } from "./ProfileContext";
 import { Toaster } from "@/components/ui/sonner";
 import { brand } from "@/lib/brand";
+import { useBankingStore } from "@/lib/banking-data";
 
 export function AppLayout({ children }: { children: ReactNode }) {
+  useBankingStore();
   const [open, setOpen] = useState(false);
   return (
     <BankingModalProvider>
