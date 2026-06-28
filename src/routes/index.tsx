@@ -74,13 +74,13 @@ function Dashboard() {
         <div className="relative flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold ring-1 ring-white/30">
-              DS
+              {(profile.fullName || "U").trim().split(/\s+/).map((p) => p[0]).slice(0, 2).join("").toUpperCase()}
             </div>
             <div className="leading-tight">
-              <div className="text-[12px] font-semibold">Welcome, ANJAN</div>
+              <div className="text-[12px] font-semibold">Welcome, {profile.fullName}</div>
               <div className="text-[10px] text-white/70 flex items-center gap-2">
                 <span>Last login: {lastLogin}</span>
-                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> Jaipur</span>
+                <span className="hidden sm:flex items-center gap-1"><MapPin className="w-2.5 h-2.5" /> {profile.branch}</span>
               </div>
             </div>
           </div>
