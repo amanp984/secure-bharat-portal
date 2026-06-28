@@ -505,7 +505,7 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       setProcessing(true);
       setTimeout(() => {
         setProcessing(false);
-        if (uid.trim() !== DEMO_USER || last4 !== RESET_CARD_LAST4 || pin !== RESET_PIN) {
+        if (uid.trim() !== getDemoUser() || last4 !== getResetCardLast4() || pin !== RESET_PIN) {
           return toast.error("Verification failed. Please check your details.");
         }
         toast.success("Identity verified. Set a new password.");
@@ -516,7 +516,7 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       if (newPwd !== confirmPwd) return toast.error("Passwords do not match");
       setProcessing(true);
       setTimeout(() => {
-        try { localStorage.setItem(PWD_KEY, newPwd); } catch {}
+        setBankingData({ password: newPwd });
         setProcessing(false);
         setDone(true);
         toast.success("Password reset successfully");
