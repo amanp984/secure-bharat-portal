@@ -11,16 +11,13 @@ import { toast } from "sonner";
 import { recordLogin } from "@/lib/session";
 import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
+import { profile, setBankingData, useBankingStore } from "@/lib/banking-data";
 
 const AUTH_KEY = "indian_one_demo_auth";
-const PWD_KEY = "indian_one_demo_pwd";
-const DEMO_USER = "36225348698";
-const DEFAULT_PASS = "PRAJA@20266";
-const RESET_CARD_LAST4 = "8688";
 const RESET_PIN = "1122";
-const getDemoPass = () => {
-  try { return localStorage.getItem(PWD_KEY) || DEFAULT_PASS; } catch { return DEFAULT_PASS; }
-};
+const getDemoUser = () => profile.username;
+const getDemoPass = () => profile.password;
+const getResetCardLast4 = () => (profile.accountNumber || "").slice(-4);
 const IDLE_MS = 3 * 60 * 1000; // 3 minutes
 
 

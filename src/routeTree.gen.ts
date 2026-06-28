@@ -18,6 +18,7 @@ import { Route as LoansRouteImport } from './routes/loans'
 import { Route as InvestmentsRouteImport } from './routes/investments'
 import { Route as FundTransferRouteImport } from './routes/fund-transfer'
 import { Route as DepositsRouteImport } from './routes/deposits'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard-settings'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CardsRouteImport } from './routes/cards'
 import { Route as BillsRouteImport } from './routes/bills'
@@ -72,6 +73,11 @@ const DepositsRoute = DepositsRouteImport.update({
   path: '/deposits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/dashboard-settings',
+  path: '/dashboard-settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/bills': typeof BillsRoute
   '/cards': typeof CardsRoute
   '/contact': typeof ContactRoute
+  '/dashboard-settings': typeof DashboardSettingsRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRoute
   '/investments': typeof InvestmentsRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/bills': typeof BillsRoute
   '/cards': typeof CardsRoute
   '/contact': typeof ContactRoute
+  '/dashboard-settings': typeof DashboardSettingsRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRoute
   '/investments': typeof InvestmentsRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/bills': typeof BillsRoute
   '/cards': typeof CardsRoute
   '/contact': typeof ContactRoute
+  '/dashboard-settings': typeof DashboardSettingsRoute
   '/deposits': typeof DepositsRoute
   '/fund-transfer': typeof FundTransferRoute
   '/investments': typeof InvestmentsRoute
@@ -179,6 +188,7 @@ export interface FileRouteTypes {
     | '/bills'
     | '/cards'
     | '/contact'
+    | '/dashboard-settings'
     | '/deposits'
     | '/fund-transfer'
     | '/investments'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/bills'
     | '/cards'
     | '/contact'
+    | '/dashboard-settings'
     | '/deposits'
     | '/fund-transfer'
     | '/investments'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/bills'
     | '/cards'
     | '/contact'
+    | '/dashboard-settings'
     | '/deposits'
     | '/fund-transfer'
     | '/investments'
@@ -237,6 +249,7 @@ export interface RootRouteChildren {
   BillsRoute: typeof BillsRoute
   CardsRoute: typeof CardsRoute
   ContactRoute: typeof ContactRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
   DepositsRoute: typeof DepositsRoute
   FundTransferRoute: typeof FundTransferRoute
   InvestmentsRoute: typeof InvestmentsRoute
@@ -311,6 +324,13 @@ declare module '@tanstack/react-router' {
       path: '/deposits'
       fullPath: '/deposits'
       preLoaderRoute: typeof DepositsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard-settings': {
+      id: '/dashboard-settings'
+      path: '/dashboard-settings'
+      fullPath: '/dashboard-settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -404,6 +424,7 @@ const rootRouteChildren: RootRouteChildren = {
   BillsRoute: BillsRoute,
   CardsRoute: CardsRoute,
   ContactRoute: ContactRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
   DepositsRoute: DepositsRoute,
   FundTransferRoute: FundTransferRoute,
   InvestmentsRoute: InvestmentsRoute,
