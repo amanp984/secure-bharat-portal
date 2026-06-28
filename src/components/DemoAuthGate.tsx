@@ -107,7 +107,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
     }
     setLoading(true);
     setTimeout(() => {
-      if (uid === DEMO_USER && pass === getDemoPass()) {
+      if (uid === getDemoUser() && pass === getDemoPass()) {
         try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
         recordLogin();
         toast.success("Login successful. Welcome to Indian One.");
