@@ -65,6 +65,7 @@ const sections: { title: string; items: Item[] }[] = [
     title: "Settings",
     items: [
       { label: "Settings", icon: Settings, to: "/settings" },
+      { label: "Dashboard Settings", icon: Settings, to: "/dashboard-settings" },
       { label: "Logout", icon: LogOut, action: "logout" },
     ],
   },

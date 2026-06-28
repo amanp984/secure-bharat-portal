@@ -11,16 +11,13 @@ import { toast } from "sonner";
 import { recordLogin } from "@/lib/session";
 import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
+import { profile, setBankingData, useBankingStore } from "@/lib/banking-data";
 
 const AUTH_KEY = "indian_one_demo_auth";
-const PWD_KEY = "indian_one_demo_pwd";
-const DEMO_USER = "36225348698";
-const DEFAULT_PASS = "PRAJA@20266";
-const RESET_CARD_LAST4 = "8688";
 const RESET_PIN = "1122";
-const getDemoPass = () => {
-  try { return localStorage.getItem(PWD_KEY) || DEFAULT_PASS; } catch { return DEFAULT_PASS; }
-};
+const getDemoUser = () => profile.username;
+const getDemoPass = () => profile.password;
+const getResetCardLast4 = () => (profile.accountNumber || "").slice(-4);
 const IDLE_MS = 3 * 60 * 1000; // 3 minutes
 
 
@@ -80,6 +77,7 @@ export function DemoAuthGate({ children }: { children: React.ReactNode }) {
 }
 
 function LoginPage({ onSuccess }: { onSuccess: () => void }) {
+  useBankingStore();
   const [tab, setTab] = useState<"individual" | "corporate">("individual");
   const [userId, setUserId] = useState("");
   const [pwd, setPwd] = useState("");
@@ -110,7 +108,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
     }
     setLoading(true);
     setTimeout(() => {
-      if (uid === DEMO_USER && pass === getDemoPass()) {
+      if (uid === getDemoUser() && pass === getDemoPass()) {
         try { localStorage.setItem(AUTH_KEY, "1"); } catch {}
         recordLogin();
         toast.success("Login successful. Welcome to Indian One.");
@@ -508,7 +506,7 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       setProcessing(true);
       setTimeout(() => {
         setProcessing(false);
-        if (uid.trim() !== DEMO_USER || last4 !== RESET_CARD_LAST4 || pin !== RESET_PIN) {
+        if (uid.trim() !== getDemoUser() || last4 !== getResetCardLast4() || pin !== RESET_PIN) {
           return toast.error("Verification failed. Please check your details.");
         }
         toast.success("Identity verified. Set a new password.");
@@ -519,7 +517,7 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
       if (newPwd !== confirmPwd) return toast.error("Passwords do not match");
       setProcessing(true);
       setTimeout(() => {
-        try { localStorage.setItem(PWD_KEY, newPwd); } catch {}
+        setBankingData({ password: newPwd });
         setProcessing(false);
         setDone(true);
         toast.success("Password reset successfully");
