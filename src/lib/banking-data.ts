@@ -1,47 +1,64 @@
-// Centralized customer & account data. Live balances are computed from the
-// transaction ledger in `useTransactions` — see `computeCurrentBalance` below.
-// `accounts[].balance` is the OPENING balance only. Never read it as the
-// current/available balance.
+// Centralized customer & account data — LIVE store.
+//
+// All customer info is held in a single in-memory object and persisted to
+// localStorage. The exported `profile` and `accounts` references are MUTABLE
+// proxies: mutating them via `setBankingData()` updates every reader.
+// Components subscribe via `useBankingStore()` to re-render on changes.
 
-export const accounts = [
-  {
-    id: "cur",
-    type: "Current Account",
-    masked: `XXXX XXXX ${"6822438688".slice(-4)}`,
-    accountNumber: "6822438688",
-    ifsc: "IDIBO00B001",
-    branch: "Jaipur",
-    customerId: "36225348698",
-    status: "Active",
-    /** Opening balance only — current balance = opening + Σcredits − Σdebits */
-    balance: 0,
-    primary: true,
-    color: "from-blue-700 via-indigo-700 to-slate-900",
-  },
-];
+import { useSyncExternalStore } from "react";
 
-export function computeCurrentBalance(
-  txns: ReadonlyArray<{ credit?: number; debit?: number }>,
-  opening: number = accounts[0]?.balance ?? 0,
-): number {
-  let bal = opening;
-  for (const t of txns) bal += (t.credit || 0) - (t.debit || 0);
-  return bal;
-}
+export type Profile = {
+  fullName: string;
+  customerId: string;
+  accountNumber: string;
+  username: string;
+  password: string;
+  ifsc: string;
+  micr: string;
+  mobile: string;
+  email: string;
+  address: string;
+  branch: string;
+  branchAddress: string;
+  // Extras
+  upiUsername: string;
+  upiId: string;
+  registeredPhone: string;
+  cardholderName: string;
+  bankName: string;
+  // Static-ish fields kept for UI continuity
+  aadhaar: string;
+  pan: string;
+  accountType: string;
+  kycStatus: string;
+  accountStatus: string;
+  nominee: string;
+  openedOn: string;
+  lastLogin: string;
+  occupation: string;
+  customerCategory: string;
+};
 
-export const profile = {
+const DEFAULT_PROFILE: Profile = {
   fullName: "ANJAN",
   customerId: "36225348698",
   accountNumber: "6822438688",
+  username: "36225348698",
+  password: "PRAJA@20266",
   ifsc: "IDIBO00B001",
   micr: "362242568324",
   mobile: "+91 XXXXX36253",
   email: "pra3668843@gmail.com",
   address: "Shop no 12, Govardhan colony, Near JK Petrol, Jaipur-85",
-  aadhaar: "XXXX XXXX 3671",
-  pan: "AXXXX0000X",
   branch: "Jaipur",
   branchAddress: "Indian Bank A/12, Western Highway, Jaipur-83",
+  upiUsername: "anjan",
+  upiId: "anjan@indianone",
+  registeredPhone: "+91 XXXXX36253",
+  cardholderName: "ANJAN",
+  bankName: "Indian One",
+  aadhaar: "XXXX XXXX 3671",
+  pan: "AXXXX0000X",
   accountType: "Current Account",
   kycStatus: "Verified",
   accountStatus: "Active",
@@ -51,6 +68,94 @@ export const profile = {
   occupation: "Business Owner",
   customerCategory: "Priority Customer",
 };
+
+const STORAGE_KEY = "indian_one_banking_data_v1";
+
+function loadInitial(): Profile {
+  try {
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
+    if (raw) return { ...DEFAULT_PROFILE, ...JSON.parse(raw) };
+  } catch {}
+  return { ...DEFAULT_PROFILE };
+}
+
+// LIVE singleton — mutated in place so legacy `profile.x` reads stay valid.
+export const profile: Profile = loadInitial();
+
+export const accounts = [
+  {
+    id: "cur",
+    type: "Current Account",
+    get masked() {
+      return `XXXX XXXX ${(profile.accountNumber || "").slice(-4)}`;
+    },
+    get accountNumber() {
+      return profile.accountNumber;
+    },
+    get ifsc() {
+      return profile.ifsc;
+    },
+    get branch() {
+      return profile.branch;
+    },
+    get customerId() {
+      return profile.customerId;
+    },
+    status: "Active",
+    balance: 0,
+    primary: true,
+    color: "from-blue-700 via-indigo-700 to-slate-900",
+  },
+];
+
+// ---- subscription / hook ---------------------------------------------------
+type Listener = () => void;
+const listeners = new Set<Listener>();
+let version = 0;
+
+export function subscribeBanking(fn: Listener) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+function emit() {
+  version++;
+  for (const l of listeners) l();
+}
+
+export function setBankingData(patch: Partial<Profile>) {
+  Object.assign(profile, patch);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  } catch {}
+  emit();
+}
+
+export function resetBankingData() {
+  Object.assign(profile, DEFAULT_PROFILE);
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {}
+  emit();
+}
+
+/** Subscribe a component to data changes — forces re-render on update. */
+export function useBankingStore() {
+  return useSyncExternalStore(
+    (fn) => subscribeBanking(fn),
+    () => version,
+    () => version,
+  );
+}
+
+export function computeCurrentBalance(
+  txns: ReadonlyArray<{ credit?: number; debit?: number }>,
+  opening: number = accounts[0]?.balance ?? 0,
+): number {
+  let bal = opening;
+  for (const t of txns) bal += (t.credit || 0) - (t.debit || 0);
+  return bal;
+}
 
 export const tickets = [
   { id: "SR248921", subject: "Debit card PIN reset", status: "Resolved", createdAt: "18 May 2026", resolution: "PIN reset successfully" },
