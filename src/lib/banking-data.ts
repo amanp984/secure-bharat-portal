@@ -69,7 +69,7 @@ const DEFAULT_PROFILE: Profile = {
   customerCategory: "Priority Customer",
 };
 
-const STORAGE_KEY = "indian_one_banking_data_v1";
+const STORAGE_KEY = "indian_one_banking_data_v2";
 
 function loadInitial(): Profile {
   try {
