@@ -9,7 +9,11 @@ type StatementDownloadButtonProps = ButtonProps & {
   idleIcon: ComponentType<{ className?: string }>;
   idleLabel: string;
   loadingLabel?: string;
+  /** Pre-filtered transactions to include in the PDF. */
   txns?: StatementTxn[];
+  /** Explicit date range (YYYY-MM-DD). When set without `txns`, the PDF is
+   *  generated from a fresh database query filtered to this range. */
+  range?: { from: string; to: string };
 };
 
 export function StatementDownloadButton({
@@ -17,6 +21,7 @@ export function StatementDownloadButton({
   idleLabel,
   loadingLabel = "Generating...",
   txns,
+  range,
   className,
   disabled,
   onClick,
@@ -32,7 +37,7 @@ export function StatementDownloadButton({
       onClick={async (event) => {
         onClick?.(event);
         if (event.defaultPrevented || isDownloading) return;
-        await downloadStatementPDF(txns);
+        await downloadStatementPDF({ txns, from: range?.from, to: range?.to });
       }}
       className={cn("relative", isDownloading && "opacity-80", className)}
     >

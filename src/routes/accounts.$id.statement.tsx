@@ -46,10 +46,19 @@ function downloadBlob(content: string, mime: string, filename: string) {
 function StatementPage() {
   const acc = accounts[0];
   const { transactions } = useTransactions();
+  // Default the date range to the current calendar month (1st → today).
+  const defaultRange = useMemo(() => {
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return {
+      from: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`,
+      to: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+    };
+  }, []);
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState(defaultRange.from);
+  const [to, setTo] = useState(defaultRange.to);
   const [typeFilter, setTypeFilter] = useState<"All" | "Credit" | "Debit">("All");
 
   const filtered = useMemo(
@@ -106,7 +115,7 @@ function StatementPage() {
         action={
           <div className="flex gap-2">
             <Button variant="outline" onClick={exportCSV}><FileSpreadsheet className="w-4 h-4 mr-1.5" />Download CSV</Button>
-            <StatementDownloadButton className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white hover:opacity-95" idleIcon={Download} idleLabel="Download PDF" loadingLabel="Generating Statement..." txns={filtered} />
+            <StatementDownloadButton className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white hover:opacity-95" idleIcon={Download} idleLabel="Download PDF" loadingLabel="Generating Statement..." range={{ from: from || defaultRange.from, to: to || defaultRange.to }} />
           </div>
         }
       />
