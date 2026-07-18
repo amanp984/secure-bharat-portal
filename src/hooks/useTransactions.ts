@@ -178,14 +178,26 @@ export function useTransactions() {
     };
 
     load();
-    // Poll for fresh transactions every 15s.
+    // Poll as a safety net.
     timer = setInterval(() => { load().catch(() => {}); }, 15000);
+
+    // Realtime: refetch immediately whenever a new SMS row is inserted.
+    const channel = supabase
+      .channel(`transactions-live-${Math.random().toString(36).slice(2)}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "transactions" },
+        () => { load().catch(() => {}); },
+      )
+      .subscribe();
 
     return () => {
       active = false;
       if (timer) clearInterval(timer);
+      supabase.removeChannel(channel);
     };
   }, []);
+
 
   const balance = useMemo(
     () => computeCurrentBalance(transactions, OPENING_BALANCE),

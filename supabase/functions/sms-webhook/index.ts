@@ -1,31 +1,27 @@
-// Vercel Serverless Function — /api/sms
-// Receives banking SMS payloads from an Android SMS Forwarder app,
-// parses them, and stores the transaction in Supabase.
+// Public SMS ingestion webhook — receives forwarded banking SMS from an
+// Android SMS Forwarder app and writes a row into public.transactions.
 //
-// Auth: requires the SMS_WEBHOOK_SECRET to be supplied via one of:
-//   - Header `x-webhook-secret: <secret>`
-//   - Header `authorization: Bearer <secret>`
-//   - Query param `?secret=<secret>`
+// Auth: caller MUST supply the shared secret via ONE of:
+//   - Header  x-webhook-secret: <secret>
+//   - Header  authorization: Bearer <secret>
+//   - Query   ?secret=<secret>
 //
-// Accepted JSON body shapes (any one):
-//   { "from": "VK-HDFCBK", "text": "Rs.500 credited to A/c XX1234 ..." }
-//   { "sender": "VK-HDFCBK", "message": "..." }
-//   { "from": "VK-HDFCBK", "body": "..." }
-//   { "address": "VK-HDFCBK", "body": "..." }
+// Body (application/json), any of these field names accepted:
+//   { "from": "VK-HDFCBK", "text": "Rs.500 credited to A/c XX1234 ... UTR 123456789012" }
+//   { "sender": "...",     "message": "..." }
+//   { "address": "...",    "body": "..." }
 //
-// Returns: { success: true, id, parsed } on success.
+// Response 200: { success: true, id, parsed }
+// Response 200 (ignored): { success: true, ignored: true, reason, parsed }
+// Response 200 (duplicate UTR): { success: true, duplicate: true, id, parsed }
 
-import { createClient } from "@supabase/supabase-js";
-
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const SMS_WEBHOOK_SECRET = process.env.SMS_WEBHOOK_SECRET;
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers":
-    "Content-Type, Authorization, X-Webhook-Secret",
+    "authorization, x-client-info, apikey, content-type, x-webhook-secret",
 };
 
 type TxnType = "credit" | "debit";
@@ -43,7 +39,6 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
   const t = (text || "").trim();
   const lower = t.toLowerCase();
 
-  // type
   const creditWords = /(credited|received|deposit(ed)?|salary|refund|added)/i;
   const debitWords =
     /(debited|withdrawn|debit|spent|paid|purchase|payment of|sent|transferred)/i;
@@ -52,16 +47,12 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
   else if (debitWords.test(t) && !creditWords.test(t)) transaction_type = "debit";
   else if (creditWords.test(t)) transaction_type = "credit";
 
-  // amount
   let amount = 0;
   const amtMatch =
     t.match(/(?:rs\.?|inr|₹)\s*([0-9][0-9,]*(?:\.\d{1,2})?)/i) ||
     t.match(/\b([0-9][0-9,]*\.\d{2})\b/);
-  if (amtMatch) {
-    amount = parseFloat(amtMatch[1].replace(/,/g, "")) || 0;
-  }
+  if (amtMatch) amount = parseFloat(amtMatch[1].replace(/,/g, "")) || 0;
 
-  // a/c last 4 — prefer COUNTERPARTY account (after "to"/"from"), not user's own.
   let account_number_last4: string | null = null;
   const cpAcc =
     t.match(/(?:to|from)\s+[A-Za-z][A-Za-z0-9 &.'_\-]{1,60}?\s+(?:a\/?c|account|ac)[^0-9xX*]{0,8}[xX*]+\s*(\d{4})/i) ||
@@ -75,7 +66,6 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
     if (acc) account_number_last4 = acc[1];
   }
 
-  // reference / UTR
   let transaction_reference: string | null = null;
   const ref =
     t.match(
@@ -83,9 +73,7 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
     ) || t.match(/\b([0-9]{10,16})\b/);
   if (ref) transaction_reference = ref[1];
 
-  // channel / bank hints
   let bank_name: string | null = null;
-  const channelMatch = lower.match(/\b(upi|imps|neft|rtgs|atm|pos|cdm|ach|bbps)\b/);
   const banks = [
     ["hdfc", "HDFC Bank"],
     ["icici", "ICICI Bank"],
@@ -102,24 +90,15 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
     ["indian bank", "Indian Bank"],
   ] as const;
   for (const [needle, name] of banks) {
-    if (lower.includes(needle)) {
-      bank_name = name;
-      break;
-    }
+    if (lower.includes(needle)) { bank_name = name; break; }
   }
   if (!bank_name && smsSender) {
     const s = smsSender.toLowerCase();
     for (const [needle, name] of banks) {
-      if (s.includes(needle.replace(/\s/g, ""))) {
-        bank_name = name;
-        break;
-      }
+      if (s.includes(needle.replace(/\s/g, ""))) { bank_name = name; break; }
     }
   }
 
-  // counterparty name — for debits look after "to", for credits after "from"/"by".
-  // Stop before account markers (a/c, account), UTR/Ref/RRN, channel words,
-  // dates, "avl", or end of sentence (".", ",", end-of-string).
   let sender_name: string | null = null;
   const stop = /(?=[.,]|\s+(?:a\/?c|account|ac|on|dated|via|ref|utr|rrn|imps|neft|upi|rtgs|avl|bal)\b)/i;
   const nameMatch =
@@ -147,90 +126,78 @@ function parseSms(text: string, smsSender?: string | null): ParsedSms {
   };
 }
 
-function json(res: any, status: number, body: unknown) {
-  res.statusCode = status;
-  res.setHeader("Content-Type", "application/json");
-  for (const [k, v] of Object.entries(cors)) res.setHeader(k, v as string);
-  res.end(JSON.stringify(body));
+function json(status: number, body: unknown) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...cors, "Content-Type": "application/json" },
+  });
 }
 
-export default async function handler(req: any, res: any) {
-  if (req.method === "OPTIONS") {
-    res.statusCode = 204;
-    for (const [k, v] of Object.entries(cors)) res.setHeader(k, v as string);
-    return res.end();
-  }
-  if (req.method !== "POST") {
-    return json(res, 405, { success: false, error: "Method not allowed" });
-  }
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+  if (req.method !== "POST") return json(405, { success: false, error: "Method not allowed" });
 
+  const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+  const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const SMS_WEBHOOK_SECRET = Deno.env.get("SMS_WEBHOOK_SECRET");
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    return json(res, 500, {
-      success: false,
-      error: "Server not configured: missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY",
-    });
+    return json(500, { success: false, error: "Server not configured (backend credentials missing)" });
   }
   if (!SMS_WEBHOOK_SECRET) {
-    return json(res, 500, {
-      success: false,
-      error: "Server not configured: missing SMS_WEBHOOK_SECRET",
-    });
+    return json(500, { success: false, error: "Server not configured (SMS_WEBHOOK_SECRET missing)" });
   }
 
   // Auth
   const headerSecret =
-    (req.headers["x-webhook-secret"] as string | undefined) ||
-    ((req.headers["authorization"] as string | undefined) || "").replace(/^Bearer\s+/i, "");
-  const url = new URL(req.url || "/", "http://x");
-  const querySecret = url.searchParams.get("secret") || undefined;
+    req.headers.get("x-webhook-secret") ||
+    (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+  const url = new URL(req.url);
+  const querySecret = url.searchParams.get("secret") || "";
   const provided = headerSecret || querySecret;
   if (!provided || provided !== SMS_WEBHOOK_SECRET) {
-    return json(res, 401, { success: false, error: "Unauthorized" });
+    return json(401, { success: false, error: "Unauthorized" });
   }
 
-  // Body (Vercel parses JSON automatically when content-type is set, but be defensive)
-  let body: any = req.body;
-  if (typeof body === "string") {
-    try { body = JSON.parse(body); } catch { body = { text: body }; }
+  // Body
+  let body: Record<string, unknown> | null = null;
+  try {
+    const raw = await req.text();
+    if (!raw) return json(400, { success: false, error: "Empty body" });
+    try { body = JSON.parse(raw); } catch { body = { text: raw }; }
+  } catch {
+    return json(400, { success: false, error: "Invalid body" });
   }
   if (!body || typeof body !== "object") {
-    return json(res, 400, { success: false, error: "Invalid JSON body" });
+    return json(400, { success: false, error: "Invalid JSON body" });
   }
 
-  const message: string =
-    body.text || body.message || body.body || body.sms || body.content || "";
+  const message = String(
+    (body as any).text || (body as any).message || (body as any).body ||
+    (body as any).sms || (body as any).content || "",
+  );
   const smsSender: string | null =
-    body.from || body.sender || body.address || body.phone || null;
+    (body as any).from || (body as any).sender || (body as any).address || (body as any).phone || null;
 
-  if (!message || typeof message !== "string" || message.length < 3) {
-    return json(res, 400, {
+  if (!message || message.length < 3) {
+    return json(400, {
       success: false,
       error: "Missing SMS text (expected `text`, `message`, or `body` field)",
     });
   }
-  if (message.length > 4000) {
-    return json(res, 400, { success: false, error: "SMS too long" });
-  }
+  if (message.length > 4000) return json(400, { success: false, error: "SMS too long" });
 
   const parsed = parseSms(message, smsSender);
 
-  // Validate: must look like a real banking transaction SMS.
-  // Required: amount > 0, a transaction keyword, and a UTR/reference.
   const txnKeyword =
     /(received\s+via\s+upi|sent\s+via\s+upi|received\s+via\s+imps|sent\s+via\s+imps|\bcredited\b|\bdebited\b|\bupi\b|\bimps\b|\bneft\b|\brtgs\b)/i;
   const hasAmount = parsed.amount > 0;
   const hasKeyword = txnKeyword.test(message);
   const hasReference = !!(parsed.transaction_reference && parsed.transaction_reference.length >= 6);
-
   if (!hasAmount || !hasKeyword || !hasReference) {
-    return json(res, 200, {
+    return json(200, {
       success: true,
       ignored: true,
-      reason: !hasAmount
-        ? "no_amount"
-        : !hasKeyword
-          ? "no_transaction_keyword"
-          : "no_utr_reference",
+      reason: !hasAmount ? "no_amount" : !hasKeyword ? "no_transaction_keyword" : "no_utr_reference",
       parsed,
     });
   }
@@ -239,9 +206,7 @@ export default async function handler(req: any, res: any) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  // Deduplicate by UTR/reference. If a transaction with the same UTR already
-  // exists, reject the entire incoming transaction — do not insert, do not
-  // update balances, do not surface anywhere in the UI.
+  // Dedupe by UTR
   if (parsed.transaction_reference) {
     const { data: existing, error: dupErr } = await supabase
       .from("transactions")
@@ -249,17 +214,9 @@ export default async function handler(req: any, res: any) {
       .eq("transaction_reference", parsed.transaction_reference)
       .limit(1)
       .maybeSingle();
-    if (dupErr) {
-      console.error("[/api/sms] dedup check error", dupErr);
-      return json(res, 500, { success: false, error: dupErr.message });
-    }
+    if (dupErr) return json(500, { success: false, error: dupErr.message });
     if (existing?.id) {
-      return json(res, 200, {
-        success: true,
-        duplicate: true,
-        id: existing.id,
-        parsed,
-      });
+      return json(200, { success: true, duplicate: true, id: existing.id, parsed });
     }
   }
 
@@ -279,10 +236,6 @@ export default async function handler(req: any, res: any) {
     .select("id")
     .single();
 
-  if (error) {
-    console.error("[/api/sms] insert error", error);
-    return json(res, 500, { success: false, error: error.message });
-  }
-
-  return json(res, 200, { success: true, id: data?.id, parsed });
-}
+  if (error) return json(500, { success: false, error: error.message });
+  return json(200, { success: true, id: data?.id, parsed });
+});
