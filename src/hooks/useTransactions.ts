@@ -105,6 +105,24 @@ function dedupeByUtr(rows: DbRow[]): DbRow[] {
   return out;
 }
 
+/**
+ * Fetch transactions filtered at the database query level by date range.
+ * Used by the statement download flow so the PDF is generated from a fresh,
+ * server-side filtered result set — not from an in-memory slice.
+ */
+export async function fetchTransactionsInRange(
+  from: string,
+  to: string,
+): Promise<UiTransaction[]> {
+  const { data, error } = await supabase.functions.invoke(
+    `list-transactions?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+    { method: "GET" },
+  );
+  if (error) throw error;
+  const rows = (data as { transactions?: DbRow[] } | null)?.transactions || [];
+  return mapRows(rows);
+}
+
 function mapRows(input: DbRow[]): UiTransaction[] {
   const rows = dedupeByUtr(input);
   const totalCredit = rows.reduce((s, r) => s + (r.transaction_type === "credit" ? Number(r.amount) || 0 : 0), 0);
