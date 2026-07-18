@@ -1,1 +1,4 @@
 project_id = "fnboyycamnvonbqtcluz"
+
+[functions.list-transactions]
+verify_jwt = false
