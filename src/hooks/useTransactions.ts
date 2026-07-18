@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import { accounts, computeCurrentBalance } from "@/lib/banking-data";
 import { setCanonicalTxns } from "@/lib/canonical-txns";
+import { supabase } from "@/integrations/supabase/client";
 
 // UI transaction shape — matches what the dashboard already expects.
 export interface UiTransaction {
@@ -158,11 +159,14 @@ export function useTransactions() {
 
     const load = async () => {
       try {
-        const res = await fetch("/api/transactions", { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const body = (await res.json()) as { transactions?: DbRow[] };
+        const { data, error } = await supabase.functions.invoke("list-transactions", {
+          method: "GET",
+        });
+        if (error) throw error;
         if (!active) return;
-        const mapped = mapRows(body.transactions || []);
+        const rows = (data as { transactions?: DbRow[] } | null)?.transactions || [];
+        console.log("[useTransactions] loaded", rows.length, "rows");
+        const mapped = mapRows(rows);
         setCanonicalTxns(mapped);
         setTransactions(mapped);
       } catch (err) {
@@ -174,8 +178,8 @@ export function useTransactions() {
     };
 
     load();
-    // Light polling in lieu of realtime (anon role no longer has table access).
-    timer = setInterval(() => { load().catch(() => {}); }, 30000);
+    // Poll for fresh transactions every 15s.
+    timer = setInterval(() => { load().catch(() => {}); }, 15000);
 
     return () => {
       active = false;
