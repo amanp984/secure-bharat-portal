@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 export interface UiTransaction {
   id: string;
   isoDate: string;
+  /** Full ISO timestamp from the DB (for stable chronological sorting). */
+  sortTs: string;
   date: string;
   narration: string;
   channel: string;
