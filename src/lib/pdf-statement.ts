@@ -186,29 +186,51 @@ function buildPdf(
 ) {
   const acc = accounts[0];
 
-  // Sort chronologically so opening/closing math is well-defined.
-  const chrono = [...txns].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+  // Sort strictly by the actual transaction timestamp (oldest → newest).
+  // Fall back to isoDate + id so ordering is deterministic if a timestamp
+  // is missing.
+  const chrono = [...txns].sort((a, b) => {
+    const ta = a.sortTs || a.isoDate;
+    const tb = b.sortTs || b.isoDate;
+    if (ta !== tb) return ta < tb ? -1 : 1;
+    return a.id.localeCompare(b.id);
+  });
 
   const totalCredit = chrono.reduce((s, t) => s + (t.credit || 0), 0);
   const totalDebit = chrono.reduce((s, t) => s + (t.debit || 0), 0);
   const creditCount = chrono.filter((t) => t.type === "Credit").length;
   const debitCount = chrono.filter((t) => t.type === "Debit").length;
 
-  // Opening = balance BEFORE the earliest filtered txn. Each txn's `balance`
-  // is post-transaction, so subtract its credit / add its debit to reverse it.
+  // Opening = balance BEFORE the earliest filtered txn. Each txn's stored
+  // `balance` is post-transaction, so subtract its credit / add its debit
+  // to reverse it back to the opening figure.
   const first = chrono[0];
   const openingBalance = first ? first.balance - (first.credit || 0) + (first.debit || 0) : acc.balance;
-  const closingBalance = chrono.length ? chrono[chrono.length - 1].balance : openingBalance;
 
-  // Render newest-first in the table (matches on-screen ledger).
-  const displayRows = [...chrono].reverse();
+  // Recompute the running balance sequentially in chronological order so the
+  // ledger is internally consistent regardless of DB insertion order.
+  const withRunning = chrono.map((t) => {
+    // running is captured via closure below
+    return t;
+  });
+  let running = openingBalance;
+  const runningBalances = new Map<string, number>();
+  for (const t of chrono) {
+    running = running + (t.credit || 0) - (t.debit || 0);
+    runningBalances.set(t.id, running);
+  }
+  const closingBalance = running;
+
+  // Render the ledger in chronological order (oldest → newest), so debit
+  // rows stay at their true position on the timeline.
+  const displayRows = chrono;
   const rows = displayRows.map((t) => ({
     date: ddmmyyyy(t.isoDate),
     narration: t.narration,
     ref: t.reference || t.id.slice(0, 12),
     debit: t.debit ? fmtINR(t.debit) : "—",
     credit: t.credit ? fmtINR(t.credit) : "—",
-    balance: fmtINR(t.balance),
+    balance: fmtINR(runningBalances.get(t.id) ?? t.balance),
   }));
 
   const periodFrom = period.from ? ddmmyyyy(period.from) : ddmmyyyy(chrono[0].isoDate);
