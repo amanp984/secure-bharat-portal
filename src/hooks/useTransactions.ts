@@ -142,6 +142,7 @@ function mapRows(input: DbRow[]): UiTransaction[] {
     const txn: UiTransaction = {
       id: r.id,
       isoDate,
+      sortTs: r.transaction_date,
       date,
       narration: buildNarration(r) || (r.message ?? "Transaction"),
       channel: (r.bank_name || r.sms_sender || "SMS").toString(),
