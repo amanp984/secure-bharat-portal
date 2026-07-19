@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 export interface UiTransaction {
   id: string;
   isoDate: string;
+  /** Full ISO timestamp from the DB (for stable chronological sorting). */
+  sortTs: string;
   date: string;
   narration: string;
   channel: string;
@@ -140,6 +142,7 @@ function mapRows(input: DbRow[]): UiTransaction[] {
     const txn: UiTransaction = {
       id: r.id,
       isoDate,
+      sortTs: r.transaction_date,
       date,
       narration: buildNarration(r) || (r.message ?? "Transaction"),
       channel: (r.bank_name || r.sms_sender || "SMS").toString(),
