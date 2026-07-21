@@ -263,3 +263,89 @@ function Dashboard() {
     </AppLayout>
   );
 }
+
+const CATEGORY_RULES: { label: string; test: RegExp; color: string }[] = [
+  { label: "Food & Dining", test: /swiggy|zomato|restaurant|cafe|dining|dominos|mcdonald|kfc|starbucks/i, color: "from-amber-500 to-orange-600" },
+  { label: "Shopping", test: /amazon|flipkart|myntra|ajio|bazaar|reliance digital|croma|mall/i, color: "from-fuchsia-500 to-pink-600" },
+  { label: "Bills & Utilities", test: /electric|bses|water|gas|airtel|jio|vodafone|vi |broadband|dth|recharge|tata power|adani/i, color: "from-emerald-500 to-teal-600" },
+  { label: "Transport & Fuel", test: /petrol|fuel|uber|ola|iocl|bpcl|hpcl|hp\b|indian oil|metro|irctc/i, color: "from-sky-500 to-blue-600" },
+  { label: "Others", test: /.*/, color: "from-slate-500 to-slate-700" },
+];
+
+function categorize(narration: string): string {
+  for (const r of CATEGORY_RULES) if (r.test.test(narration)) return r.label;
+  return "Others";
+}
+
+function fmt2(n: number) {
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(n);
+}
+
+function SpendingOverview({ transactions }: { transactions: UiTransaction[] }) {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth();
+  const prev = new Date(y, m - 1, 1);
+
+  const inMonth = (iso: string, yy: number, mm: number) => {
+    const d = new Date(iso);
+    return d.getFullYear() === yy && d.getMonth() === mm;
+  };
+
+  const thisMonthDebits = transactions.filter((t) => t.type === "Debit" && inMonth(t.sortTs, y, m));
+  const lastMonthTotal = transactions
+    .filter((t) => t.type === "Debit" && inMonth(t.sortTs, prev.getFullYear(), prev.getMonth()))
+    .reduce((s, t) => s + t.debit, 0);
+  const thisMonthTotal = thisMonthDebits.reduce((s, t) => s + t.debit, 0);
+  const change = lastMonthTotal > 0 ? ((thisMonthTotal - lastMonthTotal) / lastMonthTotal) * 100 : 0;
+
+  const grouped = new Map<string, number>();
+  for (const t of thisMonthDebits) {
+    const cat = categorize(t.narration);
+    grouped.set(cat, (grouped.get(cat) || 0) + t.debit);
+  }
+  const rows = CATEGORY_RULES
+    .map((r) => ({ label: r.label, color: r.color, amt: grouped.get(r.label) || 0 }))
+    .filter((r) => r.amt > 0)
+    .sort((a, b) => b.amt - a.amt);
+  const max = Math.max(1, ...rows.map((r) => r.amt));
+
+  return (
+    <Card className="p-4 bg-gradient-to-br from-card to-secondary/40">
+      <h2 className="text-base font-bold mb-0.5">This Month</h2>
+      <p className="text-[10px] text-muted-foreground mb-3">Spending overview</p>
+      <div className="bg-gradient-to-br from-blue-700 to-indigo-800 text-white rounded-xl p-3 mb-3">
+        <div className="text-[10px] opacity-80">Total Spent</div>
+        <div className="text-xl font-bold">{fmt2(thisMonthTotal)}</div>
+        <div className="text-xs opacity-80 flex items-center gap-1 mt-1">
+          <TrendingUp className="w-3 h-3" />
+          {lastMonthTotal > 0
+            ? `${change >= 0 ? "+" : ""}${change.toFixed(1)}% vs last month`
+            : "No spend last month"}
+        </div>
+      </div>
+      {rows.length === 0 ? (
+        <div className="text-[11px] text-muted-foreground py-4 text-center">
+          No spending recorded this month yet.
+        </div>
+      ) : (
+        rows.map((c) => (
+          <div key={c.label} className="mb-2">
+            <div className="flex justify-between text-[11px] mb-0.5">
+              <span className="font-medium">{c.label}</span>
+              <span className="text-muted-foreground">{fmt2(c.amt)}</span>
+            </div>
+            <div className="h-1 bg-muted rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(c.amt / max) * 100}%` }}
+                transition={{ duration: 0.8 }}
+                className={`h-full bg-gradient-to-r ${c.color}`}
+              />
+            </div>
+          </div>
+        ))
+      )}
+    </Card>
+  );
+}
