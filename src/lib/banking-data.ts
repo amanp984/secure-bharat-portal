@@ -37,6 +37,50 @@ export type Profile = {
   lastLogin: string;
   occupation: string;
   customerCategory: string;
+  // Bank details
+  currency: string;
+  // Financial controls
+  currentBalance: string;
+  availableBalance: string;
+  openingBalance: string;
+  // Transaction limits
+  upiDailyLimit: string;
+  upiPerTxnLimit: string;
+  impsLimit: string;
+  neftLimit: string;
+  rtgsLimit: string;
+  cashWithdrawalLimit: string;
+  atmLimit: string;
+  debitCardLimit: string;
+  creditCardLimit: string;
+  // Cards
+  debitCard: string;
+  creditCard: string;
+  cardStatus: string;
+  cardLimit: string;
+  // Loans
+  personalLoan: string;
+  homeLoan: string;
+  carLoan: string;
+  goldLoan: string;
+  loanOffers: string;
+  // Deposits
+  fd: string;
+  rd: string;
+  interestRate: string;
+  // Insurance
+  lifeInsurance: string;
+  healthInsurance: string;
+  vehicleInsurance: string;
+  // Security
+  twoFactor: string;
+  loginNotification: string;
+  trustedDevices: string;
+  deviceSessions: string;
+  // Support
+  reportFraud: string;
+  freezeAccount: string;
+  blockCards: string;
 };
 
 const DEFAULT_PROFILE: Profile = {
@@ -67,7 +111,43 @@ const DEFAULT_PROFILE: Profile = {
   lastLogin: "Just now · Varanasi",
   occupation: "Business Owner",
   customerCategory: "Priority Customer",
+  currency: "INR (₹)",
+  currentBalance: "0.00",
+  availableBalance: "0.00",
+  openingBalance: "0.00",
+  upiDailyLimit: "1,00,000",
+  upiPerTxnLimit: "1,00,000",
+  impsLimit: "5,00,000",
+  neftLimit: "10,00,000",
+  rtgsLimit: "25,00,000",
+  cashWithdrawalLimit: "50,000",
+  atmLimit: "40,000",
+  debitCardLimit: "2,00,000",
+  creditCardLimit: "3,00,000",
+  debitCard: "XXXX XXXX XXXX 5064",
+  creditCard: "Not Issued",
+  cardStatus: "Active",
+  cardLimit: "2,00,000",
+  personalLoan: "Not Availed",
+  homeLoan: "Not Availed",
+  carLoan: "Not Availed",
+  goldLoan: "Not Availed",
+  loanOffers: "Pre-approved ₹5,00,000 Personal Loan",
+  fd: "Nil",
+  rd: "Nil",
+  interestRate: "6.75%",
+  lifeInsurance: "Not Enrolled",
+  healthInsurance: "Not Enrolled",
+  vehicleInsurance: "Not Enrolled",
+  twoFactor: "Enabled",
+  loginNotification: "Enabled",
+  trustedDevices: "1 device",
+  deviceSessions: "1 active",
+  reportFraud: "1800-572-9900",
+  freezeAccount: "Available",
+  blockCards: "Available",
 };
+
 
 const STORAGE_KEY = "indian_one_banking_data_v3";
 
