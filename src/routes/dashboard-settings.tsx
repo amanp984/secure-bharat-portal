@@ -26,23 +26,111 @@ export const Route = createFileRoute("/dashboard-settings")({
 const SETTINGS_PASSWORD = "USER1947";
 const UNLOCK_KEY = "indian_one_dashboard_settings_unlocked";
 
-const FIELDS: { key: keyof Profile; label: string; type?: string; full?: boolean }[] = [
-  { key: "fullName", label: "Holder Name" },
-  { key: "customerId", label: "Customer ID" },
-  { key: "accountNumber", label: "Account Number" },
-  { key: "username", label: "Username" },
-  { key: "password", label: "Login Password", type: "text" },
-  { key: "ifsc", label: "IFSC" },
-  { key: "micr", label: "MICR Code" },
-  { key: "email", label: "Email" },
-  { key: "mobile", label: "Mobile Number" },
-  { key: "address", label: "Residential Address", full: true },
-  { key: "branchAddress", label: "Branch Address", full: true },
-  { key: "upiUsername", label: "UPI Username" },
-  { key: "upiId", label: "UPI ID" },
-  { key: "registeredPhone", label: "Registered Phone" },
-  { key: "cardholderName", label: "Cardholder Name" },
-  { key: "bankName", label: "Bank Name" },
+type Field = { key: keyof Profile; label: string; type?: string; full?: boolean };
+type Section = { title: string; fields: Field[] };
+
+const SECTIONS: Section[] = [
+  {
+    title: "Customer Profile",
+    fields: [
+      { key: "fullName", label: "Name" },
+      { key: "customerId", label: "Customer ID" },
+      { key: "username", label: "Username" },
+      { key: "password", label: "Password", type: "text" },
+      { key: "mobile", label: "Mobile" },
+      { key: "email", label: "Email" },
+      { key: "address", label: "Address", full: true },
+      { key: "branch", label: "Branch" },
+      { key: "bankName", label: "Bank Name" },
+      { key: "accountNumber", label: "Account Number" },
+      { key: "ifsc", label: "IFSC" },
+      { key: "micr", label: "MICR" },
+    ],
+  },
+  {
+    title: "Bank Details",
+    fields: [
+      { key: "branch", label: "Branch Name" },
+      { key: "branchAddress", label: "Branch Address", full: true },
+      { key: "accountStatus", label: "Account Status" },
+      { key: "accountType", label: "Account Type" },
+      { key: "currency", label: "Currency" },
+    ],
+  },
+  {
+    title: "Financial Controls",
+    fields: [
+      { key: "currentBalance", label: "Current Balance" },
+      { key: "availableBalance", label: "Available Balance" },
+      { key: "openingBalance", label: "Opening Balance" },
+    ],
+  },
+  {
+    title: "Transaction Limits",
+    fields: [
+      { key: "upiDailyLimit", label: "UPI Daily Limit" },
+      { key: "upiPerTxnLimit", label: "UPI Per Transaction" },
+      { key: "impsLimit", label: "IMPS Limit" },
+      { key: "neftLimit", label: "NEFT Limit" },
+      { key: "rtgsLimit", label: "RTGS Limit" },
+      { key: "cashWithdrawalLimit", label: "Cash Withdrawal Limit" },
+      { key: "atmLimit", label: "ATM Limit" },
+      { key: "debitCardLimit", label: "Debit Card Limit" },
+      { key: "creditCardLimit", label: "Credit Card Limit" },
+    ],
+  },
+  {
+    title: "Cards",
+    fields: [
+      { key: "debitCard", label: "Debit Card" },
+      { key: "creditCard", label: "Credit Card" },
+      { key: "cardStatus", label: "Card Status" },
+      { key: "cardLimit", label: "Card Limit" },
+    ],
+  },
+  {
+    title: "Loans",
+    fields: [
+      { key: "personalLoan", label: "Personal Loan" },
+      { key: "homeLoan", label: "Home Loan" },
+      { key: "carLoan", label: "Car Loan" },
+      { key: "goldLoan", label: "Gold Loan" },
+      { key: "loanOffers", label: "Loan Offers", full: true },
+    ],
+  },
+  {
+    title: "Deposits",
+    fields: [
+      { key: "fd", label: "FD" },
+      { key: "rd", label: "RD" },
+      { key: "interestRate", label: "Interest Rate" },
+    ],
+  },
+  {
+    title: "Insurance",
+    fields: [
+      { key: "lifeInsurance", label: "Life Insurance" },
+      { key: "healthInsurance", label: "Health Insurance" },
+      { key: "vehicleInsurance", label: "Vehicle Insurance" },
+    ],
+  },
+  {
+    title: "Security",
+    fields: [
+      { key: "twoFactor", label: "Two Factor" },
+      { key: "loginNotification", label: "Login Notification" },
+      { key: "trustedDevices", label: "Trusted Devices" },
+      { key: "deviceSessions", label: "Device Sessions" },
+    ],
+  },
+  {
+    title: "Support",
+    fields: [
+      { key: "reportFraud", label: "Report Fraud" },
+      { key: "freezeAccount", label: "Freeze Account" },
+      { key: "blockCards", label: "Block Cards" },
+    ],
+  },
 ];
 
 function DashboardSettings() {
@@ -79,16 +167,14 @@ function DashboardSettings() {
                   setUnlocked(true);
                   toast.success("Dashboard Settings unlocked");
                 } else {
-                  toast.error("Incorrect password");
+                  toast.error("Invalid Password");
                   setPwd("");
                 }
               }}
               className="space-y-3"
             >
               <div className="space-y-1.5">
-                <Label htmlFor="ds-pwd" className="text-xs">
-                  Password
-                </Label>
+                <Label htmlFor="ds-pwd" className="text-xs">Password</Label>
                 <Input
                   id="ds-pwd"
                   type="password"
@@ -97,9 +183,7 @@ function DashboardSettings() {
                   autoFocus
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Unlock
-              </Button>
+              <Button type="submit" className="w-full">Unlock</Button>
             </form>
           </Card>
         </div>
@@ -135,31 +219,40 @@ function SettingsForm() {
         title="Dashboard Settings"
         subtitle="Edit live customer & account data — applied instantly"
       />
-      <Card className="p-6">
-        <div className="flex items-center gap-2 mb-4 text-xs text-success">
-          <ShieldCheck className="w-4 h-4" />
-          <span>Changes save instantly. No redeploy required.</span>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {FIELDS.map((f) => (
-            <div
-              key={f.key}
-              className={"space-y-1.5 " + (f.full ? "sm:col-span-2" : "")}
-            >
-              <Label htmlFor={`f-${f.key}`} className="text-xs">
-                {f.label}
-              </Label>
-              <Input
-                id={`f-${f.key}`}
-                type={f.type || "text"}
-                value={String(draft[f.key] ?? "")}
-                onChange={(e) => update(f.key, e.target.value)}
-              />
-            </div>
-          ))}
-        </div>
 
-        <div className="flex flex-wrap gap-2 mt-6">
+      <div className="flex items-center gap-2 mb-4 text-xs text-success">
+        <ShieldCheck className="w-4 h-4" />
+        <span>Changes save instantly. No redeploy required.</span>
+      </div>
+
+      <div className="space-y-5">
+        {SECTIONS.map((section) => (
+          <Card key={section.title} className="p-6">
+            <h2 className="font-bold mb-4 text-sm tracking-wide">{section.title}</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {section.fields.map((f) => (
+                <div
+                  key={`${section.title}-${f.key}`}
+                  className={"space-y-1.5 " + (f.full ? "sm:col-span-2" : "")}
+                >
+                  <Label htmlFor={`f-${section.title}-${f.key}`} className="text-xs">
+                    {f.label}
+                  </Label>
+                  <Input
+                    id={`f-${section.title}-${f.key}`}
+                    type={f.type || "text"}
+                    value={String(draft[f.key] ?? "")}
+                    onChange={(e) => update(f.key, e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <div className="sticky bottom-4 mt-6">
+        <Card className="p-4 flex flex-wrap gap-2 shadow-lg">
           <Button onClick={handleSave} className="gap-1.5">
             <Save className="w-4 h-4" /> Save Changes
           </Button>
@@ -169,8 +262,8 @@ function SettingsForm() {
           <Button variant="ghost" onClick={handleReset} className="gap-1.5 text-destructive">
             <RotateCcw className="w-4 h-4" /> Reset to Defaults
           </Button>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </AppLayout>
   );
 }
