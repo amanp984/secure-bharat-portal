@@ -238,33 +238,8 @@ function Dashboard() {
           </div>
         </Card>
 
-        {/* Spending insight */}
-        <Card className="p-4 bg-gradient-to-br from-card to-secondary/40">
-          <h2 className="text-base font-bold mb-0.5">This Month</h2>
-          <p className="text-[10px] text-muted-foreground mb-3">Spending overview</p>
-          <div className="bg-gradient-to-br from-blue-700 to-indigo-800 text-white rounded-xl p-3 mb-3">
-            <div className="text-[10px] opacity-80">Total Spent</div>
-            <div className="text-xl font-bold">{fmt(9230)}</div>
-            <div className="text-xs opacity-80 flex items-center gap-1 mt-1">
-              <TrendingUp className="w-3 h-3" /> 12% vs last month
-            </div>
-          </div>
-          {[
-            { label: "Food & Dining", pct: 78, amt: 2000 },
-            { label: "Shopping", pct: 55, amt: 1500 },
-            { label: "Bills & Utilities", pct: 42, amt: 1100 },
-            { label: "Transport", pct: 28, amt: 430 },
-          ].map((c) => (
-            <div key={c.label} className="mb-2">
-              <div className="flex justify-between text-[11px] mb-0.5">
-                <span className="font-medium">{c.label}</span><span className="text-muted-foreground">{fmt(c.amt)}</span>
-              </div>
-              <div className="h-1 bg-muted rounded-full overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={{ width: `${c.pct}%` }} transition={{ duration: 0.8 }} className="h-full bg-gradient-to-r from-amber-500 to-orange-600" />
-              </div>
-            </div>
-          ))}
-        </Card>
+        {/* Spending insight — live from transactions */}
+        <SpendingOverview transactions={transactions} />
       </div>
 
       {/* Bill quick pay */}
