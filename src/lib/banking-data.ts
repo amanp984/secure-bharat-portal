@@ -40,36 +40,36 @@ export type Profile = {
 };
 
 const DEFAULT_PROFILE: Profile = {
-  fullName: "Ravi Tyres",
-  customerId: "24378814379",
-  accountNumber: "64318466142",
-  username: "24378814379",
-  password: "Ravi81916",
-  ifsc: "IDIB000G619",
-  micr: "3627482394",
-  mobile: "+91 7642864311",
-  email: "ravity3883@gmail.com",
-  address: "Shop no 12, Main Market, Near JK Petrol, Mumbai-85",
-  branch: "Mumbai",
-  branchAddress: "Indian Bank A/12, Western Highway, Mumbai-83",
-  upiUsername: "ravityres",
-  upiId: "ravityres@indianbank",
-  registeredPhone: "+91 7642864311",
-  cardholderName: "Ravi Tyres",
+  fullName: "HARDIP MOBILE",
+  customerId: "8871724337",
+  accountNumber: "61772148678",
+  username: "8871724337",
+  password: "Hardip91772",
+  ifsc: "IDIB000B189",
+  micr: "88731438724",
+  mobile: "+91 XXXXX5064",
+  email: "Hardipmobil392875@gmail.com",
+  address: "Shiv Shanti Niketan, Sector 2, Varanasi, Uttar Pradesh",
+  branch: "Varanasi",
+  branchAddress: "Indian Bank, Sector 34, Varanasi, Uttar Pradesh",
+  upiUsername: "hardipmobile",
+  upiId: "hardipmobile@indianbank",
+  registeredPhone: "+91 XXXXX5064",
+  cardholderName: "HARDIP MOBILE",
   bankName: "Indian Bank",
-  aadhaar: "XXXX XXXX 3671",
+  aadhaar: "XXXX XXXX 5064",
   pan: "AXXXX0000X",
   accountType: "Current Account",
   kycStatus: "Verified",
   accountStatus: "Active",
   nominee: "—",
   openedOn: "14 March 2018",
-  lastLogin: "Just now · Mumbai",
+  lastLogin: "Just now · Varanasi",
   occupation: "Business Owner",
   customerCategory: "Priority Customer",
 };
 
-const STORAGE_KEY = "indian_one_banking_data_v2";
+const STORAGE_KEY = "indian_one_banking_data_v3";
 
 function loadInitial(): Profile {
   try {
