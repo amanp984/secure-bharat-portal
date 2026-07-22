@@ -205,14 +205,20 @@ function DashboardSettings() {
 
 function SettingsForm() {
   useBankingStore();
+  const navigate = useNavigate();
   const [draft, setDraft] = useState<Profile>({ ...profile });
+  const [confirmDestroy, setConfirmDestroy] = useState(false);
+  const [destroying, setDestroying] = useState(false);
 
   const update = (k: keyof Profile, v: string) =>
     setDraft((d) => ({ ...d, [k]: v }));
 
   const handleSave = () => {
     setBankingData(draft);
-    toast.success("Changes saved — applied across the application");
+    toast.success("Changes saved successfully.");
+    setTimeout(() => {
+      navigate({ to: "/" });
+    }, 400);
   };
 
   const handleReset = () => {
@@ -220,6 +226,19 @@ function SettingsForm() {
     resetBankingData();
     setDraft({ ...profile });
     toast.success("Customer data reset to defaults");
+  };
+
+  const handleDestroyOthers = async () => {
+    setDestroying(true);
+    try {
+      await destroyOtherSessions();
+      toast.success("All other sessions have been destroyed.");
+    } catch {
+      toast.error("Could not destroy other sessions. Please try again.");
+    } finally {
+      setDestroying(false);
+      setConfirmDestroy(false);
+    }
   };
 
   return (
@@ -258,6 +277,23 @@ function SettingsForm() {
             </div>
           </Card>
         ))}
+
+        <Card className="p-6 border-destructive/40">
+          <div className="flex items-center gap-2 mb-1">
+            <ShieldAlert className="w-4 h-4 text-destructive" />
+            <h2 className="font-bold text-sm tracking-wide">Security Administration</h2>
+          </div>
+          <p className="text-xs text-muted-foreground mb-4">
+            Force-logout every other device that is currently signed in. Your current device will remain active.
+          </p>
+          <Button
+            variant="destructive"
+            onClick={() => setConfirmDestroy(true)}
+            className="gap-1.5"
+          >
+            <ShieldAlert className="w-4 h-4" /> Destroy Other Sessions
+          </Button>
+        </Card>
       </div>
 
       <div className="sticky bottom-4 mt-6">
@@ -273,6 +309,24 @@ function SettingsForm() {
           </Button>
         </Card>
       </div>
+
+      <Dialog open={confirmDestroy} onOpenChange={(o) => !destroying && setConfirmDestroy(o)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Destroy all other active login sessions?</DialogTitle>
+            <DialogDescription>Current device will remain logged in.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setConfirmDestroy(false)} disabled={destroying}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDestroyOthers} disabled={destroying}>
+              {destroying ? "Destroying…" : "Destroy"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }
+
