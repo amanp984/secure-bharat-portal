@@ -94,7 +94,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <main className="flex-1 mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-7">{children}</main>
           <footer className="border-t bg-card/80 mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted-foreground">
-              <div>© {new Date().getFullYear()} {brand.name}. Independent demonstration platform — not a bank.</div>
+              <div>© {new Date().getFullYear()} {brand.name}. Independent Platform.</div>
               <div className="flex gap-4 items-center">
                 <Link to="/terms" className="hover:text-primary font-medium">Terms &amp; Conditions</Link>
                 <Link to="/privacy" className="hover:text-primary font-medium">Privacy Policy</Link>
