@@ -12,6 +12,7 @@ import { recordLogin } from "@/lib/session";
 import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 import { profile, setBankingData, useBankingStore } from "@/lib/banking-data";
+import { initSessionControl, onSessionExpired } from "@/lib/session-control";
 
 const AUTH_KEY = "indian_one_demo_auth";
 const RESET_PIN = "1122";
