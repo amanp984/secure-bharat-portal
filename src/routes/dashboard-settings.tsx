@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppLayout } from "@/components/banking/AppLayout";
 import { PageHeader } from "@/components/banking/PageHeader";
@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Lock, Save, ShieldCheck, RotateCcw } from "lucide-react";
+import { Lock, Save, ShieldCheck, RotateCcw, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import {
   profile,
@@ -15,6 +15,15 @@ import {
   useBankingStore,
   type Profile,
 } from "@/lib/banking-data";
+import { destroyOtherSessions } from "@/lib/session-control";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/dashboard-settings")({
   component: DashboardSettings,
