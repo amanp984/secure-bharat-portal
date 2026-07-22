@@ -154,6 +154,7 @@ function LoginPage({ onSuccess, locked = false }: { onSuccess: () => void; locke
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (locked) return;
     const uid = userId.trim();
     const pass = pwd;
     if (!uid || !pass) return toast.error("Please enter User ID and Password");
