@@ -12,6 +12,7 @@ import { recordLogin } from "@/lib/session";
 import { showLoading } from "@/lib/loading";
 import { IndianOneLogo } from "@/components/banking/IndianBankOneLogo";
 import { profile, setBankingData, useBankingStore } from "@/lib/banking-data";
+import { initSessionControl, onSessionExpired } from "@/lib/session-control";
 
 const AUTH_KEY = "indian_one_demo_auth";
 const RESET_PIN = "1122";
@@ -38,22 +39,34 @@ const slides = [
 export function DemoAuthGate({ children }: { children: React.ReactNode }) {
   const [authed, setAuthed] = useState(false);
   const [ready, setReady] = useState(false);
+  const [expired, setExpired] = useState(false);
 
   // Force logout on every page (re)load: clear any previously persisted auth.
   useEffect(() => {
     try { localStorage.removeItem(AUTH_KEY); } catch {}
     setAuthed(false);
     setReady(true);
+    initSessionControl();
   }, []);
 
-  // Auto-logout after IDLE_MS of inactivity.
+  // Listen for cross-device "destroy other sessions" broadcasts.
+  useEffect(() => {
+    const off = onSessionExpired(() => {
+      try { localStorage.removeItem(AUTH_KEY); } catch {}
+      setAuthed(false);
+      setExpired(true);
+    });
+    return () => { off(); };
+  }, []);
+
+  // Auto-logout after IDLE_MS of inactivity — locks login until page refresh.
   useEffect(() => {
     if (!authed) return;
     let timer: ReturnType<typeof setTimeout>;
     const logout = () => {
       try { localStorage.removeItem(AUTH_KEY); } catch {}
       setAuthed(false);
-      toast.error("Session expired due to inactivity. Please login again.");
+      setExpired(true);
     };
     const reset = () => {
       clearTimeout(timer);
@@ -73,10 +86,53 @@ export function DemoAuthGate({ children }: { children: React.ReactNode }) {
   if (!ready) return null;
   if (authed) return <>{children}</>;
 
-  return <LoginPage onSuccess={() => setAuthed(true)} />;
+  return (
+    <>
+      <LoginPage onSuccess={() => setAuthed(true)} locked={expired} />
+      <SessionExpiredModal open={expired} />
+    </>
+  );
 }
 
-function LoginPage({ onSuccess }: { onSuccess: () => void }) {
+function SessionExpiredModal({ open }: { open: boolean }) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 12, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }}
+            transition={{ type: "spring", damping: 22 }}
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+          >
+            <div className="bg-gradient-to-r from-red-700 to-rose-800 text-white p-4 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5" />
+              <h3 className="font-bold">Session Expired</h3>
+            </div>
+            <div className="p-6 text-center">
+              <div className="w-16 h-16 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-3">
+                <Lock className="w-8 h-8 text-red-700" />
+              </div>
+              <p className="text-sm text-foreground font-medium mb-1">Your page has become inactive.</p>
+              <p className="text-sm text-muted-foreground mb-5">Please refresh the page and login again.</p>
+              <Button
+                className="w-full bg-gradient-to-r from-blue-700 to-indigo-800 text-white h-11 font-semibold"
+                onClick={() => window.location.reload()}
+              >
+                Refresh Page
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function LoginPage({ onSuccess, locked = false }: { onSuccess: () => void; locked?: boolean }) {
+
   useBankingStore();
   const [tab, setTab] = useState<"individual" | "corporate">("individual");
   const [userId, setUserId] = useState("");
@@ -98,6 +154,7 @@ function LoginPage({ onSuccess }: { onSuccess: () => void }) {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (locked) return;
     const uid = userId.trim();
     const pass = pwd;
     if (!uid || !pass) return toast.error("Please enter User ID and Password");
