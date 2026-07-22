@@ -58,7 +58,7 @@ function DashboardSettingsSecretTrigger() {
         className="text-muted-foreground select-none"
         aria-hidden="true"
       >
-        Dashboard Settings
+        24x7 available&nbsp;
       </span>
       <Dialog open={askPwd} onOpenChange={(o) => { setAskPwd(o); if (!o) setPwd(""); }}>
         <DialogContent className="max-w-sm">
