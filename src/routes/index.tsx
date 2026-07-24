@@ -186,7 +186,7 @@ function Dashboard() {
           </div>
           <div className="grid grid-cols-3 gap-2.5">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.04 }}>
-              <StatementDownloadButton idleIcon={Download} idleLabel="Download Statement" loadingLabel="Generating..." variant="outline" className="h-full w-full border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all bg-gradient-to-br from-card to-secondary/20 flex-col text-center gap-1.5 shadow-none">
+              <StatementDownloadButton txns={transactions} idleIcon={Download} idleLabel="Download Statement" loadingLabel="Generating..." variant="outline" className="h-full w-full border rounded-lg p-2.5 hover:shadow-md hover:-translate-y-0.5 hover:border-primary/40 transition-all bg-gradient-to-br from-card to-secondary/20 flex-col text-center gap-1.5 shadow-none">
                 <span className="sr-only">Download Statement</span>
               </StatementDownloadButton>
             </motion.div>
