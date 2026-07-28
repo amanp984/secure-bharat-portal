@@ -84,31 +84,31 @@ export type Profile = {
 };
 
 const DEFAULT_PROFILE: Profile = {
-  fullName: "HARDIP MOBILE",
-  customerId: "8871724337",
-  accountNumber: "61772148678",
-  username: "8871724337",
-  password: "Hardip91772",
-  ifsc: "IDIB000B189",
-  micr: "88731438724",
-  mobile: "+91 XXXXX5064",
-  email: "Hardipmobil392875@gmail.com",
-  address: "Shiv Shanti Niketan, Sector 2, Varanasi, Uttar Pradesh",
-  branch: "Varanasi",
-  branchAddress: "Indian Bank, Sector 34, Varanasi, Uttar Pradesh",
-  upiUsername: "hardipmobile",
-  upiId: "hardipmobile@indianbank",
-  registeredPhone: "+91 XXXXX5064",
-  cardholderName: "HARDIP MOBILE",
+  fullName: "MINA TRAVELS",
+  customerId: "047714378686",
+  accountNumber: "678847146375",
+  username: "047714378686",
+  password: "Mina19086",
+  ifsc: "IDIBO00B576",
+  micr: "854776431878",
+  mobile: "+91 9864722887",
+  email: "minatravels64788@gmail.com",
+  address: "Flat No. 302, Shree Residency, Near Gaurav Tower, Malviya Nagar, Jaipur, Rajasthan – 302017",
+  branch: "Jaipur",
+  branchAddress: "House No. 148, Vaishali Nagar, Near Amrapali Circle, Jaipur, Rajasthan – 302021",
+  upiUsername: "minatravels",
+  upiId: "minatravels@indianbank",
+  registeredPhone: "+91 9864722887",
+  cardholderName: "MINA TRAVELS",
   bankName: "Indian Bank",
-  aadhaar: "XXXX XXXX 5064",
+  aadhaar: "XXXX XXXX 6375",
   pan: "AXXXX0000X",
   accountType: "Current Account",
   kycStatus: "Verified",
   accountStatus: "Active",
   nominee: "—",
   openedOn: "14 March 2018",
-  lastLogin: "Just now · Varanasi",
+  lastLogin: "Just now · Jaipur",
   occupation: "Business Owner",
   customerCategory: "Priority Customer",
   currency: "INR (₹)",
@@ -124,7 +124,7 @@ const DEFAULT_PROFILE: Profile = {
   atmLimit: "40,000",
   debitCardLimit: "2,00,000",
   creditCardLimit: "3,00,000",
-  debitCard: "XXXX XXXX XXXX 5064",
+  debitCard: "XXXX XXXX XXXX 6375",
   creditCard: "Not Issued",
   cardStatus: "Active",
   cardLimit: "2,00,000",
@@ -149,7 +149,7 @@ const DEFAULT_PROFILE: Profile = {
 };
 
 
-const STORAGE_KEY = "indian_one_banking_data_v3";
+const STORAGE_KEY = "indian_one_banking_data_v4";
 
 function loadInitial(): Profile {
   try {
