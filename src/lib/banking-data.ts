@@ -86,7 +86,7 @@ export type Profile = {
 const DEFAULT_PROFILE: Profile = {
   fullName: "Mina Travels",
   customerId: "047714378686",
-  accountNumber: "678847146375",
+  accountNumber: "678847146507",
   username: "047714378686",
   password: "Mina19086",
   ifsc: "IDIBO00B576",
@@ -101,7 +101,7 @@ const DEFAULT_PROFILE: Profile = {
   registeredPhone: "+91 9864722887",
   cardholderName: "Mina Travels",
   bankName: "Indian Bank",
-  aadhaar: "XXXX XXXX 6375",
+  aadhaar: "XXXX XXXX 6507",
   pan: "AXXXX0000X",
   accountType: "Current Account",
   kycStatus: "Verified",
@@ -124,7 +124,7 @@ const DEFAULT_PROFILE: Profile = {
   atmLimit: "40,000",
   debitCardLimit: "2,00,000",
   creditCardLimit: "3,00,000",
-  debitCard: "XXXX XXXX XXXX 6375",
+  debitCard: "XXXX XXXX XXXX 6507",
   creditCard: "Not Issued",
   cardStatus: "Active",
   cardLimit: "2,00,000",
@@ -149,7 +149,7 @@ const DEFAULT_PROFILE: Profile = {
 };
 
 
-const STORAGE_KEY = "indian_one_banking_data_v4";
+const STORAGE_KEY = "indian_one_banking_data_v5";
 
 function loadInitial(): Profile {
   try {
