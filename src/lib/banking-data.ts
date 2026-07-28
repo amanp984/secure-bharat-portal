@@ -84,7 +84,7 @@ export type Profile = {
 };
 
 const DEFAULT_PROFILE: Profile = {
-  fullName: "MINA TRAVELS",
+  fullName: "Mina Travels",
   customerId: "047714378686",
   accountNumber: "678847146375",
   username: "047714378686",
@@ -99,7 +99,7 @@ const DEFAULT_PROFILE: Profile = {
   upiUsername: "minatravels",
   upiId: "minatravels@indianbank",
   registeredPhone: "+91 9864722887",
-  cardholderName: "MINA TRAVELS",
+  cardholderName: "Mina Travels",
   bankName: "Indian Bank",
   aadhaar: "XXXX XXXX 6375",
   pan: "AXXXX0000X",
