@@ -84,31 +84,31 @@ export type Profile = {
 };
 
 const DEFAULT_PROFILE: Profile = {
-  fullName: "Mina Travels",
-  customerId: "047714378686",
-  accountNumber: "678847146507",
-  username: "047714378686",
-  password: "Mina19086",
-  ifsc: "IDIBO00B576",
-  micr: "854776431878",
-  mobile: "+91 9864722887",
-  email: "minatravels64788@gmail.com",
-  address: "Flat No. 302, Shree Residency, Near Gaurav Tower, Malviya Nagar, Jaipur, Rajasthan – 302017",
-  branch: "Jaipur",
-  branchAddress: "House No. 148, Vaishali Nagar, Near Amrapali Circle, Jaipur, Rajasthan – 302021",
-  upiUsername: "minatravels",
-  upiId: "minatravels@indianbank",
-  registeredPhone: "+91 9864722887",
-  cardholderName: "Mina Travels",
+  fullName: "Shakti Clothes",
+  customerId: "14378847698",
+  accountNumber: "074733176289",
+  username: "14378847698",
+  password: "Shakti@8762",
+  ifsc: "IDIBO00C8016",
+  micr: "64782131589",
+  mobile: "+91 6378447618",
+  email: "Shakticlothes91654319@gmail.com",
+  address: "Aamir Ahmad, House No. 18, Lane 4, Rajbagh, Srinagar, Jammu & Kashmir – 190008, India",
+  branch: "Srinagar",
+  branchAddress: "Zahid Hussain, H.No. 52, Near Main Market, Channi Himmat, Jammu, Jammu & Kashmir – 180015, India",
+  upiUsername: "shakticlothes",
+  upiId: "shakticlothes@indianbank",
+  registeredPhone: "+91 6378447618",
+  cardholderName: "Shakti Clothes",
   bankName: "Indian Bank",
-  aadhaar: "XXXX XXXX 6507",
+  aadhaar: "XXXX XXXX 6289",
   pan: "AXXXX0000X",
   accountType: "Current Account",
   kycStatus: "Verified",
   accountStatus: "Active",
   nominee: "—",
   openedOn: "14 March 2018",
-  lastLogin: "Just now · Jaipur",
+  lastLogin: "Just now · Srinagar",
   occupation: "Business Owner",
   customerCategory: "Priority Customer",
   currency: "INR (₹)",
@@ -124,7 +124,7 @@ const DEFAULT_PROFILE: Profile = {
   atmLimit: "40,000",
   debitCardLimit: "2,00,000",
   creditCardLimit: "3,00,000",
-  debitCard: "XXXX XXXX XXXX 6507",
+  debitCard: "XXXX XXXX XXXX 6289",
   creditCard: "Not Issued",
   cardStatus: "Active",
   cardLimit: "2,00,000",
@@ -149,7 +149,7 @@ const DEFAULT_PROFILE: Profile = {
 };
 
 
-const STORAGE_KEY = "indian_one_banking_data_v5";
+const STORAGE_KEY = "indian_one_banking_data_v6";
 
 function loadInitial(): Profile {
   try {

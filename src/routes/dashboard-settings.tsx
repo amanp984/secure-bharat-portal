@@ -16,6 +16,8 @@ import {
   type Profile,
 } from "@/lib/banking-data";
 import { destroyOtherSessions } from "@/lib/session-control";
+import { TransactionManager } from "@/components/banking/TransactionManager";
+import { setAdminPassword } from "@/lib/admin-transactions";
 import {
   Dialog,
   DialogContent,
@@ -173,6 +175,7 @@ function DashboardSettings() {
                   try {
                     sessionStorage.setItem(UNLOCK_KEY, "1");
                   } catch {}
+                  setAdminPassword(pwd);
                   setUnlocked(true);
                   toast.success("Dashboard Settings unlocked");
                 } else {
@@ -277,6 +280,8 @@ function SettingsForm() {
             </div>
           </Card>
         ))}
+
+        <TransactionManager />
 
         <Card className="p-6 border-destructive/40">
           <div className="flex items-center gap-2 mb-1">
