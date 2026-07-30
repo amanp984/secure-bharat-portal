@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { setAdminPassword } from "@/lib/admin-transactions";
 
 const ADMIN_PASSWORD = "USER1947";
 const UNLOCK_KEY = "indian_one_dashboard_settings_unlocked";
@@ -42,6 +43,7 @@ function DashboardSettingsSecretTrigger() {
       try {
         sessionStorage.setItem(UNLOCK_KEY, "1");
       } catch {}
+      setAdminPassword(pwd);
       setAskPwd(false);
       setPwd("");
       navigate({ to: "/dashboard-settings" });

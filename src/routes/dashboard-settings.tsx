@@ -16,6 +16,8 @@ import {
   type Profile,
 } from "@/lib/banking-data";
 import { destroyOtherSessions } from "@/lib/session-control";
+import { TransactionManager } from "@/components/banking/TransactionManager";
+import { setAdminPassword } from "@/lib/admin-transactions";
 import {
   Dialog,
   DialogContent,
@@ -173,6 +175,7 @@ function DashboardSettings() {
                   try {
                     sessionStorage.setItem(UNLOCK_KEY, "1");
                   } catch {}
+                  setAdminPassword(pwd);
                   setUnlocked(true);
                   toast.success("Dashboard Settings unlocked");
                 } else {
