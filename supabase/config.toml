@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.sms-webhook]
 verify_jwt = false
+
+[functions.admin-transactions]
+verify_jwt = false
