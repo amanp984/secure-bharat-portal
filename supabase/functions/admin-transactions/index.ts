@@ -1,5 +1,5 @@
 // Admin CRUD endpoint for the transactions ledger.
-// Protected by the ADMIN_PASSWORD secret (sent as `x-admin-password`).
+// Protected by the ADMIN_TXN_PASSWORD secret (sent as `x-admin-password`).
 // Uses the service role so the underlying table stays locked to anon.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: cors });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
-  const expected = Deno.env.get("ADMIN_PASSWORD") || "";
+  const expected = Deno.env.get("ADMIN_TXN_PASSWORD") || "";
   const provided = req.headers.get("x-admin-password") || "";
   if (!expected || provided !== expected) return json({ error: "Unauthorized" }, 401);
 
