@@ -278,6 +278,8 @@ function SettingsForm() {
           </Card>
         ))}
 
+        <TransactionManager />
+
         <Card className="p-6 border-destructive/40">
           <div className="flex items-center gap-2 mb-1">
             <ShieldAlert className="w-4 h-4 text-destructive" />
