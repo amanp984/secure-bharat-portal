@@ -108,7 +108,7 @@ const DEFAULT_PROFILE: Profile = {
   accountStatus: "Active",
   nominee: "—",
   openedOn: "14 March 2018",
-  lastLogin: "Just now · Jaipur",
+  lastLogin: "Just now · Srinagar",
   occupation: "Business Owner",
   customerCategory: "Priority Customer",
   currency: "INR (₹)",
@@ -124,7 +124,7 @@ const DEFAULT_PROFILE: Profile = {
   atmLimit: "40,000",
   debitCardLimit: "2,00,000",
   creditCardLimit: "3,00,000",
-  debitCard: "XXXX XXXX XXXX 6507",
+  debitCard: "XXXX XXXX XXXX 6289",
   creditCard: "Not Issued",
   cardStatus: "Active",
   cardLimit: "2,00,000",
@@ -149,7 +149,7 @@ const DEFAULT_PROFILE: Profile = {
 };
 
 
-const STORAGE_KEY = "indian_one_banking_data_v5";
+const STORAGE_KEY = "indian_one_banking_data_v6";
 
 function loadInitial(): Profile {
   try {
