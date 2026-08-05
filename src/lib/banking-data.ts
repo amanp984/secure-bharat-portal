@@ -84,24 +84,24 @@ export type Profile = {
 };
 
 const DEFAULT_PROFILE: Profile = {
-  fullName: "Shakti Clothes",
-  customerId: "14378847698",
-  accountNumber: "074733176289",
-  username: "14378847698",
-  password: "Shakti@8762",
-  ifsc: "IDIBO00C8016",
-  micr: "64782131589",
-  mobile: "+91 6378447618",
-  email: "Shakticlothes91654319@gmail.com",
+  fullName: "Aman JP",
+  customerId: "64781143478",
+  accountNumber: "61337814688",
+  username: "64781143478",
+  password: "Anitek@2025",
+  ifsc: "IDIBO00C6478",
+  micr: "647781437589",
+  mobile: "+91 6347881437",
+  email: "Amanp98377662@gmail.com",
   address: "Aamir Ahmad, House No. 18, Lane 4, Rajbagh, Srinagar, Jammu & Kashmir – 190008, India",
   branch: "Srinagar",
   branchAddress: "Zahid Hussain, H.No. 52, Near Main Market, Channi Himmat, Jammu, Jammu & Kashmir – 180015, India",
-  upiUsername: "shakticlothes",
-  upiId: "shakticlothes@indianbank",
-  registeredPhone: "+91 6378447618",
-  cardholderName: "Shakti Clothes",
+  upiUsername: "amanjp",
+  upiId: "amanjp@indianbank",
+  registeredPhone: "+91 6347881437",
+  cardholderName: "Aman JP",
   bankName: "Indian Bank",
-  aadhaar: "XXXX XXXX 6289",
+  aadhaar: "XXXX XXXX 4688",
   pan: "AXXXX0000X",
   accountType: "Current Account",
   kycStatus: "Verified",
@@ -124,7 +124,7 @@ const DEFAULT_PROFILE: Profile = {
   atmLimit: "40,000",
   debitCardLimit: "2,00,000",
   creditCardLimit: "3,00,000",
-  debitCard: "XXXX XXXX XXXX 6289",
+  debitCard: "XXXX XXXX XXXX 4688",
   creditCard: "Not Issued",
   cardStatus: "Active",
   cardLimit: "2,00,000",
@@ -149,7 +149,7 @@ const DEFAULT_PROFILE: Profile = {
 };
 
 
-const STORAGE_KEY = "indian_one_banking_data_v6";
+const STORAGE_KEY = "indian_one_banking_data_v7";
 
 function loadInitial(): Profile {
   try {

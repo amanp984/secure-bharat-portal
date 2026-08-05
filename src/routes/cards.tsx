@@ -9,6 +9,7 @@ import { Wifi, KeyRound, Globe, ShieldOff, Download, AlertTriangle, CreditCard, 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
+import { profile, useBankingStore } from "@/lib/banking-data";
 
 export const Route = createFileRoute("/cards")({
   component: CardsPage,
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/cards")({
 });
 
 function CardsPage() {
+  useBankingStore();
   const [frozen, setFrozen] = useState(false);
   const [intl, setIntl] = useState(false);
   const [online, setOnline] = useState(true);
@@ -68,10 +70,10 @@ function CardsPage() {
             <Wifi className="w-5 h-5 rotate-90 opacity-80" />
           </div>
           <div className="mt-7 w-10 h-8 rounded-md bg-gradient-to-br from-amber-200 via-amber-500 to-yellow-700 shadow-inner border border-amber-200/50" />
-          <div className="font-mono text-2xl mt-5 tracking-widest">5432 88•• •••• 4521</div>
+          <div className="font-mono text-2xl mt-5 tracking-widest">{`5432 88•• •••• ${(profile.accountNumber || "").slice(-4)}`}</div>
           <div className="flex justify-between items-end mt-6 text-xs">
             <div><div className="opacity-70">Valid Thru</div><div className="font-semibold text-base">11 / 29</div></div>
-            <div><div className="opacity-70">Holder</div><div className="font-semibold">DHARMENDRA SONI</div></div>
+            <div><div className="opacity-70">Holder</div><div className="font-semibold">{(profile.cardholderName || profile.fullName).toUpperCase()}</div></div>
             <div className="text-xl font-extrabold tracking-tight"><span className="text-amber-300">Ru</span><span className="text-emerald-300">Pay</span></div>
           </div>
         </Card>
